@@ -14,6 +14,7 @@ use yii\web\IdentityInterface;
  * @property string $nombre
  * @property string $apellido
  * @property string $biografia
+ * @property string $auth_key
  * @property string $created_at
  * @property string $updated_at
  */
@@ -35,7 +36,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['email', 'password', 'nombre', 'apellido'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['email', 'password', 'nombre', 'apellido', 'biografia'], 'string', 'max' => 255],
+            [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key'], 'string', 'max' => 255],
             [['email'], 'unique'],
         ];
     }
@@ -52,6 +53,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'nombre' => 'Nombre',
             'apellido' => 'Apellido',
             'biografia' => 'Biografia',
+            'auth_key' => 'Auth Key',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -73,12 +75,12 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getAuthKey()
     {
-        // return $this->authKey;
+        return $this->auth_key;
     }
 
     public function validateAuthKey($authKey)
     {
-        // return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     public function validatePassword($password)

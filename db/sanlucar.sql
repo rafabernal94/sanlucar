@@ -12,6 +12,7 @@ CREATE TABLE usuarios
   , nombre     varchar(255) NOT NULL
   , apellido   varchar(255) NOT NULL
   , biografia  varchar(255)
+  , auth_key   varchar(255)
   , created_at timestamp(0) NOT NULL DEFAULT localtimestamp
   , updated_at timestamp(0)
 );
