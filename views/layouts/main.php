@@ -35,26 +35,30 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $items = [
+        ['label' => 'Inicio', 'url' => ['site/index']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        array_splice($items, 1, 0, [
+            ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
+            ['label' => 'Iniciar sesión', 'url' => ['site/login']]
+        ]);
+    } else {
+        array_splice($items, 1, 0, [[
+            'label' => Yii::$app->user->identity->nombre . ' '
+                . substr(Yii::$app->user->identity->apellido, 0, 1),
+            'items' => [
+                [
+                    'label' => 'Cerrar sesión',
+                    'url' => ['site/logout'],
+                    'linkOptions' => ['data-method' => 'POST'],
+                ],
+            ],
+        ]]);
+    }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->nombre . ' ' .
-                        substr(Yii::$app->user->identity->apellido, 0, 1) . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>
