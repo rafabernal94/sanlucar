@@ -40,7 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Html::submitButton('Iniciar sesión', ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
                         </div>
                     </div>
-                    
+                    <div class="col-md-6">
+                        <p>
+                            ¿No tienes cuenta?
+                            <?= Html::a('Registrarse', ['usuarios/registrar']); ?>
+                        </p>
+                    </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
