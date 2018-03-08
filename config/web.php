@@ -6,6 +6,7 @@ $log = require __DIR__ . '/log.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'SanLuCar',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

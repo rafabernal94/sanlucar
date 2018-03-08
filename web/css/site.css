@@ -113,3 +113,7 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.breadcrumb {
+    background-color: #dff0d8;
+}

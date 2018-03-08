@@ -32,7 +32,7 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
     $items = [
@@ -74,9 +74,14 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">
+            Desarrollado por <a href="https://github.com/rafabernal94" target="_blank">rafabernal94</a>
+            <?= Html::img('@web/images/github.png', [
+                'alt' => 'github-logo',
+                'width' => '26px',
+                'style' => 'margin-bottom: 2px; margin-left: 6px'
+            ]) ?>
+        </p>
     </div>
 </footer>
 
