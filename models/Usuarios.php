@@ -15,6 +15,7 @@ use yii\web\IdentityInterface;
  * @property string $apellido
  * @property string $biografia
  * @property string $auth_key
+ * @property string $token_val
  * @property string $created_at
  * @property string $updated_at
  */
@@ -42,9 +43,10 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['email', 'password', 'nombre', 'apellido', 'passwordRepeat'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key'], 'string', 'max' => 255],
+            [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key', 'token_val'], 'string', 'max' => 255],
             [['passwordRepeat'], 'compare', 'compareAttribute' => 'password'],
             [['email'], 'unique'],
+            [['token_val'], 'unique'],
             [['email'], 'email'],
         ];
     }
@@ -63,6 +65,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'apellido' => 'Apellido',
             'biografia' => 'Biografía',
             'auth_key' => 'Auth Key',
+            'token_val' => 'Token Val',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -105,6 +108,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->token_val = Yii::$app->security->generateRandomString();
                 $this->password = Yii::$app->security->generatePasswordHash($this->password);
             }
             return true;

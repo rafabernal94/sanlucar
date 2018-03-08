@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -31,6 +33,25 @@ class UsuariosController extends Controller
     }
 
     /**
+     * Valida un usuario que se ha registrado.
+     * @param  string $token Token de validación
+     * @return mixed
+     */
+    public function actionValidar($token)
+    {
+        $usuario = Usuarios::findOne(['token_val' => $token]);
+
+        if ($usuario === null) {
+            Yii::$app->session->setFlash('error', 'Esta cuenta ya ha sido validada.');
+        } else {
+            $usuario->token_val = null;
+            $usuario->save(false);
+            Yii::$app->session->setFlash('success', 'Cuenta validada correctamente.');
+        }
+        return $this->redirect(['site/login']);
+    }
+
+    /**
      * Crea un nuevo modelo de Usuarios.
      * @return mixed
      */
@@ -44,13 +65,38 @@ class UsuariosController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Te has registrado correctamente.');
+            $this->enviarEmailConfirmacion($model);
+            Yii::$app->session->setFlash('success', 'Se ha enviado un email a su correo electrónico para confirmar la cuenta.');
             return $this->redirect(['site/login']);
         }
 
         return $this->render('registrar', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Envía un email de confirmación al usuario que se registra.
+     * @param  Usuarios $model El usuario al cuál se le envía el email
+     * @return bool            Devuelve true si se ha enviado correctamente,
+     *                         false en caso contrario
+     */
+    public function enviarEmailConfirmacion($model)
+    {
+        return Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($model->email)
+            ->setSubject('Email de validación de cuenta')
+            ->setHtmlBody(
+                'Te has registrado correctamente en <strong>SanLuCar</strong>.<br><br>' .
+                Html::a(
+                    'Click aquí para activar su cuenta',
+                    Url::to([
+                        'usuarios/validar',
+                        'token' => $model->token_val,
+                    ], true)
+                )
+            )->send();
     }
 
     /**
