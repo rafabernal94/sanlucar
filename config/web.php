@@ -53,6 +53,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'usuarios/perfil/<id:\d+>' => 'usuarios/perfil',
             ],
         ],
     ],

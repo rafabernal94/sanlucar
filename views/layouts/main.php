@@ -49,6 +49,10 @@ AppAsset::register($this);
                 . substr(Yii::$app->user->identity->apellido, 0, 1),
             'items' => [
                 [
+                    'label' => 'Mi perfil',
+                    'url' => ['usuarios/perfil', 'id' => Yii::$app->user->id],
+                ],
+                [
                     'label' => 'Cerrar sesión',
                     'url' => ['site/logout'],
                     'linkOptions' => ['data-method' => 'POST'],
@@ -78,8 +82,7 @@ AppAsset::register($this);
             Desarrollado por <a href="https://github.com/rafabernal94" target="_blank">rafabernal94</a>
             <?= Html::img('@web/images/github.png', [
                 'alt' => 'github-logo',
-                'width' => '26px',
-                'style' => 'margin-bottom: 2px; margin-left: 6px'
+                'style' => 'margin-left: 6px'
             ]) ?>
         </p>
     </div>

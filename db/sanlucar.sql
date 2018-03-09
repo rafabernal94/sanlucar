@@ -18,5 +18,8 @@ CREATE TABLE usuarios
   , updated_at timestamp(0)
 );
 
-INSERT INTO usuarios (email, password, nombre, apellido)
-    VALUES ('rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal');
+INSERT INTO usuarios (email, password, nombre, apellido, biografia)
+    VALUES ('rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
+                'Me encanta conducir por Sanlúcar.'),
+            ('pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
+                'Me gusta escuchar música mientras conduzco.');

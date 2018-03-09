@@ -44,7 +44,7 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-offset-4 col-md-4">
                     <div class="form-group">
-                        <?= Html::submitButton('Registrarse', ['class' => 'btn btn-success']) ?>
+                        <?= Html::submitButton('Registrarse', ['class' => 'btn btn-success btn-block']) ?>
                     </div>
                 </div>
                 <div class="col-md-6">
