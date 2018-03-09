@@ -100,6 +100,18 @@ class UsuariosController extends Controller
     }
 
     /**
+     * Displays a single Usuarios model.
+     * @param  int   $id
+     * @return mixed
+     */
+    public function actionPerfil($id)
+    {
+        return $this->render('perfil', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
      * Finds the Usuarios model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id
