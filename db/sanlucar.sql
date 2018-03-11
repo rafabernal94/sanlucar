@@ -2,11 +2,18 @@
 -- Archivo de base de datos --
 ------------------------------
 
+DROP TABLE IF EXISTS usuarios_id CASCADE;
+
+CREATE TABLE usuarios_id
+(
+    id bigserial PRIMARY KEY
+);
+
 DROP TABLE IF EXISTS usuarios CASCADE;
 
 CREATE TABLE usuarios
 (
-    id         bigserial    PRIMARY KEY
+    id         bigint       PRIMARY KEY REFERENCES usuarios_id (id)
   , email      varchar(255) NOT NULL UNIQUE
   , password   varchar(255) NOT NULL
   , nombre     varchar(255) NOT NULL
@@ -18,8 +25,10 @@ CREATE TABLE usuarios
   , updated_at timestamp(0)
 );
 
-INSERT INTO usuarios (email, password, nombre, apellido, biografia)
-    VALUES ('rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
+INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT);
+
+INSERT INTO usuarios (id, email, password, nombre, apellido, biografia)
+    VALUES (1, 'rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
                 'Me encanta conducir por Sanlúcar.'),
-            ('pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
+           (2, 'pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
                 'Me gusta escuchar música mientras conduzco.');

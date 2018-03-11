@@ -138,4 +138,12 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return false;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuarioId()
+    {
+        return $this->hasOne(UsuariosId::className(), ['id' => 'id'])->inverseOf('usuario');
+    }
 }
