@@ -54,6 +54,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'usuarios/perfil/<id:\d+>' => 'usuarios/perfil',
+                'usuarios/modificar/<option:\w+>' => 'usuarios/modificar',
             ],
         ],
     ],

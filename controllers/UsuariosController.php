@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\Usuarios;
 use Yii;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -23,10 +23,20 @@ class UsuariosController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['registrar', 'modificar'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['registrar'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['modificar'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -57,7 +67,7 @@ class UsuariosController extends Controller
      */
     public function actionRegistrar()
     {
-        $model = new Usuarios();
+        $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -108,6 +118,35 @@ class UsuariosController extends Controller
     {
         return $this->render('perfil', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Updates an existing Usuarios model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param mixed $option
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionModificar($option)
+    {
+        $model = Yii::$app->user->identity;
+        $model->scenario = Usuarios::ESCENARIO_UPDATE;
+        $model->password = '';
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Datos modificados correctamente.');
+            return $this->redirect(['modificar', 'option' => $option]);
+        }
+
+        return $this->render('modificar', [
+            'model' => $model,
+            'option' => $option,
         ]);
     }
 
