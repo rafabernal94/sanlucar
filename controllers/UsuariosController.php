@@ -3,8 +3,10 @@
 namespace app\controllers;
 
 use app\models\Usuarios;
+use app\models\UsuariosId;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -23,9 +25,15 @@ class UsuariosController extends Controller
     public function behaviors()
     {
         return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'eliminar' => ['POST'],
+                ],
+            ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['registrar', 'modificar'],
+                'only' => ['registrar', 'modificar', 'eliminar'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -34,7 +42,7 @@ class UsuariosController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['modificar'],
+                        'actions' => ['modificar', 'eliminar'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -74,7 +82,11 @@ class UsuariosController extends Controller
             return ActiveForm::validate($model);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $usuarioId = new UsuariosId();
+            $usuarioId->save();
+            $model->id = $usuarioId->id;
+            $model->save();
             $this->enviarEmailConfirmacion($model);
             Yii::$app->session->setFlash('success', 'Se ha enviado un email a su correo electrónico para confirmar la cuenta.');
             return $this->redirect(['site/login']);
@@ -148,6 +160,18 @@ class UsuariosController extends Controller
             'model' => $model,
             'option' => $option,
         ]);
+    }
+
+    /**
+     * Elimina un modelo de Usuarios.
+     * @return mixed
+     */
+    public function actionEliminar()
+    {
+        $model = Yii::$app->user->identity;
+        $model->delete();
+        Yii::$app->session->setFlash('success', 'Su cuenta ha sido eliminada correctamente.');
+        return $this->goHome();
     }
 
     /**
