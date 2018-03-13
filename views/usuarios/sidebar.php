@@ -12,6 +12,11 @@ use kartik\sidenav\SideNav;
 			'label' => 'Información personal',
             'icon' => 'user',
 		],
+		[
+			'url' => ['modificar', 'option' => 'foto'],
+			'label' => 'Foto',
+            'icon' => 'picture',
+		],
         [
 			'url' => ['modificar', 'option' => 'password'],
 			'label' => 'Contraseña',
