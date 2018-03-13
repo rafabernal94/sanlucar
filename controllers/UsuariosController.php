@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
 
 /**
@@ -151,9 +152,18 @@ class UsuariosController extends Controller
             return ActiveForm::validate($model);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Datos modificados correctamente.');
-            return $this->redirect(['modificar', 'option' => $option]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->foto = UploadedFile::getInstance($model, 'foto');
+            if ($model->validate() && $model->upload()) {
+                if ($model->foto !== null) {
+                    $model->foto = null;
+                    $model->url_avatar = str_replace('dl=0', 'dl=1', $model->uploadDropbox());
+                }
+                if ($model->save(false)) {
+                    Yii::$app->session->setFlash('success', 'Datos modificados correctamente.');
+                    return $this->redirect(['modificar', 'option' => $option]);
+                }
+            }
         }
 
         return $this->render('modificar', [

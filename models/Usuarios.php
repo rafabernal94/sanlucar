@@ -2,8 +2,11 @@
 
 namespace app\models;
 
+use Spatie\Dropbox\Exceptions\BadRequest;
 use Yii;
+use yii\imagine\Image;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "usuarios".
@@ -14,6 +17,7 @@ use yii\web\IdentityInterface;
  * @property string $nombre
  * @property string $apellido
  * @property string $biografia
+ * @property string $url_avatar
  * @property string $auth_key
  * @property string $token_val
  * @property string $created_at
@@ -25,6 +29,13 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     const ESCENARIO_UPDATE = 'update';
 
     public $passwordRepeat;
+
+    /**
+     * Contiene la foto de perfil del usuario.
+     * @var UploadedFile
+     */
+    public $foto;
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +46,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['passwordRepeat']);
+        return array_merge(parent::attributes(), ['passwordRepeat', 'foto']);
     }
 
     /**
@@ -46,7 +57,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['email', 'nombre', 'apellido'], 'required'],
             [['password', 'passwordRepeat'], 'required', 'on' => self::ESCENARIO_CREATE],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'url_avatar'], 'safe'],
             [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key', 'token_val'], 'string', 'max' => 255],
             [
                 ['passwordRepeat'],
@@ -59,6 +70,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             [['email'], 'unique'],
             [['token_val'], 'unique'],
             [['email'], 'email'],
+            [['foto'], 'file', 'extensions' => 'jpg, png'],
         ];
     }
 
@@ -80,6 +92,40 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->foto === null) {
+            return true;
+        }
+        $nombre = Yii::getAlias('@uploads/' . $this->id . '.jpg');
+        $res = $this->foto->saveAs($nombre);
+        if ($res) {
+            Image::thumbnail($nombre, 160, null)->save($nombre);
+        }
+        return $res;
+    }
+
+    public function uploadDropbox()
+    {
+        $id = $this->id;
+        $fichero = "$id.jpg";
+        $client = new \Spatie\Dropbox\Client(getenv('DROPBOX_TOKEN'));
+        try {
+            $client->delete($fichero);
+        } catch (BadRequest $e) {
+            // No se hace nada
+        }
+        $client->upload(
+            $fichero,
+            file_get_contents(Yii::getAlias("@uploads/$fichero")),
+            'overwrite'
+        );
+        $res = $client->createSharedLinkWithSettings($fichero, [
+            'requested_visibility' => 'public',
+        ]);
+        return $res['url'];
     }
 
     public static function findIdentity($id)
