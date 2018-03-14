@@ -24,7 +24,9 @@
         "kartik-v/yii2-dialog": "*",
         "yiisoft/yii2-imagine": "^2.1",
         "spatie/dropbox-api": "^1.6",
-        "kartik-v/yii2-widget-fileinput": "@dev"
+        "kartik-v/yii2-widget-fileinput": "@dev",
+        "kartik-v/yii2-widget-touchspin": "*",
+        "kartik-v/yii2-widget-datetimepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
