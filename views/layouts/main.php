@@ -36,6 +36,11 @@ AppAsset::register($this);
         ],
     ]);
     $items = [
+        [
+            'label' => 'Publicar trayecto',
+            'url' => ['trayectos/publicar'],
+            'encode' => false,
+        ],
         ['label' => 'Inicio', 'url' => ['site/index']],
     ];
     if (Yii::$app->user->isGuest) {
