@@ -60,6 +60,13 @@ $this->registerJs($js);
                 <?php if ($model->id === Yii::$app->user->id): ?>
 					<hr>
 					<div class="row">
+						<div class="col-md-4 mb-5">
+							<?= Html::a(
+								Html::tag('span', '', ['class' => 'glyphicon glyphicon-road']) . ' Mis trayectos',
+								['trayectos/trayectos-publicados'],
+								['class' => 'btn btn-success btn-block']
+							); ?>
+	                    </div>
 	                    <div class="col-md-4 mb-5">
 							<?= Html::a(
 								Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Modificar perfil',

@@ -6,4 +6,5 @@
 }
 a, a:hover, a:focus {
     color: #5cb85c;
+    text-decoration: none;
 }
