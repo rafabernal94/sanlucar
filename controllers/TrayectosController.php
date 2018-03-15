@@ -28,16 +28,33 @@ class TrayectosController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['publicar'],
+                'only' => ['publicar', 'trayectos-publicados'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['publicar'],
+                        'actions' => ['publicar', 'trayectos-publicados'],
                         'roles' => ['@'],
                     ],
                 ],
             ],
         ];
+    }
+
+    /**
+     * Lista los trayectos de un determinado usuario.
+     * @return mixed
+     */
+    public function actionTrayectosPublicados()
+    {
+        $usuario = Yii::$app->user->identity;
+        $trayectos = Trayectos::find()
+            ->where(['conductor' => $usuario->id])
+            ->orderBy(['fecha' => SORT_ASC])->all();
+
+        return $this->render('trayectos_publicados', [
+            'trayectos' => $trayectos,
+            'usuario' => $usuario,
+        ]);
     }
 
     /**
