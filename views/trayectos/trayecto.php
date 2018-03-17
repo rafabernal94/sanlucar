@@ -2,7 +2,29 @@
 
 use yii\helpers\Html;
 
+use kartik\dialog\Dialog;
+
+$js = <<<EOT
+$('#btn-eliminar').on('click', function(e) {
+	e.preventDefault();
+    krajeeDialogCust.dialog();
+});
+EOT;
+$this->registerJs($js);
 ?>
+<?= Dialog::widget([
+	'libName' => 'krajeeDialogCust',
+	'overrideYiiConfirm' => true,
+	'options' => [
+		'size' => Dialog::SIZE_LARGE,
+		'type' => Dialog::TYPE_DANGER,
+		'title' => 'Eliminar trayecto',
+		'btnOKClass' => 'btn-danger',
+		'btnOKLabel' => '<i class="glyphicon glyphicon-ok-sign"></i> Confirmar',
+		'btnCancelLabel' =>'<i class="glyphicon glyphicon-remove-sign"></i> Cancelar',
+	]
+]); ?>
+
 <div class="panel panel-default mb-10">
     <div class="panel-heading">
         <div class="panel-title">
@@ -50,9 +72,15 @@ use yii\helpers\Html;
             </div>
             <div class="col-xs-3 col-md-3">
                 <?= Html::a(Html::tag(
-                    'span', '', ['class' => 'glyphicon glyphicon-trash'])
-                    . ' Eliminar', '#'
-                ) ?>
+                        'span', '', ['class' => 'glyphicon glyphicon-trash'])
+                    . ' Eliminar',
+                    ['trayectos/eliminar', 'id' => $trayecto->id],
+                    [
+                        'id' => 'btn-eliminar',
+                        'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
+                        'data-method' => 'post',
+                    ]
+                ); ?>
             </div>
         </div>
     </div>
