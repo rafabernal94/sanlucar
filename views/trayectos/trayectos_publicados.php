@@ -1,11 +1,15 @@
 <?php
-use yii\helpers\Html;
+use app\helpers\Utiles;
 
+use yii\helpers\Html;
 
 $this->title = 'Mis trayectos publicados';
 $this->params['breadcrumbs'][] = ['label' => 'Mi perfil', 'url' => ['usuarios/perfil', 'id' => $usuario->id]];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+<?= Utiles::modal('Eliminar trayecto') ?>
+
 <div class="trayectos-index">
     <div class="col-md-offset-1 col-md-10">
         <div class="page-header mt-0">

@@ -2,28 +2,7 @@
 
 use yii\helpers\Html;
 
-use kartik\dialog\Dialog;
-
-$js = <<<EOT
-$('#btn-eliminar').on('click', function(e) {
-	e.preventDefault();
-    krajeeDialogCust.dialog();
-});
-EOT;
-$this->registerJs($js);
 ?>
-<?= Dialog::widget([
-	'libName' => 'krajeeDialogCust',
-	'overrideYiiConfirm' => true,
-	'options' => [
-		'size' => Dialog::SIZE_LARGE,
-		'type' => Dialog::TYPE_DANGER,
-		'title' => 'Eliminar trayecto',
-		'btnOKClass' => 'btn-danger',
-		'btnOKLabel' => '<i class="glyphicon glyphicon-ok-sign"></i> Confirmar',
-		'btnCancelLabel' =>'<i class="glyphicon glyphicon-remove-sign"></i> Cancelar',
-	]
-]); ?>
 
 <div class="panel panel-default mb-10">
     <div class="panel-heading">
@@ -35,16 +14,16 @@ $this->registerJs($js);
     </div>
     <div class="panel-body">
         <div class="row mb-5">
-            <div class="col-md-8">
+            <div class="col-xs-6 col-md-8">
                 <?= "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> "
                 . Html::encode(Yii::$app->formatter->asDate($trayecto->fecha)) ?>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-6 col-md-4">
                 <?= Html::encode($trayecto->plazas) . ' plazas disponibles' ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-xs-6 col-md-8">
                 <?= "<span class='glyphicon glyphicon-time' aria-hidden='true'></span> "
                 . Html::encode(Yii::$app->formatter->asTime($trayecto->fecha, 'H:m')) ?>
             </div>
@@ -76,7 +55,6 @@ $this->registerJs($js);
                     . ' Eliminar',
                     ['trayectos/eliminar', 'id' => $trayecto->id],
                     [
-                        'id' => 'btn-eliminar',
                         'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
                         'data-method' => 'post',
                     ]

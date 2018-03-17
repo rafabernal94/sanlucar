@@ -1,7 +1,8 @@
 <?php
 
+use app\helpers\Utiles;
+
 use yii\helpers\Html;
-use kartik\dialog\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
@@ -9,26 +10,8 @@ use kartik\dialog\Dialog;
 $this->title = 'Perfil';
 $this->params['breadcrumbs'][] = ['label' => 'Perfil'];
 
-$js = <<<EOT
-$('#btn-baja').on('click', function(e) {
-	e.preventDefault();
-    krajeeDialogCust.dialog();
-});
-EOT;
-$this->registerJs($js);
 ?>
-<?= Dialog::widget([
-	'libName' => 'krajeeDialogCust',
-	'overrideYiiConfirm' => true,
-	'options' => [
-		'size' => Dialog::SIZE_LARGE,
-		'type' => Dialog::TYPE_DANGER,
-		'title' => 'Darse de baja',
-		'btnOKClass' => 'btn-danger',
-		'btnOKLabel' => '<i class="glyphicon glyphicon-ok-sign"></i> Confirmar',
-		'btnCancelLabel' =>'<i class="glyphicon glyphicon-remove-sign"></i> Cancelar',
-	]
-]); ?>
+<?= Utiles::modal('Darse de baja') ?>
 <div class="container">
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
@@ -79,7 +62,6 @@ $this->registerJs($js);
 								Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
 								['usuarios/eliminar'],
 								[
-									'id' => 'btn-baja',
 									'class' => 'btn btn-danger btn-block',
 									'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
 									'data-method' => 'post',

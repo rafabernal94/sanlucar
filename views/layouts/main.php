@@ -36,20 +36,20 @@ AppAsset::register($this);
         ],
     ]);
     $items = [
+        ['label' => 'Inicio', 'url' => ['site/index']],
         [
             'label' => 'Publicar trayecto',
             'url' => ['trayectos/publicar'],
             'encode' => false,
         ],
-        ['label' => 'Inicio', 'url' => ['site/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        array_splice($items, 1, 0, [
+        array_splice($items, 2, 0, [
             ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
             ['label' => 'Iniciar sesión', 'url' => ['site/login']]
         ]);
     } else {
-        array_splice($items, 1, 0, [[
+        array_splice($items, 2, 0, [[
             'label' => Yii::$app->user->identity->nombre . ' '
                 . substr(Yii::$app->user->identity->apellido, 0, 1),
             'items' => [
