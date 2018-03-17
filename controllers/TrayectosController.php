@@ -23,16 +23,16 @@ class TrayectosController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'eliminar' => ['POST'],
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['publicar', 'trayectos-publicados'],
+                'only' => ['publicar', 'trayectos-publicados', 'eliminar'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['publicar', 'trayectos-publicados'],
+                        'actions' => ['publicar', 'trayectos-publicados', 'eliminar'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -74,6 +74,21 @@ class TrayectosController extends Controller
         return $this->render('publicar', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Elimina un modelo de Trayectos.
+     * @return mixed
+     * @param mixed $id
+     */
+    public function actionEliminar($id)
+    {
+        if (($model = Trayectos::findOne($id)) === null) {
+            throw new NotFoundHttpException('El trayecto no existe');
+        }
+        $model->delete();
+        Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
+        return $this->redirect(['/trayectos/trayectos-publicados']);
     }
 
     /**
