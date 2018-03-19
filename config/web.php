@@ -56,6 +56,7 @@ $config = [
             'rules' => [
                 'usuarios/perfil/<id:\d+>' => 'usuarios/perfil',
                 'usuarios/modificar/<option:\w+>' => 'usuarios/modificar',
+                'trayectos/modificar/<id:\d+>' => 'trayectos/modificar',
             ],
         ],
     ],

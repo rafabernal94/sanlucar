@@ -28,11 +28,21 @@ class TrayectosController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['publicar', 'trayectos-publicados', 'eliminar'],
+                'only' => [
+                    'publicar',
+                    'trayectos-publicados',
+                    'eliminar',
+                    'modificar',
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['publicar', 'trayectos-publicados', 'eliminar'],
+                        'actions' => [
+                            'publicar',
+                            'trayectos-publicados',
+                            'eliminar',
+                            'modificar',
+                        ],
                         'roles' => ['@'],
                     ],
                 ],
@@ -72,6 +82,30 @@ class TrayectosController extends Controller
         }
 
         return $this->render('publicar', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Modifica un modelo de Trayectos.
+     * @param int $id
+     * @return mixed
+     * @throws NotFoundHttpException Si no encuentra el modelo
+     */
+    public function actionModificar($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->conductor !== Yii::$app->user->id) {
+            throw new NotFoundHttpException('No tienes permisos para modificar este trayecto.');
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'El trayecto se ha modificado correctamente.');
+            return $this->redirect(['trayectos/trayectos-publicados']);
+        }
+
+        return $this->render('modificar', [
             'model' => $model,
         ]);
     }

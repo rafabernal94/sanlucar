@@ -53,6 +53,7 @@ use kartik\touchspin\TouchSpin;
                                     		'language' => 'es',
                                     		'autoclose' => true,
                                             'weekStart' => 1,
+                                            'format' => 'dd-mm-yyyy H:i'
                                     	],
                                     ])->label(false) ?>
                             </div>
@@ -82,7 +83,8 @@ use kartik\touchspin\TouchSpin;
                 </div>
                 <div class="col-md-offset-4 col-md-4">
                     <div class="form-group">
-                        <?= Html::submitButton('Publicar', ['class' => 'btn btn-success btn-block']) ?>
+                        <?php $texto = explode(' ', $this->title)[0]; ?>
+                        <?= Html::submitButton($texto, ['class' => 'btn btn-success btn-block']) ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
