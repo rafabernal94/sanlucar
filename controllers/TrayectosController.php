@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * TrayectosController implements the CRUD actions for Trayectos model.
@@ -123,6 +124,42 @@ class TrayectosController extends Controller
         $model->delete();
         Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
         return $this->redirect(['/trayectos/trayectos-publicados']);
+    }
+
+    public function actionMasPlazaAjax()
+    {
+        if (($id = Yii::$app->request->post('id')) === null) {
+            throw new NotFoundHttpException('Falta el id del trayecto.');
+        }
+
+        if (($trayecto = Trayectos::findOne($id)) === null) {
+            throw new NotFoundHttpException('El trayecto no existe.');
+        }
+
+        $trayecto->plazas += 1;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($trayecto->save()) {
+            return $trayecto->plazas;
+        }
+        return 0;
+    }
+
+    public function actionMenosPlazaAjax()
+    {
+        if (($id = Yii::$app->request->post('id')) === null) {
+            throw new NotFoundHttpException('Falta el id del trayecto.');
+        }
+
+        if (($trayecto = Trayectos::findOne($id)) === null) {
+            throw new NotFoundHttpException('El trayecto no existe.');
+        }
+
+        $trayecto->plazas -= 1;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($trayecto->save()) {
+            return $trayecto->plazas;
+        }
+        return 0;
     }
 
     /**
