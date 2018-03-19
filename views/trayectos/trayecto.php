@@ -24,8 +24,9 @@ use yii\helpers\Html;
         </div>
         <div class="row">
             <div class="col-xs-6 col-md-8">
+                <?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
                 <?= "<span class='glyphicon glyphicon-time' aria-hidden='true'></span> "
-                . Html::encode(Yii::$app->formatter->asTime($trayecto->fecha, 'H:m')) ?>
+                . Html::encode(date('H:i', $hora)) ?>
             </div>
         </div>
     </div>
@@ -46,7 +47,7 @@ use yii\helpers\Html;
             <div class="col-xs-3 col-md-3">
                 <?= Html::a(Html::tag(
                     'span', '', ['class' => 'glyphicon glyphicon-pencil'])
-                    . ' Modificar', '#'
+                    . ' Modificar', ['trayectos/modificar', 'id' => $trayecto->id]
                 ) ?>
             </div>
             <div class="col-xs-3 col-md-3">
