@@ -1,7 +1,36 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 
+$url = Url::to(['trayectos/modificar-plazas-ajax']);
+$js = <<<EOT
+$('.btn-default').on('click', function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: '$url',
+        type: 'POST',
+        data: {
+            idTrayecto: $(this).siblings('#id-trayecto').val(),
+            idBtn: $(this).prop('id')
+        },
+        success: function(data) {
+            if (data != 1 || data != 4) {
+                $('#btnMenos').prop('disabled', false);
+                $('#btnMas').prop('disabled', false);
+            }
+            if (data == 1) {
+                $('#btnMenos').prop('disabled', true);
+            }
+            if (data == 4) {
+                $('#btnMas').prop('disabled', true);
+            }
+            $('#plazas').text(data + ' plazas disponibles');
+        }
+    })
+});
+EOT;
+$this->registerJs($js);
 ?>
 
 <div class="panel panel-default mb-10">
@@ -18,8 +47,34 @@ use yii\helpers\Html;
                 <?= "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> "
                 . Html::encode(Yii::$app->formatter->asDate($trayecto->fecha)) ?>
             </div>
-            <div class="col-xs-6 col-md-4">
-                <?= Html::encode($trayecto->plazas) . ' plazas disponibles' ?>
+            <div class="col-xs-1 col-md-1">
+                <?php
+                $array = [
+                    'id' => 'btnMas',
+                    'class' => 'btn btn-xs btn-default',
+                ];
+                if ($trayecto->plazas == 4) {
+                    $array = array_merge($array, ['disabled' => 'disabled']);
+                }
+                ?>
+                <?= Html::beginForm(
+                    ['trayectos/modificar-plazas-ajax'],
+                    'post'
+                ) ?>
+                <?= Html::hiddenInput('id',
+                    $trayecto->id,
+                    ['id' => 'id-trayecto']
+                ) ?>
+                <?= Html::submitButton(
+                    "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>",
+                    $array
+                ) ?>
+                <?= Html::endForm() ?>
+            </div>
+            <div class="col-xs-4 col-md-3">
+                <span id="plazas">
+                    <?= Html::encode($trayecto->plazas) . ' plazas disponibles' ?>
+                </span>
             </div>
         </div>
         <div class="row">
@@ -27,6 +82,30 @@ use yii\helpers\Html;
                 <?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
                 <?= "<span class='glyphicon glyphicon-time' aria-hidden='true'></span> "
                 . Html::encode(date('H:i', $hora)) ?>
+            </div>
+            <div class="col-xs-1 col-md-1">
+                <?php
+                $array = [
+                    'id' => 'btnMenos',
+                    'class' => 'btn btn-xs btn-default',
+                ];
+                if ($trayecto->plazas == 1) {
+                    $array = array_merge($array, ['disabled' => 'disabled']);
+                }
+                ?>
+                <?= Html::beginForm(
+                    ['trayectos/modificar-plazas-ajax'],
+                    'post'
+                ) ?>
+                <?= Html::hiddenInput('id',
+                    $trayecto->id,
+                    ['id' => 'id-trayecto']
+                ) ?>
+                <?= Html::submitButton(
+                    "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>",
+                    $array
+                ) ?>
+                <?= Html::endForm() ?>
             </div>
         </div>
     </div>

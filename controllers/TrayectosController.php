@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * TrayectosController implements the CRUD actions for Trayectos model.
@@ -123,6 +124,33 @@ class TrayectosController extends Controller
         $model->delete();
         Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
         return $this->redirect(['/trayectos/trayectos-publicados']);
+    }
+
+    /**
+     * Permite modificar las plazas de un trayecto mediante Ajax.
+     * @return int El número de plazas disponibles
+     */
+    public function actionModificarPlazasAjax()
+    {
+        if (($idTrayecto = Yii::$app->request->post('idTrayecto')) === null) {
+            throw new NotFoundHttpException('Falta el id del trayecto.');
+        }
+
+        if (($idBtn = Yii::$app->request->post('idBtn')) === null) {
+            throw new NotFoundHttpException('Falta el id del botón.');
+        }
+
+        if (($trayecto = Trayectos::findOne($idTrayecto)) === null) {
+            throw new NotFoundHttpException('El trayecto no existe.');
+        }
+
+        $idBtn === 'btnMas' ? $trayecto->plazas += 1 : $trayecto->plazas -= 1;
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($trayecto->save()) {
+            return $trayecto->plazas;
+        }
+        return 0;
     }
 
     /**
