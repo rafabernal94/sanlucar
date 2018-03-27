@@ -3,43 +3,29 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$url = Url::to(['trayectos/mas-plaza-ajax']);
+$url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
-$('#btnMasPlaza').on('click', function(e) {
+$('.btn-default').on('click', function(e) {
     e.preventDefault();
     $.ajax({
         url: '$url',
         type: 'POST',
         data: {
-            id: $(this).siblings('#id-trayecto').val()
+            idTrayecto: $(this).siblings('#id-trayecto').val(),
+            idBtn: $(this).prop('id')
         },
         success: function(data) {
-            if (data == 4) {
-                $('#btnMasPlaza').prop('disabled', true);
+            if (data != 1 || data != 4) {
+                $('#btnMenos').prop('disabled', false);
+                $('#btnMas').prop('disabled', false);
             }
-            $('#plazas').text(data + ' plazas disponibles');
-            $('#btnMenosPlaza').prop('disabled', false);
-        }
-    })
-});
-EOT;
-$this->registerJs($js);
-$url = Url::to(['trayectos/menos-plaza-ajax']);
-$js = <<<EOT
-$('#btnMenosPlaza').on('click', function(e) {
-    e.preventDefault();
-    $.ajax({
-        url: '$url',
-        type: 'POST',
-        data: {
-            id: $(this).siblings('#id-trayecto').val()
-        },
-        success: function(data) {
             if (data == 1) {
-                $('#btnMenosPlaza').prop('disabled', true);
+                $('#btnMenos').prop('disabled', true);
+            }
+            if (data == 4) {
+                $('#btnMas').prop('disabled', true);
             }
             $('#plazas').text(data + ' plazas disponibles');
-            $('#btnMasPlaza').prop('disabled', false);
         }
     })
 });
@@ -64,7 +50,7 @@ $this->registerJs($js);
             <div class="col-xs-1 col-md-1">
                 <?php
                 $array = [
-                    'id' => 'btnMasPlaza',
+                    'id' => 'btnMas',
                     'class' => 'btn btn-xs btn-default',
                 ];
                 if ($trayecto->plazas == 4) {
@@ -72,7 +58,7 @@ $this->registerJs($js);
                 }
                 ?>
                 <?= Html::beginForm(
-                    ['trayectos/mas-plaza-ajax'],
+                    ['trayectos/modificar-plazas-ajax'],
                     'post'
                 ) ?>
                 <?= Html::hiddenInput('id',
@@ -85,7 +71,7 @@ $this->registerJs($js);
                 ) ?>
                 <?= Html::endForm() ?>
             </div>
-            <div class="col-xs-5 col-md-3">
+            <div class="col-xs-4 col-md-3">
                 <span id="plazas">
                     <?= Html::encode($trayecto->plazas) . ' plazas disponibles' ?>
                 </span>
@@ -100,7 +86,7 @@ $this->registerJs($js);
             <div class="col-xs-1 col-md-1">
                 <?php
                 $array = [
-                    'id' => 'btnMenosPlaza',
+                    'id' => 'btnMenos',
                     'class' => 'btn btn-xs btn-default',
                 ];
                 if ($trayecto->plazas == 1) {
@@ -108,7 +94,7 @@ $this->registerJs($js);
                 }
                 ?>
                 <?= Html::beginForm(
-                    ['trayectos/menos-plaza-ajax'],
+                    ['trayectos/modificar-plazas-ajax'],
                     'post'
                 ) ?>
                 <?= Html::hiddenInput('id',
@@ -117,10 +103,7 @@ $this->registerJs($js);
                 ) ?>
                 <?= Html::submitButton(
                     "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>",
-                    [
-                        'id' => 'btnMenosPlaza',
-                        'class' => 'btn btn-xs btn-default',
-                    ]
+                    $array
                 ) ?>
                 <?= Html::endForm() ?>
             </div>

@@ -126,35 +126,26 @@ class TrayectosController extends Controller
         return $this->redirect(['/trayectos/trayectos-publicados']);
     }
 
-    public function actionMasPlazaAjax()
+    /**
+     * Permite modificar las plazas de un trayecto mediante Ajax.
+     * @return int El número de plazas disponibles
+     */
+    public function actionModificarPlazasAjax()
     {
-        if (($id = Yii::$app->request->post('id')) === null) {
+        if (($idTrayecto = Yii::$app->request->post('idTrayecto')) === null) {
             throw new NotFoundHttpException('Falta el id del trayecto.');
         }
 
-        if (($trayecto = Trayectos::findOne($id)) === null) {
+        if (($idBtn = Yii::$app->request->post('idBtn')) === null) {
+            throw new NotFoundHttpException('Falta el id del botón.');
+        }
+
+        if (($trayecto = Trayectos::findOne($idTrayecto)) === null) {
             throw new NotFoundHttpException('El trayecto no existe.');
         }
 
-        $trayecto->plazas += 1;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        if ($trayecto->save()) {
-            return $trayecto->plazas;
-        }
-        return 0;
-    }
+        $idBtn === 'btnMas' ? $trayecto->plazas += 1 : $trayecto->plazas -= 1;
 
-    public function actionMenosPlazaAjax()
-    {
-        if (($id = Yii::$app->request->post('id')) === null) {
-            throw new NotFoundHttpException('Falta el id del trayecto.');
-        }
-
-        if (($trayecto = Trayectos::findOne($id)) === null) {
-            throw new NotFoundHttpException('El trayecto no existe.');
-        }
-
-        $trayecto->plazas -= 1;
         Yii::$app->response->format = Response::FORMAT_JSON;
         if ($trayecto->save()) {
             return $trayecto->plazas;
