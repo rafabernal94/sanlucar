@@ -59,12 +59,24 @@ class TrayectosController extends Controller
     {
         $usuario = Yii::$app->user->identity;
         $trayectos = Trayectos::find()
-            ->where(['conductor' => $usuario->id])
+            ->where(['conductor_id' => $usuario->id])
             ->orderBy(['fecha' => SORT_ASC])->all();
 
         return $this->render('trayectos_publicados', [
             'trayectos' => $trayectos,
             'usuario' => $usuario,
+        ]);
+    }
+
+    /**
+     * Displays a single Usuarios model.
+     * @param  int   $id
+     * @return mixed
+     */
+    public function actionDetalles($id)
+    {
+        return $this->render('detalles', [
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -75,7 +87,7 @@ class TrayectosController extends Controller
     public function actionPublicar()
     {
         $model = new Trayectos();
-        $model->conductor = Yii::$app->user->id;
+        $model->conductor_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'El trayecto se ha publicado correctamente.');
@@ -97,7 +109,7 @@ class TrayectosController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->conductor !== Yii::$app->user->id) {
+        if ($model->conductor_id !== Yii::$app->user->id) {
             throw new NotFoundHttpException('No tienes permisos para modificar este trayecto.');
         }
 

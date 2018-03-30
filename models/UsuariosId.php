@@ -50,6 +50,6 @@ class UsuariosId extends \yii\db\ActiveRecord
      */
     public function getTrayectos()
     {
-        return $this->hasMany(Trayectos::className(), ['conductor' => 'id'])->inverseOf('conductor');
+        return $this->hasMany(Trayectos::className(), ['conductor_id' => 'id'])->inverseOf('conductor');
     }
 }

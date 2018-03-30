@@ -8,13 +8,13 @@ namespace app\models;
  * @property int $id
  * @property string $origen
  * @property string $destino
- * @property int $conductor
+ * @property int $conductor_id
  * @property string $fecha
  * @property string $plazas
  * @property string $created_at
  * @property string $updated_at
  *
- * @property UsuariosId $conductor0
+ * @property UsuariosId $conductor
  */
 class Trayectos extends \yii\db\ActiveRecord
 {
@@ -32,13 +32,13 @@ class Trayectos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['origen', 'destino', 'conductor', 'fecha', 'plazas'], 'required'],
-            [['conductor'], 'default', 'value' => null],
-            [['conductor'], 'integer'],
+            [['origen', 'destino', 'conductor_id', 'fecha', 'plazas'], 'required'],
+            [['conductor_id'], 'default', 'value' => null],
+            [['conductor_id'], 'integer'],
             [['fecha', 'created_at', 'updated_at'], 'safe'],
             [['plazas'], 'number'],
             [['origen', 'destino'], 'string', 'max' => 255],
-            [['conductor'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['conductor' => 'id']],
+            [['conductor_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['conductor_id' => 'id']],
         ];
     }
 
@@ -51,7 +51,7 @@ class Trayectos extends \yii\db\ActiveRecord
             'id' => 'ID',
             'origen' => 'Origen',
             'destino' => 'Destino',
-            'conductor' => 'Conductor',
+            'conductor_id' => 'Conductor Id',
             'fecha' => 'Fecha',
             'plazas' => 'Plazas',
             'created_at' => 'Created At',
@@ -64,6 +64,6 @@ class Trayectos extends \yii\db\ActiveRecord
      */
     public function getConductor()
     {
-        return $this->hasOne(UsuariosId::className(), ['id' => 'conductor'])->inverseOf('trayectos');
+        return $this->hasOne(UsuariosId::className(), ['id' => 'conductor_id'])->inverseOf('trayectos');
     }
 }
