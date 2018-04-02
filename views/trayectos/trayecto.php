@@ -114,7 +114,7 @@ $this->registerJs($js);
             <div class="col-xs-3 col-md-3">
                 <?= Html::a(Html::tag(
                     'span', '', ['class' => 'glyphicon glyphicon-eye-open'])
-                    . ' Ver trayecto', '#'
+                    . ' Ver trayecto', ['trayectos/detalles', 'id' => $trayecto->id]
                 ) ?>
             </div>
             <div class="col-xs-3 col-md-3">
