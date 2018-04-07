@@ -19,7 +19,7 @@ class Utiles
         return Dialog::widget([
             'overrideYiiConfirm' => true,
             'options' => [
-                'size' => Dialog::SIZE_LARGE,
+                'size' => Dialog::SIZE_NORMAL,
                 'type' => Dialog::TYPE_DANGER,
                 'title' => $titulo,
                 'btnOKClass' => 'btn-danger',

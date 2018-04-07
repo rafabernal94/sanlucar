@@ -115,5 +115,17 @@ a.desc:after {
 }
 
 .breadcrumb {
-    background-color: #dff0d8;
+    background-color: #EFF8FB;
+}
+
+a, a:hover, a:focus {
+    color: #00b5db;
+}
+
+.panel-perfil {
+    background-color: #00b5db !important;
+}
+
+.img-circle {
+    border: 6px solid #fff;
 }

@@ -7,70 +7,112 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
 
-$this->title = 'Perfil';
-$this->params['breadcrumbs'][] = ['label' => 'Perfil'];
+$this->title = 'Perfil de ' . $model->nombre . ' ' . substr($model->apellido, 0, 1) . '.';
+$this->params['breadcrumbs'][] = ['label' => $this->title];
 
 ?>
 <?= Utiles::modal('Darse de baja') ?>
-<div class="container">
-	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
-    	    <div class="well">
-				<div class="row">
-					<div class="col-md-8">
-	                    <h2>
-							<strong>
-								<?= Html::encode($model->nombre . ' ' . $model->apellido) ?>
-							</strong>
-						</h2>
-	                    <p><strong>Email: </strong> <?= Html::encode($model->email) ?></p>
-	                    <p><strong>Biografía: </strong> <?= Html::encode($model->biografia) ?></p>
-	                </div>
-					<?php
-					if ($model->url_avatar !== null) {
-						$fotoUrl = $model->url_avatar;
-					} else {
-						$fotoUrl = '@web/images/avatar-default.png';
-					}
-					?>
-	                <div class="col-md-4 text-center">
-	                    <?= Html::img(
-							$fotoUrl, [
-	                        	'class' => 'img-thumbnail img-responsive'
-	                    	]) ?>
-	                </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default text-center">
+			<div class="panel-heading panel-perfil">
+				<?php
+				if ($model->url_avatar !== null) {
+					$fotoUrl = $model->url_avatar;
+				} else {
+					$fotoUrl = '@web/images/avatar-default.png';
+				}
+				?>
+				<?= Html::img(
+					$fotoUrl, [
+						'class' => 'img-circle',
+					]) ?>
+			</div>
+  			<div class="panel-body">
+				<div class="col-md-10 col-xs-5 text-left">
+					<h4><strong><?= $model->nombre .
+						' ' . substr($model->apellido, 0, 1) ?>.</strong></h4>
+					<h5>Aún no tienes valoraciones</h5>
 				</div>
-                <?php if ($model->id === Yii::$app->user->id): ?>
-					<hr>
-					<div class="row">
-						<div class="col-md-4 mb-5">
-							<?= Html::a(
-								Html::tag('span', '', ['class' => 'glyphicon glyphicon-road']) . ' Mis trayectos',
-								['trayectos/trayectos-publicados'],
-								['class' => 'btn btn-success btn-block']
-							); ?>
-	                    </div>
-	                    <div class="col-md-4 mb-5">
-							<?= Html::a(
-								Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Modificar perfil',
-								['usuarios/modificar', 'option' => 'infopersonal'],
-								['class' => 'btn btn-primary btn-block']
-							); ?>
-	                    </div>
-						<div class="col-md-4">
-							<?= Html::a(
-								Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
-								['usuarios/eliminar'],
-								[
-									'class' => 'btn btn-danger btn-block',
-									'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
-									'data-method' => 'post',
-								]
-							); ?>
-	                    </div>
+				<div class="col-md-2 col-xs-7 text-right">
+					<?= Html::a(
+						Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Editar perfil',
+						['usuarios/modificar', 'option' => 'infopersonal'],
+						['class' => 'btn btn-primary btn-block']
+					); ?>
+					<?= Html::a(
+						Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
+						['usuarios/eliminar'],
+						[
+							'class' => 'btn btn-danger btn-block',
+							'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
+							'data-method' => 'post',
+						]
+					); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-md-2 col-xs-6">
+						<span><strong>Edad</strong></span>
 					</div>
-                <?php endif ?>
-    	    </div>
+					<div class="col-md-10 col-xs-6 text-right">
+						<span>23</span>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-md-5 col-xs-6">
+						<span><strong>Usuario desde</strong></span>
+					</div>
+					<div class="col-md-7 col-xs-6 text-right">
+						<span><?= Yii::$app->formatter->asDate($model->created_at) ?></span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-8">
+		<div class="panel panel-default">
+  			<div class="panel-heading"><strong>Sobre ti</strong></div>
+  			<div class="panel-body"><?= $model->biografia ?></div>
+		</div>
+		<div class="panel panel-default">
+  			<div class="panel-heading"><strong>Trayectos publicados</strong></div>
+  			<div class="panel-body">
+				<table class="table mb-0">
+					<thead>
+						<th>Salida</th>
+						<th>Trayecto</th>
+						<th>Plazas</th>
+					</thead>
+					<tbody>
+						<?php foreach ($model->usuarioId->trayectos as $trayecto): ?>
+							<tr>
+								<?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
+								<td><?= Html::encode(
+									Yii::$app->formatter->asDate($trayecto->fecha). ' a las ' .
+									date('H:i', $hora)
+									) ?>
+								</td>
+								<td><?= Html::a(Html::encode($trayecto->origen)
+									. " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
+									. Html::encode($trayecto->destino)
+									, ['trayectos/detalles', 'id' => $trayecto->id]) ?>
+								</td>
+								<td><?= Html::encode($trayecto->plazas) ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
