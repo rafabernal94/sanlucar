@@ -11,18 +11,14 @@ $this->title = 'Iniciar sesión';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
-    <div class="col-md-offset-3 col-md-6">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="panel-title text-center">
-                    <h4><?= Html::encode($this->title) ?></h4>
-                </div>
-            </div>
-            <div class="panel-body">
+    <div class="col-md-12">
+        <h3><strong><?= Html::encode($this->title) ?></strong></h3>
+        <hr>
+        <div class="col-md-offset-3 col-md-6">
+            <div class="row">
                 <?php $form = ActiveForm::begin([
                     'id' => 'login-form',
                 ]); ?>
-
                     <?= $form->field($model, 'email')
                         ->textInput(['autofocus' => true])
                         ->input('email', ['placeholder' => 'Email'])
@@ -33,20 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ->input('password', ['placeholder' => 'Contraseña'])
                         ->label(false) ?>
 
-                    <?= $form->field($model, 'rememberMe')->checkbox([]) ?>
+                    <?= $form->field($model, 'rememberMe')->checkbox([])
+                        ->label('Recuérdame') ?>
 
-                    <div class="col-md-offset-4 col-md-4">
+                    <div class="col-md-3 col-xs-5 pl-0">
                         <div class="form-group">
                             <?= Html::submitButton('Iniciar sesión', ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <p>
-                            ¿No tienes cuenta?
-                            <?= Html::a('Registrarse', ['usuarios/registrar']); ?>
-                        </p>
-                    </div>
                 <?php ActiveForm::end(); ?>
+            </div>
+            <div class="row">
+                <hr>
+                ¿No tienes cuenta?
+                <?= Html::a('Regístrate', ['usuarios/registrar']); ?>
             </div>
         </div>
     </div>
