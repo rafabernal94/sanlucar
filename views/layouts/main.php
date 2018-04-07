@@ -35,35 +35,45 @@ AppAsset::register($this);
             'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
-    $items = [
-        ['label' => 'Inicio', 'url' => ['site/index']],
-        [
-            'label' => 'Publicar trayecto',
-            'url' => ['trayectos/publicar'],
-            'encode' => false,
-        ],
-    ];
     if (Yii::$app->user->isGuest) {
-        array_splice($items, 2, 0, [
-            ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
-            ['label' => 'Iniciar sesión', 'url' => ['site/login']]
-        ]);
+        $items = [
+            ['label' => 'Regístrate', 'url' => ['usuarios/registrar']],
+            ['label' => 'Inicia sesión', 'url' => ['site/login']]
+        ];
     } else {
-        array_splice($items, 2, 0, [[
-            'label' => Yii::$app->user->identity->nombre . ' '
-                . substr(Yii::$app->user->identity->apellido, 0, 1),
-            'items' => [
-                [
-                    'label' => 'Mi perfil',
-                    'url' => ['usuarios/perfil', 'id' => Yii::$app->user->id],
-                ],
-                [
-                    'label' => 'Cerrar sesión',
-                    'url' => ['site/logout'],
-                    'linkOptions' => ['data-method' => 'POST'],
-                ],
+        $foto = Yii::$app->user->identity->url_avatar;
+        $items = [
+            [
+                'label' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-send'])
+                    . ' Publicar trayecto',
+                'url' => ['trayectos/publicar'],
+                'encode' => false,
             ],
-        ]]);
+            [
+                'label' => Html::img($foto,
+                    [
+                        'class' => 'img-thumbnail',
+                        'style' => 'width: 40px; margin: -14px 0px -14px 0px',
+                    ]
+                ),
+                'encode' => false,
+                'items' => [
+                    [
+                        'label' => 'Mi perfil',
+                        'url' => ['usuarios/perfil', 'id' => Yii::$app->user->id],
+                    ],
+                    [
+                        'label' => 'Mis trayectos',
+                        'url' => ['trayectos/trayectos-publicados', 'id' => Yii::$app->user->id],
+                    ],
+                    [
+                        'label' => 'Cerrar sesión',
+                        'url' => ['site/logout'],
+                        'linkOptions' => ['data-method' => 'POST'],
+                    ],
+                ],
+            ]
+        ];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
