@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'rememberMe')->checkbox([])
                         ->label('Recuérdame') ?>
 
-                    <div class="col-md-3 col-xs-5 pl-0">
+                    <div class="col-md-3 col-xs-6 pl-0">
                         <div class="form-group">
                             <?= Html::submitButton('Iniciar sesión', ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
                         </div>

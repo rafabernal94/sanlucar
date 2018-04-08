@@ -10,11 +10,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= Utiles::modal('Eliminar trayecto') ?>
 
-<div class="trayectos-index">
-    <div class="col-md-offset-1 col-md-10">
-        <div class="page-header mt-0">
-            <h2><?= Html::encode('Mis trayectos publicados') ?></h2>
-        </div>
+<div class="trayectos-create">
+    <div class="col-md-12">
+        <h3><strong><?= Html::encode($this->title) ?></strong></h3>
+        <hr>
         <?php if(count($trayectos) > 0): ?>
             <div class="panel-group">
                 <?php foreach ($trayectos as $trayecto): ?>

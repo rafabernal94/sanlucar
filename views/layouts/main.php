@@ -53,7 +53,7 @@ AppAsset::register($this);
                 'label' => Html::img($foto,
                     [
                         'class' => 'img-thumbnail',
-                        'style' => 'width: 40px; margin: -14px 0px -14px 0px',
+                        'style' => 'height: 40px; width: 40px; margin: -14px 0px -14px 0px',
                     ]
                 ),
                 'encode' => false,

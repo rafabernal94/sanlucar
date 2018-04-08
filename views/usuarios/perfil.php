@@ -26,29 +26,32 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 				<?= Html::img(
 					$fotoUrl, [
 						'class' => 'img-circle',
+						'style' => 'height: 172px; width: 172px',
 					]) ?>
 			</div>
   			<div class="panel-body">
 				<div class="col-md-10 col-xs-5 text-left">
-					<h4><strong><?= $model->nombre .
-						' ' . substr($model->apellido, 0, 1) ?>.</strong></h4>
+					<h4><strong><?= Html::encode($model->nombre .
+						' ' . substr($model->apellido, 0, 1)) ?>.</strong></h4>
 					<h5>Aún no tienes valoraciones</h5>
 				</div>
 				<div class="col-md-2 col-xs-7 text-right">
-					<?= Html::a(
-						Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Editar perfil',
-						['usuarios/modificar', 'option' => 'infopersonal'],
-						['class' => 'btn btn-primary btn-block']
-					); ?>
-					<?= Html::a(
-						Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
-						['usuarios/eliminar'],
-						[
-							'class' => 'btn btn-danger btn-block',
-							'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
-							'data-method' => 'post',
-						]
-					); ?>
+					<?php if (Yii::$app->user->id === $model->id): ?>
+						<?= Html::a(
+							Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Editar perfil',
+							['usuarios/modificar', 'option' => 'infopersonal'],
+							['class' => 'btn btn-primary btn-block']
+						); ?>
+						<?= Html::a(
+							Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
+							['usuarios/eliminar'],
+							[
+								'class' => 'btn btn-danger btn-block',
+								'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
+								'data-method' => 'post',
+							]
+						); ?>
+					<?php endif ?>
 				</div>
 			</div>
 		</div>
@@ -73,7 +76,11 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 						<span><strong>Usuario desde</strong></span>
 					</div>
 					<div class="col-md-7 col-xs-6 text-right">
-						<span><?= Yii::$app->formatter->asDate($model->created_at) ?></span>
+						<span>
+							<?= Html::encode(
+								Yii::$app->formatter->asDate($model->created_at)
+							) ?>
+						</span>
 					</div>
 				</div>
 			</li>
@@ -81,8 +88,8 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 	</div>
 	<div class="col-md-8">
 		<div class="panel panel-default">
-  			<div class="panel-heading"><strong>Sobre ti</strong></div>
-  			<div class="panel-body"><?= $model->biografia ?></div>
+  			<div class="panel-heading"><strong>Sobre mi</strong></div>
+  			<div class="panel-body"><?= Html::encode($model->biografia) ?></div>
 		</div>
 		<div class="panel panel-default">
   			<div class="panel-heading"><strong>Trayectos publicados</strong></div>
@@ -98,9 +105,9 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 							<tr>
 								<?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
 								<td><?= Html::encode(
-									Yii::$app->formatter->asDate($trayecto->fecha). ' a las ' .
-									date('H:i', $hora)
-									) ?>
+									Yii::$app->formatter->asDate($trayecto->fecha))
+									. ' a las '
+									. Html::encode(date('H:i', $hora)) ?>
 								</td>
 								<td><?= Html::a(Html::encode($trayecto->origen)
 									. " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "

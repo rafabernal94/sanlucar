@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
     ->passwordInput(['maxlength' => true, 'placeholder' => 'Confirmar contraseña'])
     ->label(false) ?>
 
-    <div class="col-md-3 col-xs-5 pl-0">
+    <div class="col-md-3 col-xs-6 pl-0">
         <div class="form-group">
             <?= Html::submitButton('Registrarse', ['class' => 'btn btn-success btn-block']) ?>
         </div>

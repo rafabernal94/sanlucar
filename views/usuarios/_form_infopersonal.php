@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
 /* @var $form yii\widgets\ActiveForm */
+
 $js = <<<EOT
 $(document).ready(function() {
     $('.nav-pills > li').removeClass('active');
@@ -14,15 +15,10 @@ $(document).ready(function() {
 EOT;
 $this->registerJs($js);
 ?>
-<div class="panel panel-success">
-    <div class="panel-heading">
-        <div class="panel-title text-center">
-            <h4><?= Html::encode('Información personal') ?></h4>
-        </div>
-    </div>
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Información personal</strong></div>
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
-
         <div class="row">
             <div class="col-md-6">
                 <?= $form->field($model, 'nombre')
@@ -43,9 +39,9 @@ $this->registerJs($js);
         ->textarea(['maxlength' => true, 'placeholder' => 'Biografía'])
         ->label('Biografía') ?>
 
-        <div class="col-md-offset-4 col-md-4">
+        <div class="col-md-offset-9 col-md-3 col-xs-offset-6 col-xs-6 pr-0">
             <div class="form-group">
-                <?= Html::submitButton('Modificar', ['class' => 'btn btn-success btn-block']) ?>
+                <?= Html::submitButton('Guardar', ['class' => 'btn btn-success btn-block']) ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>
