@@ -156,7 +156,7 @@ class TrayectosController extends Controller
             throw new NotFoundHttpException('El trayecto no existe.');
         }
 
-        $idBtn === 'btnMas' ? $trayecto->plazas += 1 : $trayecto->plazas -= 1;
+        substr($idBtn, 0, 6) === 'btnMas' ? $trayecto->plazas += 1 : $trayecto->plazas -= 1;
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         if ($trayecto->save()) {

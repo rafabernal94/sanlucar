@@ -7,25 +7,26 @@ $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
 $('.btn-default').on('click', function(e) {
     e.preventDefault();
+    var trayectoId = $(this).siblings('#id-trayecto').val();
     $.ajax({
         url: '$url',
         type: 'POST',
         data: {
-            idTrayecto: $(this).siblings('#id-trayecto').val(),
+            idTrayecto: trayectoId,
             idBtn: $(this).prop('id')
         },
         success: function(data) {
             if (data != 1 || data != 4) {
-                $('#btnMenos').prop('disabled', false);
-                $('#btnMas').prop('disabled', false);
+                $('#btnMenos-'+trayectoId).prop('disabled', false);
+                $('#btnMas-'+trayectoId).prop('disabled', false);
             }
             if (data == 1) {
-                $('#btnMenos').prop('disabled', true);
+                $('#btnMenos-'+trayectoId).prop('disabled', true);
             }
             if (data == 4) {
-                $('#btnMas').prop('disabled', true);
+                $('#btnMas-'+trayectoId).prop('disabled', true);
             }
-            $('#plazas').text(data + ' plazas disponibles');
+            $('#plazas-'+trayectoId).text(data + ' plazas disponibles');
         }
     })
 });
@@ -50,7 +51,7 @@ $this->registerJs($js);
             <div class="col-xs-1 col-md-1">
                 <?php
                 $array = [
-                    'id' => 'btnMas',
+                    'id' => "btnMas-$trayecto->id",
                     'class' => 'btn btn-xs btn-default',
                 ];
                 if ($trayecto->plazas == 4) {
@@ -72,7 +73,7 @@ $this->registerJs($js);
                 <?= Html::endForm() ?>
             </div>
             <div class="col-xs-4 col-md-3">
-                <span id="plazas">
+                <span id="plazas-<?= $trayecto->id ?>">
                     <?= Html::encode($trayecto->plazas) . ' plazas disponibles' ?>
                 </span>
             </div>
@@ -86,7 +87,7 @@ $this->registerJs($js);
             <div class="col-xs-1 col-md-1">
                 <?php
                 $array = [
-                    'id' => 'btnMenos',
+                    'id' => "btnMenos-$trayecto->id",
                     'class' => 'btn btn-xs btn-default',
                 ];
                 if ($trayecto->plazas == 1) {
