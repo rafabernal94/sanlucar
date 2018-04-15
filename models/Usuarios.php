@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
  * @property string $url_avatar
  * @property string $auth_key
  * @property string $token_val
+ * @property string $token_pass
  * @property string $created_at
  * @property string $updated_at
  */
@@ -27,6 +28,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 {
     const ESCENARIO_CREATE = 'create';
     const ESCENARIO_UPDATE = 'update';
+    const ESCENARIO_RECUPERAR = 'recuperar';
 
     public $passwordRepeat;
 
@@ -56,19 +58,25 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['email', 'nombre', 'apellido'], 'required'],
-            [['password', 'passwordRepeat'], 'required', 'on' => self::ESCENARIO_CREATE],
+            [['password', 'passwordRepeat'], 'required', 'on' => [
+                self::ESCENARIO_CREATE,
+                self::ESCENARIO_RECUPERAR,
+            ]],
             [['created_at', 'updated_at', 'url_avatar'], 'safe'],
-            [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key', 'token_val'], 'string', 'max' => 255],
+            [['email', 'password', 'nombre', 'apellido', 'biografia', 'auth_key', 'token_val', 'token_pass'], 'string', 'max' => 255],
             [
                 ['passwordRepeat'],
                 'compare',
                 'compareAttribute' => 'password',
                 'skipOnEmpty' => false,
-                'on' => [self::ESCENARIO_UPDATE, self::ESCENARIO_CREATE],
+                'on' => [
+                    self::ESCENARIO_UPDATE,
+                    self::ESCENARIO_CREATE,
+                    self::ESCENARIO_RECUPERAR,
+                ],
                 'message' => 'Las contraseñas deben ser iguales',
             ],
-            [['email'], 'unique'],
-            [['token_val'], 'unique'],
+            [['email', 'token_val', 'token_pass'], 'unique'],
             [['email'], 'email'],
             [['foto'], 'file', 'extensions' => 'jpg, png'],
         ];
@@ -89,6 +97,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'biografia' => 'Biografía',
             'auth_key' => 'Auth Key',
             'token_val' => 'Token Val',
+            'token_pass' => 'Token Pass',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -171,7 +180,8 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
                         ->generatePasswordHash($this->password);
                 }
             } else {
-                if ($this->scenario === self::ESCENARIO_UPDATE) {
+                if ($this->scenario === self::ESCENARIO_UPDATE
+                    || $this->scenario === self::ESCENARIO_RECUPERAR) {
                     if ($this->password === '') {
                         $this->password = $this->getOldAttribute('password');
                     } else {

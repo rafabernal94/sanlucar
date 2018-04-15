@@ -43,6 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <hr>
                 ¿No tienes cuenta?
                 <?= Html::a('Regístrate', ['usuarios/registrar']); ?>
+                <br>
+                ¿Olvidaste tu contraseña?
+                <?= Html::a('Restaurar', ['usuarios/recuperar-pass']); ?>
             </div>
         </div>
     </div>

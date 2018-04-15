@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\EmailRecuperarForm;
 use app\models\Usuarios;
 use app\models\UsuariosId;
 use Yii;
@@ -182,6 +183,88 @@ class UsuariosController extends Controller
         $model->delete();
         Yii::$app->session->setFlash('success', 'Su cuenta ha sido eliminada correctamente.');
         return $this->goHome();
+    }
+
+    /**
+     * Renderiza un formulario para restaurar la contraseña de un usuario.
+     * @param  string $token El token de contraseña del usuario
+     * @return mixed
+     */
+    public function actionRestaurarPass($token)
+    {
+        if (($model = Usuarios::findOne(['token_pass' => $token])) === null) {
+            return $this->goHome();
+        }
+
+        $model->scenario = Usuarios::ESCENARIO_RECUPERAR;
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->token_pass = null;
+            $model->save();
+            Yii::$app->session->setFlash(
+                'success',
+                'Tu contraseña se ha modificado correctamente.'
+            );
+            return $this->redirect(['site/login']);
+        }
+        $model->password = '';
+
+        return $this->render('recuperar', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Envía un email al usuario que ha solicitado recuperar su contraseña.
+     * @return mixed
+     */
+    public function actionRecuperarPass()
+    {
+        $form = new EmailRecuperarForm();
+        $email = Yii::$app->request->post('email');
+        if ($email !== null) {
+            $form->email = $email;
+            if ($form->validate()) {
+                $token = Yii::$app->security->generateRandomString();
+                $model = Usuarios::findOne(['email' => $email]);
+                $model->token_pass = $token;
+                if ($model->save()) {
+                    $this->enviarEmailRecuperar($model);
+                    Yii::$app->session->setFlash(
+                        'info',
+                        'Recibirás un correo con instrucciones para restaurar tu contraseña.'
+                    );
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('email_recuperar', [
+            'model' => $form,
+        ]);
+    }
+
+    /**
+     * Envía un email de restauración de contraseña.
+     * @param  Usuarios $model El usuario al cuál se le envía el email
+     * @return bool            Devuelve true si se ha enviado correctamente,
+     *                         false en caso contrario
+     */
+    public function enviarEmailRecuperar($model)
+    {
+        return Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($model->email)
+            ->setSubject('Email de restauración de contraseña')
+            ->setHtmlBody(
+                'Has solicitado un cambio de contraseña.<br><br>' .
+                Html::a(
+                    'Modificar contraseña',
+                    Url::to([
+                        'usuarios/restaurar-pass',
+                        'token' => $model->token_pass,
+                    ], true)
+                )
+            )->send();
     }
 
     /**
