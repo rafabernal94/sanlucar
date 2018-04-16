@@ -58,12 +58,19 @@ class TrayectosController extends Controller
     public function actionTrayectosPublicados()
     {
         $usuario = Yii::$app->user->identity;
-        $trayectos = Trayectos::find()
+        $trayectosAct = Trayectos::find()
             ->where(['conductor_id' => $usuario->id])
+            ->andWhere('fecha >= now()')
+            ->orderBy(['fecha' => SORT_ASC])->all();
+
+        $trayectosPas = Trayectos::find()
+            ->where(['conductor_id' => $usuario->id])
+            ->andWhere('fecha < now()')
             ->orderBy(['fecha' => SORT_ASC])->all();
 
         return $this->render('trayectos_publicados', [
-            'trayectos' => $trayectos,
+            'trayectosAct' => $trayectosAct,
+            'trayectosPas' => $trayectosPas,
             'usuario' => $usuario,
         ]);
     }

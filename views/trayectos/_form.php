@@ -37,6 +37,8 @@ use kartik\touchspin\TouchSpin;
             <div class="panel-body">
                 <?= $form->field($model, 'fecha')
                     ->widget(DateTimePicker::classname(), [
+                        'layout' => '{picker}{input}',
+
                     	'options' => [
                             'placeholder' => 'Introduce la fecha'
                         ],
@@ -44,6 +46,7 @@ use kartik\touchspin\TouchSpin;
                     		'language' => 'es',
                     		'autoclose' => true,
                             'weekStart' => 1,
+                            'startDate' => date('d-m-Y H:i'),
                             'format' => 'dd-mm-yyyy H:i'
                     	],
                     ])->label(false) ?>

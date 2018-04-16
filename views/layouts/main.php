@@ -29,7 +29,11 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => Html::img('@web/images/logo.png', [
+            'alt' => 'SanluCar',
+            'width' => '140px;',
+            'style' => 'margin-top: -4px',
+        ]),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default navbar-fixed-top',
@@ -64,7 +68,7 @@ AppAsset::register($this);
                     ],
                     [
                         'label' => 'Mis trayectos',
-                        'url' => ['trayectos/trayectos-publicados', 'id' => Yii::$app->user->id],
+                        'url' => ['trayectos/trayectos-publicados'],
                     ],
                     [
                         'label' => 'Cerrar sesión',
