@@ -7,6 +7,8 @@ namespace app\models;
  *
  * @property int $id
  *
+ * @property Coches[] $coches
+ * @property Trayectos[] $trayectos
  * @property Usuarios $usuarios
  */
 class UsuariosId extends \yii\db\ActiveRecord
@@ -51,5 +53,13 @@ class UsuariosId extends \yii\db\ActiveRecord
     public function getTrayectos()
     {
         return $this->hasMany(Trayectos::className(), ['conductor_id' => 'id'])->inverseOf('conductor');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCoches()
+    {
+        return $this->hasMany(Coches::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
     }
 }

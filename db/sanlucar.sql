@@ -41,6 +41,19 @@ CREATE TABLE trayectos
   , updated_at   timestamp(0)
 );
 
+DROP TABLE IF EXISTS coches CASCADE;
+
+CREATE TABLE coches
+(
+    id         bigserial    PRIMARY KEY
+  , marca      varchar(255) NOT NULL
+  , modelo     varchar(255) NOT NULL
+  , usuario_id bigint       NOT NULL REFERENCES usuarios_id (id)
+  , plazas     numeric(1)   NOT NULL
+  , created_at timestamp(0) NOT NULL DEFAULT localtimestamp
+  , updated_at timestamp(0)
+);
+
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar)
@@ -54,3 +67,7 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
     VALUES ('Calle San Nicolás', 'Calle Ancha', 1, localtimestamp + 'P1D'::interval, 4)
          , ('Calle Barrameda', 'Calle Ganado', 2, localtimestamp + 'P2D'::interval, 3);
+
+INSERT INTO coches (marca, modelo, usuario_id, plazas)
+    VALUES ('Opel', 'Corsa', 1, 5)
+         , ('Nissan', 'Micra', 2, 7);
