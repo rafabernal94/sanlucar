@@ -59,16 +59,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'position' => TabsX::POS_ABOVE,
             'encodeLabels' => false
         ]); ?>
-        <?php /*if(count($trayectos) > 0): ?>
-            <div class="panel-group">
-                <?php foreach ($trayectos as $trayecto): ?>
-                    <?= $this->render('/trayectos/trayecto', [
-                        'trayecto' => $trayecto
-                    ]) ?>
-                <?php endforeach ?>
-            </div>
-        <?php else: ?>
-            <h4>No tienes trayectos publicados</h4>
-        <?php endif */?>
     </div>
 </div>

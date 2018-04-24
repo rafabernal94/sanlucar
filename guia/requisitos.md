@@ -595,6 +595,42 @@
 | **Entrega**     | v3             |
 | **Incidencia**  | [66](https://github.com/rafabernal94/sanlucar/issues/66) |
 
+| **R67**     | **Mis coches**           |
+| --------------: | :------------------- |
+| **Descripción** | Muestra un listado con los coches del usuario.             |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Fácil         |
+| **Entrega**     | v2             |
+| **Incidencia**  | [82](https://github.com/rafabernal94/sanlucar/issues/82) |
+
+| **R68**     | **Coche favorito**           |
+| --------------: | :------------------- |
+| **Descripción** | El usuario tendrá la opción de marcar uno de sus coches como favorito.             |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Media         |
+| **Entrega**     | v2             |
+| **Incidencia**  | [83](https://github.com/rafabernal94/sanlucar/issues/83) |
+
+| **R69**     | **Preferencias**           |
+| --------------: | :------------------- |
+| **Descripción** | Se almacenará si se permiten o no algunas de las siguientes opciones: fumar, mascotas, música, etc.              |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Fácil         |
+| **Entrega**     | v2             |
+| **Incidencia**  | [84](https://github.com/rafabernal94/sanlucar/issues/84) |
+
+| **R70**     | **Añadir preferencias**           |
+| --------------: | :------------------- |
+| **Descripción** | El usuario podrá añadir preferencias de viaje al publicar un trayecto.             |
+| **Prioridad**   | Importante           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Fácil         |
+| **Entrega**     | v2             |
+| **Incidencia**  | [85](https://github.com/rafabernal94/sanlucar/issues/85) |
+
 
 ## Cuadro resumen
 
@@ -666,3 +702,7 @@
 | (**R64**) Comprobar que el diseño es correcto en varios navegadores | Mínimo | Técnico | Fácil | v3 | [64](https://github.com/rafabernal94/sanlucar/issues/64) |
 | (**R65**) Desplegar  en un Host | Mínimo | Técnico | Media | v3 | [65](https://github.com/rafabernal94/sanlucar/issues/65) |
 | (**R66**) Desplegar en un servidor local | Mínimo | Técnico | Media | v3 | [66](https://github.com/rafabernal94/sanlucar/issues/66) |
+| (**R67**) Mis coches | Importante | Funcional | Fácil | v2 | [82](https://github.com/rafabernal94/sanlucar/issues/82) |
+| (**R68**) Coche favorito | Importante | Funcional | Media | v2 | [83](https://github.com/rafabernal94/sanlucar/issues/83) |
+| (**R69**) Preferencias | Importante | Funcional | Fácil | v2 | [84](https://github.com/rafabernal94/sanlucar/issues/84) |
+| (**R70**) Añadir preferencias | Importante | Funcional | Fácil | v2 | [85](https://github.com/rafabernal94/sanlucar/issues/85) |
