@@ -28,11 +28,11 @@ class CochesController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['crear'],
+                'only' => ['crear', 'mis-coches'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['crear'],
+                        'actions' => ['crear', 'mis-coches'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -51,11 +51,25 @@ class CochesController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Tu coche ha sido añadido correctamente.');
-            return $this->goHome();
+            return $this->redirect(['coches/mis-coches']);
         }
 
         return $this->render('crear', [
             'model' => $model,
+        ]);
+    }
+
+    /**
+     * Lista los coches de un determinado usuario.
+     * @return mixed
+     */
+    public function actionMisCoches()
+    {
+        $usuario = Yii::$app->user->identity;
+        $coches = $usuario->usuarioId->coches;
+
+        return $this->render('mis_coches', [
+            'coches' => $coches,
         ]);
     }
 

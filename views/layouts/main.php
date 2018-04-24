@@ -71,6 +71,10 @@ AppAsset::register($this);
                         'url' => ['trayectos/trayectos-publicados'],
                     ],
                     [
+                        'label' => 'Mis coches',
+                        'url' => ['coches/mis-coches'],
+                    ],
+                    [
                         'label' => 'Cerrar sesión',
                         'url' => ['site/logout'],
                         'linkOptions' => ['data-method' => 'POST'],
