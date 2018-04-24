@@ -19,8 +19,15 @@ use yii\helpers\Html;
                         <?= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']),
                             '#', ['class' => 'btn btn-xs btn-default']
                         ); ?>
-                        <?= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-trash']),
-                            '#', ['class' => 'btn btn-xs btn-default']
+                        <?= Html::a(
+                            Html::tag('span', '', ['class' => 'glyphicon glyphicon-trash']),
+                            ['coches/eliminar', 'id' => $coche->id],
+                            [
+                                'data-confirm' => '¿Estás seguro que quieres eliminar el coche?',
+                                'data-method' => 'post',
+                                'class' => 'btn btn-xs btn-default',
+                                'title' => 'Eliminar coche'
+                            ]
                         ); ?>
                     </div>
                 </div>
