@@ -23,7 +23,7 @@ class CochesController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'eliminar' => ['POST'],
                 ],
             ],
             'access' => [
@@ -57,6 +57,21 @@ class CochesController extends Controller
         return $this->render('crear', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Elimina un modelo de Coches.
+     * @return mixed
+     * @param mixed $id
+     */
+    public function actionEliminar($id)
+    {
+        if (($model = Coches::findOne($id)) === null) {
+            throw new NotFoundHttpException('El coche no existe');
+        }
+        $model->delete();
+        Yii::$app->session->setFlash('success', 'El coche ha sido eliminado correctamente.');
+        return $this->redirect(['/coches/mis-coches']);
     }
 
     /**

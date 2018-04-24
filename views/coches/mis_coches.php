@@ -1,4 +1,6 @@
 <?php
+use app\helpers\Utiles;
+
 use yii\helpers\Html;
 
 $this->title = 'Mis coches';
@@ -6,7 +8,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Mi perfil', 'url' => ['usuarios/pe
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
+<?= Utiles::modal('Eliminar coche') ?>
 <div class="mis-coches">
     <div class="col-md-12">
         <div class="row">
@@ -31,10 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php else: ?>
             <h4>No tienes coches asociados a tu perfil.</h4>
-            <?= Html::a('Añadir coche',
-                ['coches/crear'],
-                ['class' => 'btn btn-success']
-            ); ?>
         <?php endif ?>
     </div>
 </div>
