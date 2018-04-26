@@ -38,8 +38,9 @@ use kartik\touchspin\TouchSpin;
                 ]) ?>
         </div>
     </div>
-    
+
     <div class="form-group text-right">
-        <?= Html::submitButton('Añadir coche', ['class' => 'btn btn-success']) ?>
+        <?php $texto = explode(' ', $this->title)[0]; ?>
+        <?= Html::submitButton($texto .' coche', ['class' => 'btn btn-success']) ?>
     </div>
 <?php ActiveForm::end(); ?>

@@ -17,7 +17,8 @@ use yii\helpers\Html;
                 <div class="col-md-6 col-xs-6 text-right">
                     <div class="btn-group" role="group">
                         <?= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']),
-                            '#', ['class' => 'btn btn-xs btn-default']
+                            ['coches/modificar', 'id' => $coche->id],
+                            ['class' => 'btn btn-xs btn-default']
                         ); ?>
                         <?= Html::a(
                             Html::tag('span', '', ['class' => 'glyphicon glyphicon-trash']),

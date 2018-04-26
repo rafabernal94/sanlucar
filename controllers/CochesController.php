@@ -28,11 +28,11 @@ class CochesController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['crear', 'mis-coches'],
+                'only' => ['crear', 'mis-coches', 'modificar'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['crear', 'mis-coches'],
+                        'actions' => ['crear', 'mis-coches', 'modificar'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -60,6 +60,30 @@ class CochesController extends Controller
     }
 
     /**
+     * Modifica un modelo de Coches.
+     * @param int $id
+     * @return mixed
+     * @throws NotFoundHttpException Si no encuentra el modelo
+     */
+    public function actionModificar($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->usuario_id !== Yii::$app->user->id) {
+            throw new NotFoundHttpException('No tienes permisos para modificar este coche.');
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'El coche se ha modificado correctamente.');
+            return $this->redirect(['coches/mis-coches']);
+        }
+
+        return $this->render('modificar', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Elimina un modelo de Coches.
      * @return mixed
      * @param mixed $id
@@ -81,7 +105,8 @@ class CochesController extends Controller
     public function actionMisCoches()
     {
         $usuario = Yii::$app->user->identity;
-        $coches = $usuario->usuarioId->coches;
+        $coches = $usuario->usuarioId->getCoches()
+            ->orderBy(['created_at' => SORT_ASC])->all();
 
         return $this->render('mis_coches', [
             'coches' => $coches,
