@@ -58,6 +58,7 @@ $config = [
                 'usuarios/modificar/<option:\w+>' => 'usuarios/modificar',
                 'trayectos/modificar/<id:\d+>' => 'trayectos/modificar',
                 'trayectos/detalles/<id:\d+>' => 'trayectos/detalles',
+                'coches/modificar/<id:\d+>' => 'coches/modificar',
             ],
         ],
     ],
