@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Preferencias;
 use app\models\Trayectos;
 use Yii;
 use yii\filters\AccessControl;
@@ -96,13 +97,21 @@ class TrayectosController extends Controller
         $model = new Trayectos();
         $model->conductor_id = Yii::$app->user->id;
 
+        $pref = new Preferencias();
+        $pref->musica = true;
+        $pref->ninos = true;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'El trayecto se ha publicado correctamente.');
-            return $this->goHome();
+            $pref->trayecto_id = $model->id;
+            if ($pref->load(Yii::$app->request->post()) && $pref->save()) {
+                Yii::$app->session->setFlash('success', 'El trayecto se ha publicado correctamente.');
+                return $this->redirect(['trayectos/trayectos-publicados']);
+            }
         }
 
         return $this->render('publicar', [
             'model' => $model,
+            'pref' => $pref,
         ]);
     }
 
