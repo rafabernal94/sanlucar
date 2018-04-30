@@ -2,8 +2,9 @@
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Trayectos */
-use yii\helpers\Html;
+/* @var $pref app\models\Preferencias */
 
+use yii\helpers\Html;
 
 $this->title = 'Publicar trayecto';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <?= $this->render('_form', [
                     'model' => $model,
+                    'pref' => $pref,
                 ]) ?>
             </div>
         </div>

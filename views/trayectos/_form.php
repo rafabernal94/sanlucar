@@ -9,12 +9,13 @@ use kartik\touchspin\TouchSpin;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Trayectos */
+/* @var $pref app\models\Preferencias */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Puntos de encuentro</h3>
@@ -29,6 +30,27 @@ use kartik\touchspin\TouchSpin;
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Preferencias de viaje</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $form->field($pref, 'musica')->checkbox() ?>
+                        <?= $form->field($pref, 'mascotas')->checkbox() ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $form->field($pref, 'ninos')->checkbox() ?>
+                        <?= $form->field($pref, 'fumar')->checkbox() ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -53,7 +75,7 @@ use kartik\touchspin\TouchSpin;
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Plazas disponibles</h3>
