@@ -15,6 +15,7 @@ namespace app\models;
  * @property string $updated_at
  *
  * @property UsuariosId $conductor
+ * @property Preferencias $preferencias
  */
 class Trayectos extends \yii\db\ActiveRecord
 {
@@ -65,5 +66,13 @@ class Trayectos extends \yii\db\ActiveRecord
     public function getConductor()
     {
         return $this->hasOne(UsuariosId::className(), ['id' => 'conductor_id'])->inverseOf('trayectos');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPreferencias()
+    {
+        return $this->hasOne(Preferencias::className(), ['trayecto_id' => 'id'])->inverseOf('trayecto');
     }
 }

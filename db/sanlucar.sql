@@ -54,6 +54,20 @@ CREATE TABLE coches
   , updated_at timestamp(0)
 );
 
+DROP TABLE IF EXISTS preferencias CASCADE;
+
+CREATE TABLE preferencias
+(
+    id          bigserial    PRIMARY KEY
+  , musica      boolean      NOT NULL
+  , mascotas    boolean      NOT NULL
+  , ninos       boolean      NOT NULL
+  , fumar       boolean      NOT NULL
+  , trayecto_id bigint       NOT NULL REFERENCES trayectos (id)
+  , created_at  timestamp(0) NOT NULL DEFAULT localtimestamp
+  , updated_at  timestamp(0)
+);
+
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar)
@@ -71,3 +85,7 @@ INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
 INSERT INTO coches (marca, modelo, usuario_id, plazas)
     VALUES ('Opel', 'Corsa', 1, 5)
          , ('Nissan', 'Micra', 2, 7);
+
+INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
+    VALUES (true, true, true, false, 1)
+         , (true, false, true, false, 2);
