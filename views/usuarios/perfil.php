@@ -85,6 +85,47 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 				</div>
 			</li>
 		</ul>
+		<div class="panel panel-default">
+  			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-6 col-xs-6">
+						<strong>Mis coches</strong>
+					</div>
+					<?php if (Yii::$app->user->id === $model->id) : ?>
+						<div class="col-md-6 col-xs-6 text-right">
+							<?= Html::a('+', ['coches/crear'], [
+								'class' => 'btn btn-xs btn-success',
+								'title' => 'Añadir coche'
+							]) ?>
+						</div>
+					<?php endif ?>
+				</div>
+			</div>
+			<ul class="list-group">
+				<?php if (count($model->usuarioId->coches)) : ?>
+					<?php foreach ($model->usuarioId->coches as $coche) : ?>
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-md-6 col-xs-6">
+									<?= Html::encode($coche->marca . ' ' . $coche->modelo) ?>
+								</div>
+								<div class="col-md-6 col-xs-6 text-right">
+									<?= Html::encode($coche->plazas) . ' plazas' ?>
+								</div>
+							</div>
+						</li>
+					<?php endforeach ?>
+				<?php else : ?>
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-md-12 col-xs-12">
+								No tienes coches asociados
+							</div>
+						</div>
+					</li>
+				<?php endif ?>
+			</ul>
+		</div>
 	</div>
 	<div class="col-md-8">
 		<div class="panel panel-default">
@@ -114,7 +155,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 									. Html::encode($trayecto->destino)
 									, ['trayectos/detalles', 'id' => $trayecto->id]) ?>
 								</td>
-								<td><?= Html::encode($trayecto->plazas) ?></td>
+								<td><?= Html::encode($trayecto->plazas) . ' disp.' ?></td>
 							</tr>
 						<?php endforeach ?>
 					</tbody>

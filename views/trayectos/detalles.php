@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Trayectos */
+/* @var $conductor app\models\Conductor */
+/* @var $pref app\models\Preferencias */
 
 use app\helpers\Utiles;
 use yii\helpers\Html;
@@ -52,7 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-md-8">
         <div class="panel panel-default">
-  			<div class="panel-heading"><strong>Itinerario</strong></div>
+  			<div class="panel-heading">
+                <h3 class="panel-title">Itinerario</h3>
+            </div>
   			<div class="panel-body">
                 <div class="row">
                     <div class="col-xs-4 col-md-3">
@@ -80,36 +84,90 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 		</div>
+        <div class="panel panel-default">
+  			<div class="panel-heading">
+                <h3 class="panel-title">Preferencias</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <?php
+                        $img = '@web/images/';
+                        $pref->musica ? $img .= 'check.svg' : $img .= 'prohibited.svg';
+                        ?>
+                        <div class="col-md-6 col-xs-6" style="display: flex">
+                            <?= Html::img($img, [
+                                    'class' => 'img-circle img-responsive',
+                                    'style' => 'width: 28px; height: 28px',
+                            ]) ?>
+                            <span class="pt-5">Música</span>
+                        </div>
+                        <?php
+                        $img = '@web/images/';
+                        $pref->ninos ? $img .= 'check.svg' : $img .= 'prohibited.svg';
+                        ?>
+                        <div class="col-md-6 col-xs-6" style="display: flex">
+                            <?= Html::img($img, [
+                                    'class' => 'img-circle img-responsive',
+                                    'style' => 'width: 28px; height: 28px',
+                            ]) ?>
+                            <span class="pt-5">Niños</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <?php
+                        $img = '@web/images/';
+                        $pref->mascotas ? $img .= 'check.svg' : $img .= 'prohibited.svg';
+                        ?>
+                        <div class="col-md-6 col-xs-6" style="display: flex">
+                            <?= Html::img($img, [
+                                    'class' => 'img-circle img-responsive',
+                                    'style' => 'width: 28px; height: 28px',
+                            ]) ?>
+                            <span class="pt-5">Mascotas</span>
+                        </div>
+                        <?php
+                        $img = '@web/images/';
+                        $pref->fumar ? $img .= 'check.svg' : $img .= 'prohibited.svg';
+                        ?>
+                        <div class="col-md-6 col-xs-6" style="display: flex">
+                            <?= Html::img($img, [
+                                    'class' => 'img-circle img-responsive',
+                                    'style' => 'width: 28px; height: 28px',
+                            ]) ?>
+                            <span class="pt-5">Fumar</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+		</div>
     </div>
     <div class="col-md-4">
         <div class="panel panel-default">
-  			<div class="panel-heading"><strong>Plazas disponibles</strong></div>
+  			<div class="panel-heading">
+                <h3 class="panel-title">Plazas disponibles</h3>
+            </div>
   			<div class="panel-body">
                 <h4><strong><?= Html::encode($model->plazas) ?></strong> plazas disponibles</h4>
             </div>
 		</div>
         <div class="panel panel-default">
-  			<div class="panel-heading"><strong>Conductor</strong></div>
+  			<div class="panel-heading">
+                <h3 class="panel-title">Conductor</h3>
+            </div>
   			<div class="panel-body">
-                <?php
-                if ($model->conductor->usuario->url_avatar !== null) {
-                    $fotoUrl = $model->conductor->usuario->url_avatar;
-                } else {
-                    $fotoUrl = '@web/images/avatar-default.png';
-                }
-                ?>
                 <div class="col-xs-4 col-md-4">
                     <?= Html::img(
-                        $fotoUrl, [
+                        $conductor->url_avatar, [
                             'class' => 'img-circle img-responsive',
                             'style' => 'width: 76px; height: 76px',
                         ]) ?>
                 </div>
                 <div class="col-xs-8 col-md-8">
                     <h4><strong>
-                        <?= Html::encode($model->conductor->usuario->nombre)
+                        <?= Html::encode($conductor->nombre)
                         . ' ' . Html::encode(
-                            substr($model->conductor->usuario->apellido, 0, 1)
+                            substr($conductor->apellido, 0, 1)
                         ) ?>
                     </strong></h4>
                     <h5>23 años</h5>
@@ -120,7 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h4><strong>Actividad</strong></h4>
                     <p><?= $model->conductor->getTrayectos()->count() ?> viaje/s publicado/s</p>
                     <p>Usuario desde: <?= Yii::$app->formatter->asDate(
-                        $model->conductor->usuario->created_at) ?></p>
+                        $conductor->created_at) ?></p>
                     <?= Html::a(
                         'Ver perfil público',
                         ['usuarios/perfil', 'id' => $model->conductor_id]

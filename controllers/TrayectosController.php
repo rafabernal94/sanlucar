@@ -83,8 +83,13 @@ class TrayectosController extends Controller
      */
     public function actionDetalles($id)
     {
+        $model = $this->findModel($id);
+        $conductor = $model->conductor->usuario;
+        $pref = $model->preferencias;
         return $this->render('detalles', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'conductor' => $conductor,
+            'pref' => $pref,
         ]);
     }
 
@@ -124,7 +129,7 @@ class TrayectosController extends Controller
     public function actionModificar($id)
     {
         $model = $this->findModel($id);
-        $pref = Preferencias::findOne(['trayecto_id' => $id]);
+        $pref = $model->preferencias;
 
         if ($model->conductor_id !== Yii::$app->user->id) {
             throw new NotFoundHttpException('No tienes permisos para modificar este trayecto.');
@@ -153,7 +158,7 @@ class TrayectosController extends Controller
         if (($model = Trayectos::findOne($id)) === null) {
             throw new NotFoundHttpException('El trayecto no existe');
         }
-        if (($pref = Preferencias::findOne(['trayecto_id' => $id])) === null) {
+        if (($pref = $model->preferencias) === null) {
             throw new NotFoundHttpException('Las preferencias de este trayecto no existen');
         }
         $pref->delete();
