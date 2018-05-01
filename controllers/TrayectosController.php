@@ -149,6 +149,10 @@ class TrayectosController extends Controller
         if (($model = Trayectos::findOne($id)) === null) {
             throw new NotFoundHttpException('El trayecto no existe');
         }
+        if (($pref = Preferencias::findOne(['trayecto_id' => $id])) === null) {
+            throw new NotFoundHttpException('Las preferencias de este trayecto no existen');
+        }
+        $pref->delete();
         $model->delete();
         Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
         return $this->redirect(['/trayectos/trayectos-publicados']);
