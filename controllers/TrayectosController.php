@@ -124,18 +124,22 @@ class TrayectosController extends Controller
     public function actionModificar($id)
     {
         $model = $this->findModel($id);
+        $pref = Preferencias::findOne(['trayecto_id' => $id]);
 
         if ($model->conductor_id !== Yii::$app->user->id) {
             throw new NotFoundHttpException('No tienes permisos para modificar este trayecto.');
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'El trayecto se ha modificado correctamente.');
-            return $this->redirect(['trayectos/trayectos-publicados']);
+            if ($pref->load(Yii::$app->request->post()) && $pref->save()) {
+                Yii::$app->session->setFlash('success', 'El trayecto se ha modificado correctamente.');
+                return $this->redirect(['trayectos/trayectos-publicados']);
+            }
         }
 
         return $this->render('modificar', [
             'model' => $model,
+            'pref' => $pref,
         ]);
     }
 
