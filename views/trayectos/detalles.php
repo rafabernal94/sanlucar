@@ -5,8 +5,12 @@
 /* @var $conductor app\models\Conductor */
 /* @var $pref app\models\Preferencias */
 
+use app\models\Coches;
+
 use app\helpers\Utiles;
 use yii\helpers\Html;
+
+use kartik\icons\Icon;
 
 $this->title = 'Detalles';
 $this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/trayectos-publicados']];
@@ -28,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </strong></h4>
 					</div>
 
-                    <?php if (Yii::$app->user->id === $model->conductor->id): ?>
+                    <?php if (Yii::$app->user->id === $conductor->id): ?>
     					<div class="col-md-6 col-xs-6 text-right">
                             <?= Html::a(
                                 'Editar el trayecto', [
@@ -66,16 +70,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-xs-8 col-md-9">
                         <p>
-                            <span class="glyphicon glyphicon-record text-primary"></span>
+                            <?= Icon::show('arrow-circle-right', ['class' => ' fas text-primary']) ?>
                             <?= Html::encode($model->origen) ?>
                         </p>
                         <p>
-                            <span class="glyphicon glyphicon-map-marker text-primary"></span>
+                            <?= Icon::show('bullseye', ['class' => 'text-primary']) ?>
                             <?= Html::encode($model->destino) ?>
                         </p>
                         <?php $hora = strtotime($model->fecha . 'UTC'); ?>
                         <p>
-                            <span class="glyphicon glyphicon-calendar text-primary"></span>
+                            <?= Icon::show('calendar', ['class' => 'text-primary']) ?>
                             <?= Html::encode(
                                 Yii::$app->formatter->asDate($model->fecha)
                                 ) ?> - <?= date('H:i', $hora) ?>
@@ -174,6 +178,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <ul class="list-group">
+                <li class="list-group-item">
+                    <h4><strong>Coche</strong></h4>
+                    <?php
+                    if (($coche = Coches::findOne($conductor->coche_fav)) !== null): ?>
+                        <p><?= Icon::show('car')
+                        . Html::encode($conductor->cocheFav->marca) . ' '
+                        . Html::encode($conductor->cocheFav->modelo)
+                        ?></p>
+                    <?php else: ?>
+                        No tiene coche favorito.
+                        <?php if (Yii::$app->user->id === $conductor->id): ?>
+                            <?= Html::a(
+                                'Seleccionar coche favorito',
+                                ['coches/mis-coches', 'id' => $model->conductor_id],
+                                ['style' => 'font-size: 12px']
+                            ) ?>
+                        <?php endif ?>
+                    <?php endif ?>
+                </li>
                 <li class="list-group-item">
                     <h4><strong>Actividad</strong></h4>
                     <p><?= $model->conductor->getTrayectos()->count() ?> viaje/s publicado/s</p>

@@ -1,12 +1,71 @@
 <?php
-use yii\helpers\Html;
+use app\models\Usuarios;
 
+use yii\helpers\Url;
+use yii\helpers\Html;
+use kartik\icons\Icon;
+
+$url = Url::to(['coches/favorito-ajax']);
+$js = <<<EOT
+$('.btn-link').on('click', function(e) {
+    e.preventDefault();
+    var cocheId = $(this).siblings('#id-coche').val();
+    $.ajax({
+        url: '$url',
+        type: 'POST',
+        data: {
+            idCoche: cocheId,
+        },
+        success: function(data) {
+            if (data == 1) {
+                $('.fa-star').removeClass('fav');
+                $('.btn-link').prop('disabled', false);
+                $('#btn-'+cocheId).children('.fa-star').addClass('fav');
+                $('#btn-'+cocheId).prop('disabled', true);
+            }
+        }
+    })
+});
+EOT;
+$this->registerJs($js);
 ?>
+
 <div class="col-md-6 col-xs-12">
     <div class="panel panel-info mb-10">
         <div class="panel-heading">
             <div class="panel-title">
-                <?= Html::encode($coche->marca) . ' ' . Html::encode($coche->modelo) ?>
+                <div class="row">
+                    <div class="col-md-10">
+                        <?= Html::encode($coche->marca) . ' ' . Html::encode($coche->modelo) ?>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <?php
+                        $class = '';
+                        $array = [
+                            'id' => 'btn-' . $coche->id,
+                            'class' => 'btn btn-link',
+                            'style' => 'padding: 0px; font-size: 16px; opacity: 1'
+                        ];
+                        $userAct = Usuarios::findOne(Yii::$app->user->id);
+                        if ($userAct->coche_fav === $coche->id) {
+                            $class = 'fav';
+                            $array = array_merge($array, ['disabled' => 'disabled']);
+                        }
+                        ?>
+                        <?= Html::beginForm(
+                            ['coches/favorito-ajax'],
+                            'post'
+                        ) ?>
+                        <?= Html::hiddenInput('id',
+                            $coche->id,
+                            ['id' => 'id-coche']
+                        ) ?>
+                        <?= Html::submitButton(
+                            Icon::show('star', ['class' => $class]), $array
+                        ) ?>
+                        <?= Html::endForm() ?>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="panel-body">

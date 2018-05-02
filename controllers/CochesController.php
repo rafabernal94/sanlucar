@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use app\models\Coches;
+use app\models\Usuarios;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * CochesController implements the CRUD actions for Coches model.
@@ -111,6 +113,30 @@ class CochesController extends Controller
         return $this->render('mis_coches', [
             'coches' => $coches,
         ]);
+    }
+
+    /**
+     * Permite al usuario seleccionar un coche como favorito.
+     * @return int Devuelve 1 si se ha guardado correctamente
+     */
+    public function actionFavoritoAjax()
+    {
+        if (($idCoche = Yii::$app->request->post('idCoche')) === null) {
+            throw new NotFoundHttpException('Falta el id del coche.');
+        }
+
+        if (($coche = Coches::findOne($idCoche)) === null) {
+            throw new NotFoundHttpException('El coche no existe.');
+        }
+
+        $usuario = Usuarios::findOne(Yii::$app->user->id);
+        $usuario->coche_fav = $idCoche;
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($usuario->save()) {
+            return 1;
+        }
+        return 0;
     }
 
     /**

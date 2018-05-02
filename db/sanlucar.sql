@@ -23,6 +23,7 @@ CREATE TABLE usuarios
   , auth_key   varchar(255)
   , token_val  varchar(255) UNIQUE
   , token_pass varchar(255) UNIQUE
+  , coche_fav  bigserial    NOT NULL REFERENCES coches (id)
   , created_at timestamp(0) NOT NULL DEFAULT localtimestamp
   , updated_at timestamp(0)
 );
@@ -70,13 +71,13 @@ CREATE TABLE preferencias
 
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT);
 
-INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar)
+INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)
     VALUES (1, 'rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
                 'Me encanta conducir por Sanlúcar.',
-                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1')
+                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 1)
          , (2, 'pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
                 'Me gusta escuchar música mientras conduzco.',
-                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1');
+                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 2);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
     VALUES ('Calle San Nicolás', 'Calle Ancha', 1, localtimestamp + 'P1D'::interval, 4)

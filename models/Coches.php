@@ -64,4 +64,12 @@ class Coches extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UsuariosId::className(), ['id' => 'usuario_id'])->inverseOf('coches');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuario()
+    {
+        return $this->hasOne(Usuarios::className(), ['coche_fav' => 'id'])->inverseOf('cocheFav');
+    }
 }
