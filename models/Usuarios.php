@@ -21,6 +21,7 @@ use yii\web\UploadedFile;
  * @property string $auth_key
  * @property string $token_val
  * @property string $token_pass
+ * @property int $coche_fav
  * @property string $created_at
  * @property string $updated_at
  */
@@ -98,6 +99,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'auth_key' => 'Auth Key',
             'token_val' => 'Token Val',
             'token_pass' => 'Token Pass',
+            'coche_fav' => 'Coche Fav',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -201,5 +203,13 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function getUsuarioId()
     {
         return $this->hasOne(UsuariosId::className(), ['id' => 'id'])->inverseOf('usuario');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCocheFav()
+    {
+        return $this->hasOne(Coches::className(), ['id' => 'coche_fav'])->inverseOf('usuario');
     }
 }
