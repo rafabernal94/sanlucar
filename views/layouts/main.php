@@ -10,7 +10,10 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
+use kartik\icons\Icon;
+
 AppAsset::register($this);
+Icon::map($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -41,15 +44,22 @@ AppAsset::register($this);
     ]);
     if (Yii::$app->user->isGuest) {
         $items = [
-            ['label' => 'Regístrate', 'url' => ['usuarios/registrar']],
-            ['label' => 'Inicia sesión', 'url' => ['site/login']]
+            [
+                'label' => Icon::show('registered') . ' Regístrate',
+                'url' => ['usuarios/registrar'],
+                'encode' => false,
+            ],
+            [
+                'label' => Icon::show('sign-in') . ' Iniciar sesión',
+                'url' => ['site/login'],
+                'encode' => false,
+            ]
         ];
     } else {
         $foto = Yii::$app->user->identity->url_avatar;
         $items = [
             [
-                'label' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-send'])
-                    . ' Publicar trayecto',
+                'label' => Icon::show('plus-circle') . ' Publicar trayecto',
                 'url' => ['trayectos/publicar'],
                 'encode' => false,
             ],
@@ -63,21 +73,25 @@ AppAsset::register($this);
                 'encode' => false,
                 'items' => [
                     [
-                        'label' => 'Mi perfil',
+                        'label' => Icon::show('user-circle') . ' Mi perfil',
                         'url' => ['usuarios/perfil', 'id' => Yii::$app->user->id],
+                        'encode' => false
                     ],
                     [
-                        'label' => 'Mis trayectos',
+                        'label' => Icon::show('map-signs') . ' Mis trayectos',
                         'url' => ['trayectos/trayectos-publicados'],
+                        'encode' => false,
                     ],
                     [
-                        'label' => 'Mis coches',
+                        'label' => Icon::show('car') . ' Mis coches',
                         'url' => ['coches/mis-coches'],
+                        'encode' => false,
                     ],
                     [
-                        'label' => 'Cerrar sesión',
+                        'label' => Icon::show('sign-out') . ' Cerrar sesión',
                         'url' => ['site/logout'],
                         'linkOptions' => ['data-method' => 'POST'],
+                        'encode' => false,
                     ],
                 ],
             ]
@@ -102,11 +116,10 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            Desarrollado por <a href="https://github.com/rafabernal94" target="_blank">rafabernal94</a>
-            <?= Html::img('@web/images/github.png', [
-                'alt' => 'github-logo',
-                'style' => 'margin-left: 6px'
-            ]) ?>
+            <span>
+                Desarrollado por <a href="https://github.com/rafabernal94" target="_blank">rafabernal94</a>
+                <?= Icon::show('github', ['style' => 'font-size: 18px']) ?>
+            </span>
         </p>
     </div>
 </footer>
