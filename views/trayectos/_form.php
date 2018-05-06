@@ -37,11 +37,11 @@ use kartik\touchspin\TouchSpin;
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-xs-6 col-md-6">
                         <?= $form->field($pref, 'musica')->checkbox() ?>
                         <?= $form->field($pref, 'mascotas')->checkbox() ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-xs-6 col-md-6">
                         <?= $form->field($pref, 'ninos')->checkbox() ?>
                         <?= $form->field($pref, 'fumar')->checkbox() ?>
                     </div>

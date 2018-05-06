@@ -23,7 +23,7 @@ CREATE TABLE usuarios
   , auth_key   varchar(255)
   , token_val  varchar(255) UNIQUE
   , token_pass varchar(255) UNIQUE
-  , coche_fav  bigserial    NOT NULL REFERENCES coches (id)
+  , coche_fav  bigserial    REFERENCES coches (id)
   , created_at timestamp(0) NOT NULL DEFAULT localtimestamp
   , updated_at timestamp(0)
 );
@@ -69,7 +69,16 @@ CREATE TABLE preferencias
   , updated_at  timestamp(0)
 );
 
-INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT);
+DROP TABLE IF EXISTS pasajeros CASCADE;
+
+CREATE TABLE pasajeros
+(
+    id          bigserial PRIMARY KEY
+  , usuario_id  bigint    NOT NULL REFERENCES usuarios_id (id)
+  , trayecto_id bigint    NOT NULL REFERENCES trayectos (id)
+);
+
+INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)
     VALUES (1, 'rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
@@ -77,15 +86,22 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
                 'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 1)
          , (2, 'pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
                 'Me gusta escuchar música mientras conduzco.',
-                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 2);
+                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 2)
+         , (3, 'manolo@manolo.com', crypt('manolo123', gen_salt('bf', 13)), 'Manolo', 'Pérez',
+               'Me encanta la feria.',
+               'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 3);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
-    VALUES ('Calle San Nicolás', 'Calle Ancha', 1, localtimestamp + 'P1D'::interval, 4)
+    VALUES ('Calle San Nicolás', 'Calle Ancha', 1, localtimestamp + 'P1D'::interval, 2)
          , ('Calle Barrameda', 'Calle Ganado', 2, localtimestamp + 'P2D'::interval, 3);
+
+INSERT INTO pasajeros (usuario_id, trayecto_id)
+    VALUES (1, 2), (2, 1), (3, 1);
 
 INSERT INTO coches (marca, modelo, usuario_id, plazas)
     VALUES ('Opel', 'Corsa', 1, 5)
-         , ('Nissan', 'Micra', 2, 7);
+         , ('Nissan', 'Micra', 2, 7)
+         , ('Fiat', 'Punto', 3, 5);
 
 INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
     VALUES (true, true, true, false, 1)
