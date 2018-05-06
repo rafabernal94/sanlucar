@@ -62,4 +62,12 @@ class UsuariosId extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Coches::className(), ['usuario_id' => 'id'])->inverseOf('usuarioId');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPasajero()
+    {
+        return $this->hasMany(Pasajeros::className(), ['usuario_id' => 'id'])->inverseOf('usuarioId');
+    }
 }
