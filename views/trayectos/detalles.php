@@ -6,6 +6,8 @@
 /* @var $pref app\models\Preferencias */
 
 use app\models\Coches;
+use app\models\Usuarios;
+use app\models\Solicitudes;
 
 use app\helpers\Utiles;
 use yii\helpers\Html;
@@ -78,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row pl-30">
                     <div class="col-xs-2 col-md-1 pt-5">
                     </div>
-                    <div class="col-xs-2 col-md-1" style="padding-left: 11px">
+                    <div class="col-xs-2 col-md-1 pl-10">
                         <?= Icon::show('map-marker', ['class' => 'fa-2x text-primary']) ?>
                     </div>
                     <div class="col-md-8 pl-0">
@@ -233,9 +235,37 @@ $this->params['breadcrumbs'][] = $this->title;
                     </li>
                 <?php endforeach ?>
             </ul>
-            <div class="panel-footer text-center">
-                <?= Html::a('Pedir solicitud de unión', '#', ['class' => 'btn btn-success']) ?>
-            </div>
+            <?php $userActual = Usuarios::findOne(Yii::$app->user->id); ?>
+            <?php $solicitud = Solicitudes::findOne([
+                'usuario_id' => Yii::$app->user->id,
+                'trayecto_id' => $model->id]
+            ); ?>
+            <?php if (Yii::$app->user->id !== $conductor->id
+                    && !$userActual->esPasajero($model)
+                    && $solicitud === null): ?>
+                <div class="panel-footer text-center">
+                    <?= Html::beginForm(
+                        ['trayectos/solicitud', 'id' => $model->id],
+                        'post'
+                    ) ?>
+                    <?= Html::submitButton(
+                        'Pedir solicitud de unión',
+                        ['class' => 'btn btn-success']
+                    ) ?>
+                    <?= Html::endForm() ?>
+                </div>
+            <?php endif ?>
+            <?php if ($solicitud !== null && !$solicitud->estaAceptada($model->id)): ?>
+                <div class="panel-footer text-center">
+                    <?= Html::submitButton(
+                        'Solicitud de unión enviada',
+                        [
+                            'class' => 'btn btn-default',
+                            'disabled' => 'disabled'
+                        ]
+                    ) ?>
+                </div>
+            <?php endif ?>
 		</div>
     </div>
 </div>

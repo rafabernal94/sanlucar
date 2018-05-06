@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Preferencias;
+use app\models\Solicitudes;
 use app\models\Trayectos;
 use Yii;
 use yii\filters\AccessControl;
@@ -25,7 +26,7 @@ class TrayectosController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'eliminar' => ['POST'],
+                    'eliminar', 'solicitud' => ['POST'],
                 ],
             ],
             'access' => [
@@ -192,6 +193,30 @@ class TrayectosController extends Controller
             return $trayecto->plazas;
         }
         return 0;
+    }
+
+    /**
+     * Crea un Solicitud de unión sobre un Trayecto.
+     * @param  int $id El ID del trayecto.
+     * @return mixed
+     */
+    public function actionSolicitud($id)
+    {
+        if ($this->findModel($id) === null) {
+            throw new NotFoundHttpException('El trayecto no existe.');
+        }
+
+        $solicitud = new Solicitudes(
+            [
+                'usuario_id' => Yii::$app->user->id,
+                'trayecto_id' => $id,
+            ]
+        );
+
+        if ($solicitud->save()) {
+            Yii::$app->session->setFlash('success', 'Solicitud de unión enviada.');
+            return $this->redirect(['trayectos/detalles', 'id' => $id]);
+        }
     }
 
     /**
