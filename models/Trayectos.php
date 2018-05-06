@@ -83,4 +83,12 @@ class Trayectos extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Pasajeros::className(), ['trayecto_id' => 'id'])->inverseOf('trayecto');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSolicitudes()
+    {
+        return $this->hasMany(Solicitudes::className(), ['trayecto_id' => 'id'])->inverseOf('trayecto');
+    }
 }

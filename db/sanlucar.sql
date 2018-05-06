@@ -78,6 +78,16 @@ CREATE TABLE pasajeros
   , trayecto_id bigint    NOT NULL REFERENCES trayectos (id)
 );
 
+DROP TABLE IF EXISTS solicitudes CASCADE;
+
+CREATE TABLE solicitudes
+(
+    id          bigserial PRIMARY KEY
+  , usuario_id  bigint    NOT NULL REFERENCES usuarios_id (id)
+  , trayecto_id bigint    NOT NULL REFERENCES trayectos (id)
+  , aceptada    boolean
+);
+
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)

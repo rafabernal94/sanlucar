@@ -139,6 +139,18 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return $res['url'];
     }
 
+    /**
+     * Devuelve si el usuario es pasajero del trayecto introducido.
+     * @param  Trayectos $trayecto El trayecto donde se busca el pasajero.
+     * @return int Devuelve 1 si es pasajero, 0 si no lo es.
+     */
+    public function esPasajero(Trayectos $trayecto)
+    {
+        return count(Pasajeros::find()
+            ->where(['usuario_id' => $this->id])
+            ->andWhere(['trayecto_id' => $trayecto->id])->all());
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne($id);
