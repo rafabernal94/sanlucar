@@ -85,7 +85,7 @@ CREATE TABLE solicitudes
     id          bigserial PRIMARY KEY
   , usuario_id  bigint    NOT NULL REFERENCES usuarios_id (id)
   , trayecto_id bigint    NOT NULL REFERENCES trayectos (id)
-  , aceptada    boolean
+  , aceptada    boolean   DEFAULT false
 );
 
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
@@ -106,7 +106,7 @@ INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
          , ('Calle Barrameda', 'Calle Ganado', 2, localtimestamp + 'P2D'::interval, 3);
 
 INSERT INTO pasajeros (usuario_id, trayecto_id)
-    VALUES (1, 2), (2, 1), (3, 1);
+    VALUES (2, 1), (3, 1);
 
 INSERT INTO coches (marca, modelo, usuario_id, plazas)
     VALUES ('Opel', 'Corsa', 1, 5)

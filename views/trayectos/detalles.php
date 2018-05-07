@@ -215,26 +215,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     </strong>
                 </h3>
             </div>
-            <ul class="list-group">
-                <?php foreach ($model->pasajeros as $pasajero): ?>
+            <?php if (count($model->pasajeros)): ?>
+                <ul class="list-group">
+                    <?php foreach ($model->pasajeros as $pasajero): ?>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-3 col-md-2">
+                                    <?= Html::img(
+                                        $pasajero->usuarioId->usuario->url_avatar, [
+                                            'class' => 'img-circle img-responsive',
+                                            'style' => 'width: 30px; height: 30px',
+                                        ]) ?>
+                                </div>
+                                <div class="col-xs-9 col-md-10 pl-0" style="padding-top: 4px">
+                                    <?= Html::a(Html::encode($pasajero->usuarioId->usuario->nombre
+                                    . ' ' . substr($pasajero->usuarioId->usuario->apellido, 0, 1)) . '.',
+                                    ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]) ?>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+            <?php else: ?>
+                <ul class="list-group">
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-3 col-md-2">
-                                <?= Html::img(
-                                    $pasajero->usuarioId->usuario->url_avatar, [
-                                        'class' => 'img-circle img-responsive',
-                                        'style' => 'width: 30px; height: 30px',
-                                    ]) ?>
-                            </div>
-                            <div class="col-xs-9 col-md-10 pl-0" style="padding-top: 4px">
-                                <?= Html::a(Html::encode($pasajero->usuarioId->usuario->nombre
-                                . ' ' . substr($pasajero->usuarioId->usuario->apellido, 0, 1)) . '.',
-                                ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]) ?>
+                            <div class="col-xs-12 col-md-12">
+                                Aún no hay pasajeros.
                             </div>
                         </div>
                     </li>
-                <?php endforeach ?>
-            </ul>
+                </ul>
+            <?php endif ?>
             <?php $userActual = Usuarios::findOne(Yii::$app->user->id); ?>
             <?php $solicitud = Solicitudes::findOne([
                 'usuario_id' => Yii::$app->user->id,
@@ -242,14 +254,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ); ?>
             <?php if (Yii::$app->user->id !== $conductor->id
                     && !$userActual->esPasajero($model)
-                    && $solicitud === null): ?>
+                    && $solicitud === null
+                    && $model->plazas >= 1): ?>
                 <div class="panel-footer text-center">
                     <?= Html::beginForm(
-                        ['trayectos/solicitud', 'id' => $model->id],
+                        ['solicitudes/crear'],
                         'post'
                     ) ?>
+                    <?= Html::hiddenInput('id-trayecto', $model->id) ?>
                     <?= Html::submitButton(
-                        'Pedir solicitud de unión',
+                        'Solicitar plaza',
                         ['class' => 'btn btn-success']
                     ) ?>
                     <?= Html::endForm() ?>
@@ -258,7 +272,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if ($solicitud !== null && !$solicitud->estaAceptada($model->id)): ?>
                 <div class="panel-footer text-center">
                     <?= Html::submitButton(
-                        'Solicitud de unión enviada',
+                        'Solicitud de plaza enviada',
                         [
                             'class' => 'btn btn-default',
                             'disabled' => 'disabled'
@@ -268,4 +282,59 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php endif ?>
 		</div>
     </div>
+    <?php if (Yii::$app->user->id === $conductor->id): ?>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+      			<div class="panel-heading">
+                    <h3 class="panel-title">Solicitudes de unión</h3>
+                </div>
+                <?php $solicitudesSinAceptar = $model->getSolicitudes()
+                    ->where(['aceptada' => false])
+                    ->all(); ?>
+                <?php if (count($solicitudesSinAceptar)): ?>
+                    <ul class="list-group">
+                        <?php foreach ($solicitudesSinAceptar as $solicitud): ?>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-3 col-md-2">
+                                        <?= Html::img(
+                                            $solicitud->usuarioId->usuario->url_avatar, [
+                                                'class' => 'img-circle img-responsive',
+                                                'style' => 'width: 30px; height: 30px',
+                                            ]) ?>
+                                    </div>
+                                    <div class="col-xs-3 col-md-4 pl-0" style="padding-top: 4px">
+                                        <?= Html::a(Html::encode($solicitud->usuarioId->usuario->nombre
+                                        . ' ' . substr($solicitud->usuarioId->usuario->apellido, 0, 1)) . '.',
+                                        ['usuarios/perfil', 'id' => $solicitud->usuarioId->usuario->id]) ?>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6 pt-5 text-right">
+                                        <?= Html::beginForm(
+                                            ['solicitudes/aceptar', 'id' => $solicitud->id],
+                                            'post'
+                                        ) ?>
+                                        <?= Html::submitButton(
+                                            'Aceptar solicitud',
+                                            ['class' => 'btn btn-xs btn-success']
+                                        ) ?>
+                                        <?= Html::endForm() ?>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                <?php else: ?>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    No tienes solicitudes pendientes.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                <?php endif ?>
+    		</div>
+        </div>
+    <?php endif ?>
 </div>
