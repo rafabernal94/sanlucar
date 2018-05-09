@@ -8,6 +8,7 @@ namespace app\models;
  * @property int $id
  * @property string $marca
  * @property string $modelo
+ * @property string $matricula
  * @property int $usuario_id
  * @property string $plazas
  * @property string $created_at
@@ -35,7 +36,7 @@ class Coches extends \yii\db\ActiveRecord
             [['usuario_id'], 'default', 'value' => null],
             [['usuario_id'], 'integer'],
             [['plazas'], 'number'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'matricula'], 'safe'],
             [['marca', 'modelo'], 'string', 'max' => 255],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['usuario_id' => 'id']],
         ];
@@ -50,6 +51,7 @@ class Coches extends \yii\db\ActiveRecord
             'id' => 'ID',
             'marca' => 'Marca',
             'modelo' => 'Modelo',
+            'matricula' => 'Matrícula',
             'usuario_id' => 'Usuario ID',
             'plazas' => 'Plazas',
             'created_at' => 'Created At',

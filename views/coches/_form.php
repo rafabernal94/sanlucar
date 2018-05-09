@@ -9,17 +9,62 @@ use kartik\touchspin\TouchSpin;
 /* @var $model app\models\Coches */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php
+$js = <<<EOT
+var matricula = $('#matricula');
+
+matricula.on('blur keyup', validar);
+$('.btn-success').on('click', function(e) {
+    e.preventDefault();
+    validar();
+    var valida = false;
+    $('input[type=text]').each(function() {
+        if ($(this).parent().hasClass('has-success')) {
+            valida = true;
+        }
+    });
+    if (valida) {
+        $('#form-coche').submit();
+    }
+});
+
+function validar() {
+    if (matricula.val().length > 0) {
+        var patron = /^[0-9]{4}\s[A-NOPR-Z]{3}$/;
+        if(patron.test(matricula.val())) {
+            ocultarError();
+            matricula.parent().addClass('has-success');
+        } else {
+            mostrarError('La matrícula introducida no es correcta. Formato válido: 1234 ABC');
+        }
+    } else {
+        mostrarError('Matrícula no puede estar vacío.');
+    }
+}
+
+function mostrarError(mensaje) {
+    matricula.parent().removeClass('has-success');
+    matricula.parent().addClass('has-error');
+    matricula.next().text(mensaje);
+}
+
+function ocultarError() {
+    matricula.parent().removeClass('has-error');
+    matricula.next().text('');
+}
+
+EOT;
+$this->registerJs($js);
+?>
+<?php $form = ActiveForm::begin(['id' => 'form-coche']); ?>
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'marca')
-                ->textInput(['maxlength' => true, 'placeholder' => 'Marca'])
-                ->label(false) ?>
+                ->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'modelo')
-            ->textInput(['maxlength' => true, 'placeholder' => 'Modelo'])
-            ->label(false) ?>
+            ->textInput(['maxlength' => true]) ?>
         </div>
     </div>
     <div class="row">
@@ -36,6 +81,10 @@ use kartik\touchspin\TouchSpin;
                         'max' => 9,
                     ],
                 ]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'matricula')
+            ->textInput(['maxlength' => true, 'id' => 'matricula']) ?>
         </div>
     </div>
 
