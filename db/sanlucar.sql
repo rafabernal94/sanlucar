@@ -49,6 +49,7 @@ CREATE TABLE coches
     id         bigserial    PRIMARY KEY
   , marca      varchar(255) NOT NULL
   , modelo     varchar(255) NOT NULL
+  , matricula  varchar(8)   NOT NULL
   , usuario_id bigint       NOT NULL REFERENCES usuarios_id (id)
   , plazas     numeric(1)   NOT NULL
   , created_at timestamp(0) NOT NULL DEFAULT localtimestamp
@@ -108,10 +109,10 @@ INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
 INSERT INTO pasajeros (usuario_id, trayecto_id)
     VALUES (2, 1), (3, 1);
 
-INSERT INTO coches (marca, modelo, usuario_id, plazas)
-    VALUES ('Opel', 'Corsa', 1, 5)
-         , ('Nissan', 'Micra', 2, 7)
-         , ('Fiat', 'Punto', 3, 5);
+INSERT INTO coches (marca, modelo, matricula, usuario_id, plazas)
+    VALUES ('Opel', 'Corsa', '1234 ABC', 1, 5)
+         , ('Nissan', 'Micra', '4321 CBA', 2, 7)
+         , ('Fiat', 'Punto', '9876 EFG', 3, 5);
 
 INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
     VALUES (true, true, true, false, 1)
