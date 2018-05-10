@@ -28,9 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				<div class="row">
 					<div class="col-md-6 col-xs-12 mb-5">
                         <h3 class="mt-0"><strong>
-                            <?= Html::encode($model->origen) . ' '
+                            <?php
+                            $origen = explode(',', $model->origen)[0];
+                            $destino = explode(',', $model->destino)[0];
+                            ?>
+                            <?= Html::encode($origen) . ' '
                             . Icon::show('long-arrow-right', ['class' => 'text-muted'])
-                            . Html::encode($model->destino) ?>
+                            . Html::encode($destino) ?>
                         </strong></h3>
                         <?php $hora = strtotime($model->fecha . 'UTC'); ?>
                         <?= Html::encode(
@@ -74,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Icon::show('bullseye', ['class' => 'fa-2x text-primary']) ?>
                     </div>
                     <div class="col-xs-8 col-md-10 pl-0">
-                        <h4 class="mt-5"><?= Html::encode($model->origen) ?></h4>
+                        <h4 class="mt-5"><?= Html::encode($origen) ?></h4>
                     </div>
                 </div>
                 <div class="row pl-30">
@@ -84,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Icon::show('map-marker', ['class' => 'fa-2x text-primary']) ?>
                     </div>
                     <div class="col-md-8 pl-0">
-                        <h4 class="mt-5"><?= Html::encode($model->destino) ?></h4>
+                        <h4 class="mt-5"><?= Html::encode($destino) ?></h4>
                     </div>
                 </div>
             </div>

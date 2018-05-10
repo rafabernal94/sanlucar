@@ -37,9 +37,13 @@ $this->registerJs($js);
 <div class="panel panel-default mb-10">
     <div class="panel-heading">
         <div class="panel-title">
-            <?= Html::encode($trayecto->origen)
+            <?php
+            $origen = explode(',', $trayecto->origen)[0];
+            $destino = explode(',', $trayecto->destino)[0];
+            ?>
+            <?= Html::encode($origen)
             . " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
-            . Html::encode($trayecto->destino) ?>
+            . Html::encode($destino) ?>
         </div>
     </div>
     <div class="panel-body">
