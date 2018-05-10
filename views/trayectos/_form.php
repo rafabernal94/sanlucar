@@ -1,5 +1,7 @@
 <?php
 
+use yii\web\View;
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -11,6 +13,9 @@ use kartik\touchspin\TouchSpin;
 /* @var $model app\models\Trayectos */
 /* @var $pref app\models\Preferencias */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile('@web/js/maps.js', ['position' => View::POS_HEAD]);
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQK52OS9wzjw5P6QE_ejpFTytrD4&libraries=places&callback=initMap');
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
@@ -22,10 +27,16 @@ use kartik\touchspin\TouchSpin;
             </div>
             <div class="panel-body">
                 <?= $form->field($model, 'origen')
-                    ->textInput(['maxlength' => true, 'placeholder' => 'Introduce el origen'])
+                    ->textInput([
+                        'id' => 'origen',
+                        'maxlength' => true,
+                        'placeholder' => 'Introduce el origen'])
                     ->label(false) ?>
                 <?= $form->field($model, 'destino')
-                    ->textInput(['maxlength' => true, 'placeholder' => 'Introduce el destino'])
+                    ->textInput([
+                        'id' => 'destino',
+                        'maxlength' => true,
+                        'placeholder' => 'Introduce el destino'])
                     ->label(false) ?>
             </div>
         </div>
@@ -62,7 +73,8 @@ use kartik\touchspin\TouchSpin;
                         'layout' => '{picker}{input}',
 
                     	'options' => [
-                            'placeholder' => 'Introduce la fecha'
+                            'placeholder' => 'Introduce la fecha',
+                            'readonly' => true
                         ],
                     	'pluginOptions' => [
                     		'language' => 'es',
@@ -104,3 +116,4 @@ use kartik\touchspin\TouchSpin;
     </div>
 </div>
 <?php ActiveForm::end(); ?>
+<div id="mapa"></div>

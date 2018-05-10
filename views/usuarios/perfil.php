@@ -150,9 +150,13 @@ $this->params['breadcrumbs'][] = ['label' => $this->title];
 									. ' a las '
 									. Html::encode(date('H:i', $hora)) ?>
 								</td>
-								<td><?= Html::a(Html::encode($trayecto->origen)
+								<?php
+					            $origen = explode(',', $trayecto->origen)[0];
+					            $destino = explode(',', $trayecto->destino)[0];
+					            ?>
+								<td><?= Html::a(Html::encode($origen)
 									. " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
-									. Html::encode($trayecto->destino)
+									. Html::encode($destino)
 									, ['trayectos/detalles', 'id' => $trayecto->id]) ?>
 								</td>
 								<td><?= Html::encode($trayecto->plazas) . ' disp.' ?></td>
