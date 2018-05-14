@@ -24,8 +24,11 @@ class AppAsset extends AssetBundle
         'css/bootstrap-extra.css',
         'css/nav.css',
         'css/sidebar.css',
+        'css/bootstrap-colorselector.css',
     ];
     public $js = [
+        'js/bootstrap-colorselector.js',
+        'js/jquery.cookie.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
