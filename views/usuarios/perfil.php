@@ -1,7 +1,6 @@
 <?php
 
 use app\helpers\Utiles;
-
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -10,24 +9,100 @@ use yii\helpers\Html;
 $this->title = 'Perfil de ' . $model->nombre . ' ' . substr($model->apellido, 0, 1) . '.';
 $this->params['breadcrumbs'][] = ['label' => $this->title];
 
+$js = <<<EOT
+$('#colorselector').colorselector({
+	callback: function (value, color, title) {
+		$.cookie('color', color);
+		$.cookie('valueColor', value);
+		$('.panel-heading').first().attr('style', 'background-color: ' +color+ ' !important');
+  	}
+});
+
+if ($.cookie('color') == null && $.cookie('valueColor') == null) {
+	$.cookie('color', '#2E9AFE');
+	$.cookie('valueColor', '15');
+} else {
+	var color = $.cookie('color');
+	var valueColor = $.cookie('valueColor');
+	$('.btn-colorselector').attr('style', 'background-color: '+color+' !important');
+	$('a').removeClass('selected');
+	$('a[data-value='+valueColor+']').addClass('selected');
+}
+EOT;
+$this->registerJs($js);
 ?>
 <?= Utiles::modal('Darse de baja') ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default text-center">
-			<div class="panel-heading panel-perfil">
-				<?php
-				if ($model->url_avatar !== null) {
-					$fotoUrl = $model->url_avatar;
-				} else {
-					$fotoUrl = '@web/images/avatar-default.png';
-				}
-				?>
-				<?= Html::img(
-					$fotoUrl, [
-						'class' => 'img-circle',
-						'style' => 'height: 172px; width: 172px',
-					]) ?>
+			<?php
+			if (Yii::$app->user->id === $model->id) $color = $_COOKIE['color'];
+			else $color = '#2E9AFE';
+			?>
+			<div class="panel-heading" style="background-color: <?= $color ?>">
+				<div class="row">
+					<div class="col-xs-2 col-md-5 text-left">
+						<?php if (Yii::$app->user->id === $model->id): ?>
+							<button class="btn btn-xs btn-default">
+								<select id="colorselector">
+								    <option value="1" data-color="#FE2E2E"></option>
+								    <option value="2" data-color="#FE642E"></option>
+								    <option value="3" data-color="#FE9A2E"></option>
+								    <option value="4" data-color="#FACC2E"></option>
+								    <option value="5" data-color="#F7FE2E"></option>
+									<option value="6" data-color="#C8FE2E"></option>
+									<option value="7" data-color="#9AFE2E"></option>
+									<option value="8" data-color="#64FE2E"></option>
+									<option value="9" data-color="#2EFE2E"></option>
+									<option value="10" data-color="#2EFE64"></option>
+									<option value="11" data-color="#2EFE9A"></option>
+									<option value="12" data-color="#2EFEC8"></option>
+								    <option value="13" data-color="#2EFEF7"></option>
+									<option value="14" data-color="#2ECCFA"></option>
+									<option value="15" data-color="#2E9AFE" selected="selected"></option>
+									<option value="16" data-color="#2E64FE"></option>
+									<option value="17" data-color="#2E2EFE"></option>
+									<option value="18" data-color="#642EFE"></option>
+									<option value="19" data-color="#9A2EFE"></option>
+								    <option value="20" data-color="#CC2EFA"></option>
+									<option value="21" data-color="#FE2EF7"></option>
+									<option value="22" data-color="#FE2EC8"></option>
+									<option value="23" data-color="#FE2E9A"></option>
+									<option value="24" data-color="#FE2E64"></option>
+									<option value="25" data-color="#A4A4A4"></option>
+								</select>
+							</button>
+						<?php endif ?>
+					</div>
+					<div class="col-md-7 text-left hidden-xs">
+						<?php
+						if ($model->url_avatar !== null) {
+							$fotoUrl = $model->url_avatar;
+						} else {
+							$fotoUrl = '@web/images/avatar-default.png';
+						}
+						?>
+						<?= Html::img(
+							$fotoUrl, [
+								'class' => 'img-circle',
+								'style' => 'height: 172px; width: 172px',
+							]) ?>
+					</div>
+					<div class="col-xs-8 visible-xs">
+						<?php
+						if ($model->url_avatar !== null) {
+							$fotoUrl = $model->url_avatar;
+						} else {
+							$fotoUrl = '@web/images/avatar-default.png';
+						}
+						?>
+						<?= Html::img(
+							$fotoUrl, [
+								'class' => 'img-circle',
+								'style' => 'height: 172px; width: 172px',
+							]) ?>
+					</div>
+				</div>
 			</div>
   			<div class="panel-body">
 				<div class="col-md-10 col-xs-5 text-left">
