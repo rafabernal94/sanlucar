@@ -1,5 +1,7 @@
 <?php
 
+use kartik\datecontrol\Module;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $log = require __DIR__ . '/log.php';
@@ -63,6 +65,17 @@ $config = [
         ],
     ],
     'params' => $params,
+    'modules' => [
+        'datecontrol' => [
+            'class' => '\kartik\datecontrol\Module',
+            'displaySettings' => [
+                Module::FORMAT_DATE => $params['dateFormat'],
+            ],
+            'saveSettings' => [
+                Module::FORMAT_DATE => 'php:Y-m-d',
+            ],
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

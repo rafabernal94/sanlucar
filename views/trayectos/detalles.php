@@ -19,7 +19,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayect
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<?= Utiles::modal('Eliminar trayecto') ?>
+<?php if (Yii::$app->user->id === $conductor->id): ?>
+    <?= Utiles::modal('Eliminar trayecto') ?>
+<?php else: ?>
+    <?= Utiles::modal('Retirarse del trayecto') ?>
+<?php endif ?>
 
 <div class="row">
     <div class="col-md-12">
@@ -231,11 +235,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'style' => 'width: 30px; height: 30px',
                                         ]) ?>
                                 </div>
-                                <div class="col-xs-9 col-md-10 pl-0" style="padding-top: 4px">
+                                <div class="col-xs-9 col-md-4 pl-0 pt-5">
                                     <?= Html::a(Html::encode($pasajero->usuarioId->usuario->nombre
                                     . ' ' . substr($pasajero->usuarioId->usuario->apellido, 0, 1)) . '.',
                                     ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]) ?>
                                 </div>
+                                <?php if ($pasajero->usuarioId->usuario->id === Yii::$app->user->id): ?>
+                                    <div class="col-md-6 text-right pt-5">
+                                        <?= Html::a(
+                                            'Retirarse',
+                                            [
+                                                'pasajeros/eliminar',
+                                                'usuarioId' => $pasajero->usuarioId->usuario->id,
+                                                    'trayectoId' => $model->id,
+                                            ],
+                                            [
+                                                'data-confirm' => '¿Estás seguro que quieres retirarte del trayecto? Perderás el importe pagado.',
+                                                'data-method' => 'post',
+                                                'class' => 'btn btn-xs btn-danger'
+                                            ]
+                                        ) ?>
+                                    </div>
+                                <?php endif ?>
                             </div>
                         </li>
                     <?php endforeach ?>
