@@ -9,35 +9,21 @@ use yii\helpers\Html;
 $this->title = 'Perfil de ' . $model->nombre . ' ' . substr($model->apellido, 0, 1) . '.';
 $this->params['breadcrumbs'][] = ['label' => $this->title];
 
-$js = <<<EOT
-$('#colorselector').colorselector({
-	callback: function (value, color, title) {
-		$.cookie('color', color);
-		$.cookie('valueColor', value);
-		$('.panel-heading').first().attr('style', 'background-color: ' +color+ ' !important');
-  	}
-});
-
-if ($.cookie('color') == null && $.cookie('valueColor') == null) {
-	$.cookie('color', '#2E9AFE');
-	$.cookie('valueColor', '15');
-} else {
-	var color = $.cookie('color');
-	var valueColor = $.cookie('valueColor');
-	$('.btn-colorselector').attr('style', 'background-color: '+color+' !important');
-	$('a').removeClass('selected');
-	$('a[data-value='+valueColor+']').addClass('selected');
-}
-EOT;
-$this->registerJs($js);
+$this->registerJsFile('@web/js/cambia-color.js', [
+	'depends' => [\yii\web\JqueryAsset::className()]
+]);
 ?>
 <?= Utiles::modal('Darse de baja') ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default text-center">
 			<?php
-			if (Yii::$app->user->id === $model->id) $color = $_COOKIE['color'];
-			else $color = '#2E9AFE';
+			$color = '#2E9AFE';
+			if (Yii::$app->user->id === $model->id) {
+				if (isset($_COOKIE['color'])) {
+					$color = $_COOKIE['color'];
+				}
+			}
 			?>
 			<div class="panel-heading" style="background-color: <?= $color ?>">
 				<div class="row">
