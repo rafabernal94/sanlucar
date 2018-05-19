@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Inicio';
+$this->registerJsFile('@web/js/live-chat.js');
 ?>
 <div class="site-index">
 
