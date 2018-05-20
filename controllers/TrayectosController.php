@@ -2,11 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\Pasajeros;
 use app\models\Preferencias;
 use app\models\Trayectos;
+use app\models\Usuarios;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -137,6 +142,9 @@ class TrayectosController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($pref->load(Yii::$app->request->post()) && $pref->save()) {
+                foreach ($model->pasajeros as $pasajero) {
+                    $this->enviarEmail($pasajero->usuarioId->usuario, $model);
+                }
                 Yii::$app->session->setFlash('success', 'El trayecto se ha modificado correctamente.');
                 return $this->redirect(['trayectos/trayectos-publicados']);
             }
@@ -161,8 +169,22 @@ class TrayectosController extends Controller
         if (($pref = $model->preferencias) === null) {
             throw new NotFoundHttpException('Las preferencias de este trayecto no existen');
         }
-        $pref->delete();
-        $model->delete();
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            foreach ($model->pasajeros as $pasajero) {
+                $this->enviarEmail($pasajero->usuarioId->usuario, $model, true);
+            }
+            $pasajeros = Pasajeros::deleteAll(['trayecto_id' => $id]);
+            $pref->delete();
+            $model->delete();
+
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
         Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
         return $this->redirect(['/trayectos/trayectos-publicados']);
     }
@@ -192,6 +214,37 @@ class TrayectosController extends Controller
             return $trayecto->plazas;
         }
         return 0;
+    }
+
+    /**
+     * Envia un email cuando se modifica o elimina un trayecto.
+     * @param  Usuarios  $usuario  Usuario al que se envie el email
+     * @param  Trayectos $trayecto El trayecto modificado o eliminado
+     * @param  bool      $elimina  True si el trayecto ha sido eliminado
+     * @return bool      True si el email se ha enviado correctamente
+     */
+    public function enviarEmail($usuario, $trayecto, $elimina = false)
+    {
+        $subject = 'Trayecto modificado';
+        $opcion = 'modificado';
+        $enlace = Html::a(
+            'Ver trayecto',
+            Url::to(['trayectos/detalles', 'id' => $trayecto->id], true)
+        );
+        if ($elimina) {
+            $subject = 'Trayecto eliminado';
+            $opcion = 'eliminado';
+            $enlace = '';
+        }
+        return Yii::$app->mailer->compose()
+        ->setFrom(Yii::$app->params['adminEmail'])
+        ->setTo($usuario->email)
+        ->setSubject($subject)
+        ->setHtmlBody(
+            '¡Hola ' . $usuario->nombre . '!<br>
+            Se ha ' . $opcion . ' un trayecto en el que participas.<br><br>' .
+            $enlace
+        )->send();
     }
 
     /**
