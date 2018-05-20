@@ -10,7 +10,11 @@ use app\models\Usuarios;
 use app\models\Solicitudes;
 
 use app\helpers\Utiles;
+use yii\web\View;
+
 use yii\helpers\Html;
+
+use yii\bootstrap\Modal;
 
 use kartik\icons\Icon;
 
@@ -18,6 +22,21 @@ $this->title = 'Detalles';
 $this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/trayectos-publicados']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$this->registerJsFile('@web/js/draw-detalles.js', [
+    'position' => View::POS_HEAD,
+    'depends' => [\yii\web\JqueryAsset::className()]
+]);
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQK52OS9wzjw5P6QE_ejpFTytrD4&libraries=places&callback=initMap');
+
+$js = <<<EOT
+$(function() {
+    $('#modalButton').on('click', function() {
+        $('#modalMapa').modal('show')
+            .find('#modalContent');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <?php if (Yii::$app->user->id === $conductor->id): ?>
     <?= Utiles::modal('Eliminar trayecto') ?>
@@ -31,6 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			<li class="list-group-item">
 				<div class="row">
 					<div class="col-md-6 col-xs-12 mb-5">
+                        <?= Html::hiddenInput('origen', $model->origen, ['id' => 'origen']) ?>
+                        <?= Html::hiddenInput('destino', $model->destino, ['id' => 'destino']) ?>
                         <h3 class="mt-0"><strong>
                             <?php
                             $origen = explode(',', $model->origen)[0];
@@ -97,7 +118,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="panel-footer text-center">
-                <?= Html::a('Ver trayecto en el mapa', '#') ?>
+                <?= Html::button(Icon::show('map'). ' Ver trayecto en el mapa', [
+                    'id' => 'modalButton',
+                    'class' => 'btn btn-link',
+                    'style' => 'padding: 0px'
+                ]) ?>
             </div>
         </div>
         <div class="panel panel-default">
@@ -363,3 +388,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif ?>
 </div>
+<?php
+    Modal::begin([
+        'header' => '<span style="font-size: 24px">Resumen del trayecto</span>',
+        'id' => 'modalMapa',
+        'size' => 'modal-lg',
+    ]);
+    echo "<div id='modalContent'><div id='mapa' style='width:100%; height:400px'></div></div>";
+    Modal::end();
+?>

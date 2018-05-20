@@ -103,8 +103,8 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 3);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
-    VALUES ('Calle San Nicolás', 'Calle Ancha', 1, localtimestamp + 'P1D'::interval, 2)
-         , ('Calle Barrameda', 'Calle Ganado', 2, localtimestamp + 'P2D'::interval, 3);
+    VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2)
+         , ('Calle Barrameda, Sanlúcar de Barrameda, España', 'Calle Ganado, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3);
 
 INSERT INTO pasajeros (usuario_id, trayecto_id)
     VALUES (2, 1), (3, 1);

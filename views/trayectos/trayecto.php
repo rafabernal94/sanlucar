@@ -1,7 +1,8 @@
 <?php
-
 use yii\helpers\Url;
 use yii\helpers\Html;
+
+use yii\bootstrap\Modal;
 
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
@@ -29,6 +30,15 @@ $('.btn-default').on('click', function(e) {
             $('#plazas-'+trayectoId).text(data + ' plazas disponibles');
         }
     })
+});
+EOT;
+$this->registerJs($js);
+$js = <<<EOT
+$(function() {
+    $('#modalButton').on('click', function() {
+        $('#modalPasajeros').modal('show')
+            .find('#modalContent');
+    });
 });
 EOT;
 $this->registerJs($js);
@@ -123,9 +133,13 @@ $this->registerJs($js);
                 ) ?>
             </div>
             <div class="col-xs-3 col-md-3">
-                <?= Html::a(Html::tag(
+                <?= Html::button(Html::tag(
                     'span', '', ['class' => 'glyphicon glyphicon-user'])
-                    . ' Ver ocupantes', '#'
+                    . ' Ver ocupantes', [
+                        'id' => 'modalButton',
+                        'class' => 'btn btn-link',
+                        'style' => 'padding: 0px'
+                    ]
                 ) ?>
             </div>
             <div class="col-xs-3 col-md-3">
@@ -148,3 +162,47 @@ $this->registerJs($js);
         </div>
     </div>
 </div>
+<?php
+$content = '';
+if (count($trayecto->pasajeros)) {
+    $content .= '<ul class="list-group">';
+        foreach ($trayecto->pasajeros as $pasajero) {
+            $content .= '<li class="list-group-item">
+                <div class="row">
+                    <div class="col-xs-3 col-md-2">';
+                        $content .= Html::img(
+                            $pasajero->usuarioId->usuario->url_avatar, [
+                                'class' => 'img-circle img-responsive',
+                                'style' => 'width: 30px; height: 30px',
+                            ]);
+                    $content .= '</div>
+                    <div class="col-xs-9 col-md-4 pl-0 pt-5">';
+                        $content .= Html::a(Html::encode($pasajero->usuarioId->usuario->nombre
+                        . ' ' . substr($pasajero->usuarioId->usuario->apellido, 0, 1)) . '.',
+                        ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]);
+                    $content .= '</div>
+                </div>
+            </li>';
+        }
+    $content .= '</ul>';
+} else {
+    $content .= '<ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    Aún no hay pasajeros.
+                </div>
+            </div>
+        </li>
+    </ul>';
+}
+?>
+<?php
+    Modal::begin([
+        'header' => '<span style="font-size: 24px">Pasajeros</span>',
+        'id' => 'modalPasajeros',
+        'size' => 'modal-md',
+    ]);
+    echo "<div id='modalContent'>$content</div>";
+    Modal::end();
+?>
