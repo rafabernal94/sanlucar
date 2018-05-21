@@ -89,7 +89,7 @@ class UsuariosController extends Controller
             $usuarioId->save();
             $model->id = $usuarioId->id;
             $model->save();
-            $this->enviarEmailConfirmacion($model);
+            $this->enviarEmail($model);
             Yii::$app->session->setFlash('success', 'Se ha enviado un email a su correo electrónico para confirmar la cuenta.');
             return $this->redirect(['site/login']);
         }
@@ -97,30 +97,6 @@ class UsuariosController extends Controller
         return $this->render('registrar', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Envía un email de confirmación al usuario que se registra.
-     * @param  Usuarios $model El usuario al cuál se le envía el email
-     * @return bool            Devuelve true si se ha enviado correctamente,
-     *                         false en caso contrario
-     */
-    public function enviarEmailConfirmacion($model)
-    {
-        return Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['adminEmail'])
-            ->setTo($model->email)
-            ->setSubject('Email de validación de cuenta')
-            ->setHtmlBody(
-                'Te has registrado correctamente en <strong>SanLuCar</strong>.<br><br>' .
-                Html::a(
-                    'Click aquí para activar su cuenta',
-                    Url::to([
-                        'usuarios/validar',
-                        'token' => $model->token_val,
-                    ], true)
-                )
-            )->send();
     }
 
     /**
@@ -228,7 +204,7 @@ class UsuariosController extends Controller
                 $model = Usuarios::findOne(['email' => $email]);
                 $model->token_pass = $token;
                 if ($model->save()) {
-                    $this->enviarEmailRecuperar($model);
+                    $this->enviarEmail($model, true);
                     Yii::$app->session->setFlash(
                         'info',
                         'Recibirás un correo con instrucciones para restaurar tu contraseña.'
@@ -244,12 +220,50 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Envía un email de restauración de contraseña.
+     * Envía un email de confirmación al usuario que se registra.
      * @param  Usuarios $model El usuario al cuál se le envía el email
+     * @param mixed $recuperar True si el correo es de recuperación de pass
      * @return bool            Devuelve true si se ha enviado correctamente,
      *                         false en caso contrario
      */
-    public function enviarEmailRecuperar($model)
+    public function enviarEmail($model, $recuperar = false)
+    {
+        $asunto = 'Validación de cuenta';
+        $texto = 'Te has registrado correctamente en <strong>SanLuCar</strong>';
+        $enlace = Html::a(
+            'Click aquí para activar su cuenta',
+            Url::to([
+                'usuarios/validar',
+                'token' => $model->token_val,
+            ], true)
+        );
+        if ($recuperar) {
+            $asunto = 'Restauración de contraseña';
+            $texto = 'Has solicitado un cambio de contraseña';
+            $enlace = Html::a('Modificar contraseña', Url::to([
+                    'usuarios/restaurar-pass',
+                    'token' => $model->token_pass,
+                ], true));
+        }
+        $cuerpo = "¡Hola $model->nombre!<br>$texto.<br><br>$enlace";
+        return Yii::$app->mailer->compose('template', [
+            'usuario' => $model,
+            'cuerpo' => $cuerpo,
+        ])
+        ->setFrom(Yii::$app->params['adminEmail'])
+        ->setTo($model->email)
+        ->setSubject($asunto)
+        ->send();
+    }
+
+    /**
+     * Envía un email de restauración de contraseña.
+     * @param  Usuarios $model El usuario al cuál se le envía el email
+     * @param mixed $id
+     * @return bool            Devuelve true si se ha enviado correctamente,
+     *                         false en caso contrario
+     */
+    /*public function enviarEmailRecuperar($model)
     {
         return Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])
@@ -265,7 +279,7 @@ class UsuariosController extends Controller
                     ], true)
                 )
             )->send();
-    }
+    }*/
 
     /**
      * Finds the Usuarios model based on its primary key value.

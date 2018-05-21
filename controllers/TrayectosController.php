@@ -225,26 +225,32 @@ class TrayectosController extends Controller
      */
     public function enviarEmail($usuario, $trayecto, $elimina = false)
     {
-        $subject = 'Trayecto modificado';
+        $asunto = 'Trayecto modificado';
         $opcion = 'modificado';
         $enlace = Html::a(
             'Ver trayecto',
             Url::to(['trayectos/detalles', 'id' => $trayecto->id], true)
         );
         if ($elimina) {
-            $subject = 'Trayecto eliminado';
+            $asunto = 'Trayecto eliminado';
             $opcion = 'eliminado';
             $enlace = '';
         }
-        return Yii::$app->mailer->compose()
+        $origen = explode(',', $trayecto->origen)[0];
+        $destino = explode(',', $trayecto->destino)[0];
+        $fecha = Yii::$app->formatter->asDatetime($trayecto->fecha);
+        $cuerpo = "¡Hola $usuario->nombre!<br>
+            El siguiente trayecto ha sido $opcion.<br><br>
+            - Salida: $origen<br>- Destino: $destino<br>
+            - Fecha: $fecha<br><br>$enlace";
+        return Yii::$app->mailer->compose('template', [
+            'usuario' => $usuario,
+            'cuerpo' => $cuerpo,
+        ])
         ->setFrom(Yii::$app->params['adminEmail'])
         ->setTo($usuario->email)
-        ->setSubject($subject)
-        ->setHtmlBody(
-            '¡Hola ' . $usuario->nombre . '!<br>
-            Se ha ' . $opcion . ' un trayecto en el que participas.<br><br>' .
-            $enlace
-        )->send();
+        ->setSubject($asunto)
+        ->send();
     }
 
     /**
