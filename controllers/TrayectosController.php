@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Pasajeros;
 use app\models\Preferencias;
 use app\models\Trayectos;
+use app\models\TrayectosSearch;
 use app\models\Usuarios;
 use Yii;
 use yii\db\Exception;
@@ -55,6 +56,21 @@ class TrayectosController extends Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * Permite realizar búsquedas de trayectos por origen y destino.
+     * @return mixed
+     */
+    public function actionBuscar()
+    {
+        $searchModel = new TrayectosSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('buscar', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $trayectosActuales .= '<div class="panel-group">';
             foreach ($trayectosAct as $trayecto) {
                 $trayectosActuales .= $this->render('/trayectos/trayecto', [
-                    'trayecto' => $trayecto
+                    'model' => $trayecto
                 ]);
             }
         $trayectosActuales .= '</div>';
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $trayectosPasados .= '<div class="panel-group">';
             foreach ($trayectosPas as $trayecto) {
                 $trayectosPasados .= $this->render('/trayectos/trayecto', [
-                    'trayecto' => $trayecto
+                    'model' => $trayecto
                 ]);
             }
         $trayectosPasados .= '</div>';
