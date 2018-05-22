@@ -59,6 +59,11 @@ Icon::map($this);
         $foto = Yii::$app->user->identity->url_avatar;
         $items = [
             [
+                'label' => Icon::show('search') . ' Buscar trayecto',
+                'url' => ['trayectos/buscar'],
+                'encode' => false,
+            ],
+            [
                 'label' => Icon::show('plus-circle') . ' Publicar trayecto',
                 'url' => ['trayectos/publicar'],
                 'encode' => false,
