@@ -2,11 +2,18 @@
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
+use app\assets\PwsAsset;
+
 use yii\helpers\Html;
 
 
 $this->title = 'Regístrate';
 $this->params['breadcrumbs'][] = $this->title;
+
+PwsAsset::register($this);
+$this->registerJsFile('@web/js/pwstrength.js', [
+	'depends' => [\yii\web\JqueryAsset::className()]
+]);
 ?>
 <div class="usuarios-registrar">
     <div class="col-md-12">
