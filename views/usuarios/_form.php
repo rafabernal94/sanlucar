@@ -20,21 +20,34 @@ use yii\widgets\ActiveForm;
             ->label(false) ?>
         </div>
     </div>
+
     <?= $form->field($model, 'email', ['enableAjaxValidation' => true])
     ->textInput(['maxlength' => true, 'placeholder' => 'Correo electrónico'])
     ->label(false) ?>
 
-    <?= $form->field($model, 'password')
-    ->passwordInput(['maxlength' => true, 'placeholder' => 'Contraseña'])
-    ->label(false) ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'password')
+            ->passwordInput(['id' => 'password', 'maxlength' => true, 'placeholder' => 'Contraseña'])
+            ->label(false) ?>
+        </div>
+        <div class="col-md-6 mt-5">
+            <div id="pwd-container">
+                <div class="pwstrength_viewport_progress"></div>
+            </div>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'passwordRepeat')
-    ->passwordInput(['maxlength' => true, 'placeholder' => 'Confirmar contraseña'])
-    ->label(false) ?>
-
-    <div class="col-md-3 col-xs-6 pl-0">
-        <div class="form-group">
-            <?= Html::submitButton('Registrarse', ['class' => 'btn btn-success btn-block']) ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'passwordRepeat')
+            ->passwordInput(['maxlength' => true, 'placeholder' => 'Confirmar contraseña'])
+            ->label(false) ?>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <?= Html::submitButton('Registrarse', ['class' => 'btn btn-success btn-block']) ?>
+            </div>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

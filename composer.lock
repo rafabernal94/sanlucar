@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb5ef1e1f2c2535ae0e32ba55db1a24e",
+    "content-hash": "7df5dba5a3afce2dbcb470762bcf1459",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1304,6 +1304,52 @@
                 "yii2"
             ],
             "time": "2016-01-10T17:10:39+00:00"
+        },
+        {
+            "name": "npm-asset/bootstrap",
+            "version": "4.1.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.1.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/jquery",
+            "version": "3.3.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.3.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/pwstrength-bootstrap",
+            "version": "2.2.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/pwstrength-bootstrap/-/pwstrength-bootstrap-2.2.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/bootstrap": ">=2.0.0",
+                "npm-asset/jquery": ">=3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "(GPL-3.0 OR MIT)"
+            ]
         },
         {
             "name": "psr/http-message",
