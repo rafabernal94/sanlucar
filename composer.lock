@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7df5dba5a3afce2dbcb470762bcf1459",
+    "content-hash": "f269639e5bbe1a33ac9ad7313eee5ba1",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1317,6 +1317,20 @@
             "type": "npm-asset",
             "license": [
                 "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/bootstrap-colorselector",
+            "version": "0.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/bootstrap-colorselector/-/bootstrap-colorselector-0.1.0.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "ISC"
             ]
         },
         {

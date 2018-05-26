@@ -11,38 +11,9 @@ $this->title = 'Regístrate';
 $this->params['breadcrumbs'][] = $this->title;
 
 PwsAsset::register($this);
-$js = <<<EOT
-$(document).ready(function() {
-    "use strict";
-    i18next.init({
-        lng: 'es',
-        resources: {
-            es: {
-                translation: {
-                    "veryWeak": "Muy Débil",
-                    "weak": "Débil",
-                    "normal": "Normal",
-                    "medium": "Media",
-                    "strong": "Fuerte",
-                    "veryStrong": "Muy Fuerte",
-                }
-            }
-        }
-    }, function () {
-        var options = {};
-        options.ui = {
-            container: "#pwd-container",
-            showVerdictsInsideProgressBar: true,
-            viewports: {
-                progress: ".pwstrength_viewport_progress"
-            },
-            progressBarExtraCssClasses: "progress-bar-striped active"
-        };
-        $('#password').pwstrength(options);
-    });
-});
-EOT;
-$this->registerJs($js);
+$this->registerJsFile('@web/js/pwstrength.js', [
+	'depends' => [\yii\web\JqueryAsset::className()]
+]);
 ?>
 <div class="usuarios-registrar">
     <div class="col-md-12">

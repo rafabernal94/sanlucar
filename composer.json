@@ -30,7 +30,8 @@
         "kartik-v/yii2-tabs-x": "*",
         "kartik-v/yii2-icons": "@dev",
         "kartik-v/yii2-datecontrol": "@dev",
-        "npm-asset/pwstrength-bootstrap": "^2.2"
+        "npm-asset/pwstrength-bootstrap": "^2.2",
+        "npm-asset/bootstrap-colorselector": "^0.1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

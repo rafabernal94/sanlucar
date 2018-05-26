@@ -1,5 +1,7 @@
 <?php
 
+use app\assets\CSAsset;
+
 use app\helpers\Utiles;
 use yii\helpers\Html;
 
@@ -9,7 +11,8 @@ use yii\helpers\Html;
 $this->title = 'Perfil de ' . $model->nombre . ' ' . substr($model->apellido, 0, 1) . '.';
 $this->params['breadcrumbs'][] = ['label' => $this->title];
 
-$this->registerJsFile('@web/js/cambia-color.js', [
+CSAsset::register($this);
+$this->registerJsFile('@web/js/color-selector.js', [
 	'depends' => [\yii\web\JqueryAsset::className()]
 ]);
 ?>
