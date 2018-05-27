@@ -3,7 +3,12 @@
 use app\assets\CSAsset;
 
 use app\helpers\Utiles;
+use yii\helpers\Url;
 use yii\helpers\Html;
+
+use yii\bootstrap\Modal;
+
+use kartik\icons\Icon;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
@@ -15,6 +20,16 @@ CSAsset::register($this);
 $this->registerJsFile('@web/js/color-selector.js', [
 	'depends' => [\yii\web\JqueryAsset::className()]
 ]);
+$js = <<<EOT
+$(document).ready(function() {
+	$('#btnMensaje').on('click', function() {
+		$('#modalMensaje').modal('show')
+			.find('#modalContent')
+			.load($(this).attr('value'));
+	});
+});
+EOT;
+$this->registerJs($js);
 ?>
 <?= Utiles::modal('Darse de baja') ?>
 <div class="row">
@@ -94,25 +109,35 @@ $this->registerJsFile('@web/js/color-selector.js', [
 				</div>
 			</div>
   			<div class="panel-body">
-				<div class="col-md-10 col-xs-5 text-left">
+				<div class="col-md-8 col-xs-5 text-left">
 					<h4><strong><?= Html::encode($model->nombre .
 						' ' . substr($model->apellido, 0, 1)) ?>.</strong></h4>
 					<h5>Aún no tienes valoraciones</h5>
 				</div>
 				<div class="col-md-2 col-xs-7 text-right">
 					<?php if (Yii::$app->user->id === $model->id): ?>
-						<?= Html::a(
-							Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']) . ' Editar perfil',
+						<?= Html::a(Icon::show('edit') . ' Editar perfil',
 							['usuarios/modificar', 'option' => 'infopersonal'],
 							['class' => 'btn btn-primary btn-block']
 						); ?>
-						<?= Html::a(
-							Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove']) . ' Darse de baja',
+					<?php endif ?>
+				</div>
+				<div class="col-md-2">
+					<?php if (Yii::$app->user->id === $model->id): ?>
+						<?= Html::a(Icon::show('times-circle') . ' Darse de baja',
 							['usuarios/eliminar'],
 							[
 								'class' => 'btn btn-danger btn-block',
 								'data-confirm' => '¿Estás seguro que quieres eliminar tu cuenta?',
 								'data-method' => 'post',
+							]
+						); ?>
+					<?php else: ?>
+						<?= Html::button(Icon::show('envelope') . ' Enviar mensaje',
+							[
+								'value' => Url::to(['mensajes/crear', 'receptor' => $model->id]),
+								'id' => 'btnMensaje',
+								'class' => 'btn btn-success btn-block'
 							]
 						); ?>
 					<?php endif ?>
@@ -232,3 +257,12 @@ $this->registerJsFile('@web/js/color-selector.js', [
 		</div>
 	</div>
 </div>
+<?php
+    Modal::begin([
+        'header' => '<span style="font-size: 24px">Enviar mensaje</span>',
+        'id' => 'modalMensaje',
+        'size' => 'modal-md',
+    ]);
+    echo "<div id='modalContent'></div>";
+    Modal::end();
+?>

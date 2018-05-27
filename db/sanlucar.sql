@@ -89,6 +89,19 @@ CREATE TABLE solicitudes
   , aceptada    boolean   DEFAULT false
 );
 
+DROP TABLE IF EXISTS mensajes CASCADE;
+
+CREATE TABLE mensajes
+(
+    id          bigserial    PRIMARY KEY
+  , emisor_id   bigint       NOT NULL REFERENCES usuarios_id (id)
+                             ON DELETE NO ACTION ON UPDATE CASCADE
+  , receptor_id bigint       NOT NULL REFERENCES usuarios_id (id)
+                             ON DELETE NO ACTION ON UPDATE CASCADE
+  , mensaje     varchar(255) NOT NULL
+  , created_at  timestamp(0) NOT NULL DEFAULT localtimestamp
+);
+
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)
@@ -117,3 +130,7 @@ INSERT INTO coches (marca, modelo, matricula, usuario_id, plazas)
 INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
     VALUES (true, true, true, false, 1)
          , (true, false, true, false, 2);
+
+INSERT INTO mensajes (emisor_id, receptor_id, mensaje)
+    VALUES (1, 2, 'Hola Pepe. ¿Qué tal?')
+         , (2, 3, 'Hola Manolo. ¿Mañana conduces?');
