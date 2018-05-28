@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f269639e5bbe1a33ac9ad7313eee5ba1",
+    "content-hash": "4e3e828ab4f927b36a012a18c1207d7b",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1334,6 +1334,21 @@
             ]
         },
         {
+            "name": "npm-asset/counterup",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/counterup/-/counterup-1.0.2.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "npm-asset/jquery": ">=1.5",
+                "npm-asset/waypoints": ">=2.0"
+            },
+            "type": "npm-asset"
+        },
+        {
             "name": "npm-asset/jquery",
             "version": "3.3.1",
             "dist": {
@@ -1363,6 +1378,20 @@
             "type": "npm-asset",
             "license": [
                 "(GPL-3.0 OR MIT)"
+            ]
+        },
+        {
+            "name": "npm-asset/waypoints",
+            "version": "4.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/waypoints/-/waypoints-4.0.1.tgz",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
