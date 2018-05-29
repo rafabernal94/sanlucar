@@ -9,6 +9,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * SolicitudesController implements the CRUD actions for Solicitudes model.
@@ -36,25 +37,23 @@ class SolicitudesController extends Controller
      */
     public function actionCrear()
     {
-        $idTrayecto = Yii::$app->request->post('id-trayecto');
+        $idTrayecto = Yii::$app->request->post('idTrayecto');
         $model = new Solicitudes();
         $model->usuario_id = Yii::$app->user->id;
         $model->trayecto_id = $idTrayecto;
 
-        if ($model->save()) {
-            Yii::$app->session->setFlash('success', 'Plaza solicitada correctamente.');
-            return $this->redirect(['trayectos/detalles', 'id' => $idTrayecto]);
-        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $model->save();
     }
 
     /**
      * Acepta una solicitud de unión pendiente.
-     * @param int $id
      * @return mixed
      */
-    public function actionAceptar($id)
+    public function actionAceptar()
     {
-        $model = $this->findModel($id);
+        $idSolicitud = Yii::$app->request->post('idSolicitud');
+        $model = $this->findModel($idSolicitud);
         $model->aceptada = true;
 
         if ($model->save()) {
@@ -64,9 +63,18 @@ class SolicitudesController extends Controller
             if ($pasajero->save()) {
                 $trayecto = Trayectos::findOne($model->trayecto_id);
                 $trayecto->plazas -= 1;
-                if ($trayecto->save()) {
-                    return $this->redirect(['trayectos/detalles', 'id' => $trayecto->id]);
-                }
+                $trayecto->save();
+
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                $resultado = [
+                    $this->renderAjax('/trayectos/lista_pasajeros', [
+                        'trayecto' => $trayecto,
+                    ]),
+                    $this->renderAjax('/trayectos/lista_solicitudes', [
+                        'trayecto' => $trayecto,
+                    ]),
+                ];
+                return $resultado;
             }
         }
     }
