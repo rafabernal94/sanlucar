@@ -26,6 +26,7 @@ class AppAsset extends AssetBundle
         'css/sidebar.css',
     ];
     public $js = [
+        'js/main.js',
         'js/jquery.cookie.js',
     ];
     public $depends = [

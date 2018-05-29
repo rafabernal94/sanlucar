@@ -12,6 +12,7 @@ use app\models\Solicitudes;
 use app\helpers\Utiles;
 use yii\web\View;
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 
 use yii\bootstrap\Modal;
@@ -33,6 +34,35 @@ $(function() {
     $('#modalButton').on('click', function() {
         $('#modalMapa').modal('show')
             .find('#modalContent');
+    });
+});
+EOT;
+$this->registerJs($js);
+$url = Url::to(['solicitudes/crear']);
+$url2 = Url::to(['solicitudes/aceptar']);
+$js = <<<EOT
+$(document).ready(function() {
+    $('#btnSolicitar').on('click', function(e) {
+        e.preventDefault();
+        enviarAjax('$url', 'POST',
+            {idTrayecto: $(this).siblings('#id-trayecto').val()},
+            function(data) {
+                if (data) {
+                    var btn = $('<button class="btn btn-default" disabled>Solicitud de plaza enviada</button>');
+                    $(this).replaceWith(btn);
+                }
+            }.bind(this)
+        );
+    });
+    $('body').on('click', '.btnAceptarSolicitud', function(e) {
+        e.preventDefault();
+        enviarAjax('$url2', 'POST',
+            {idSolicitud: $(this).siblings('#id-solicitud').val()},
+            function(data) {
+                $('#listaPasajeros').closest('.panel-default').html(data[0]);
+                $('#listaSolicitudes').replaceWith(data[1]);
+            }
+        );
     });
 });
 EOT;
@@ -240,63 +270,9 @@ $this->registerJs($js);
     </div>
     <div class="col-md-4">
         <div class="panel panel-default">
-  			<div class="panel-heading">
-                <h3 class="panel-title text-center">
-                    <strong>
-                        Pasajeros -
-                        <?= Html::encode($model->plazas) ?> plazas disponibles
-                    </strong>
-                </h3>
-            </div>
-            <?php if (count($model->pasajeros)): ?>
-                <ul class="list-group">
-                    <?php foreach ($model->pasajeros as $pasajero): ?>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-xs-3 col-md-2">
-                                    <?= Html::img(
-                                        $pasajero->usuarioId->usuario->url_avatar, [
-                                            'class' => 'img-circle img-responsive',
-                                            'style' => 'width: 30px; height: 30px',
-                                        ]) ?>
-                                </div>
-                                <div class="col-xs-9 col-md-4 pl-0 pt-5">
-                                    <?= Html::a(Html::encode($pasajero->usuarioId->usuario->nombre
-                                    . ' ' . substr($pasajero->usuarioId->usuario->apellido, 0, 1)) . '.',
-                                    ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]) ?>
-                                </div>
-                                <?php if ($pasajero->usuarioId->usuario->id === Yii::$app->user->id): ?>
-                                    <div class="col-md-6 text-right pt-5">
-                                        <?= Html::a(
-                                            'Retirarse',
-                                            [
-                                                'pasajeros/eliminar',
-                                                'usuarioId' => $pasajero->usuarioId->usuario->id,
-                                                    'trayectoId' => $model->id,
-                                            ],
-                                            [
-                                                'data-confirm' => '¿Estás seguro que quieres retirarte del trayecto? Perderás el importe pagado.',
-                                                'data-method' => 'post',
-                                                'class' => 'btn btn-xs btn-danger'
-                                            ]
-                                        ) ?>
-                                    </div>
-                                <?php endif ?>
-                            </div>
-                        </li>
-                    <?php endforeach ?>
-                </ul>
-            <?php else: ?>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-xs-12 col-md-12">
-                                Aún no hay pasajeros.
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            <?php endif ?>
+            <?= $this->render('lista_pasajeros', [
+                'trayecto' => $model
+            ]) ?>
             <?php $userActual = Usuarios::findOne(Yii::$app->user->id); ?>
             <?php $solicitud = Solicitudes::findOne([
                 'usuario_id' => Yii::$app->user->id,
@@ -311,10 +287,12 @@ $this->registerJs($js);
                         ['solicitudes/crear'],
                         'post'
                     ) ?>
-                    <?= Html::hiddenInput('id-trayecto', $model->id) ?>
+                    <?= Html::hiddenInput('id-trayecto', $model->id, [
+                        'id' => 'id-trayecto'
+                        ]) ?>
                     <?= Html::submitButton(
                         'Solicitar plaza',
-                        ['class' => 'btn btn-success']
+                        ['id' => 'btnSolicitar', 'class' => 'btn btn-success']
                     ) ?>
                     <?= Html::endForm() ?>
                 </div>
@@ -338,52 +316,9 @@ $this->registerJs($js);
       			<div class="panel-heading">
                     <h3 class="panel-title">Solicitudes de unión</h3>
                 </div>
-                <?php $solicitudesSinAceptar = $model->getSolicitudes()
-                    ->where(['aceptada' => false])
-                    ->all(); ?>
-                <?php if (count($solicitudesSinAceptar)): ?>
-                    <ul class="list-group">
-                        <?php foreach ($solicitudesSinAceptar as $solicitud): ?>
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-xs-3 col-md-2">
-                                        <?= Html::img(
-                                            $solicitud->usuarioId->usuario->url_avatar, [
-                                                'class' => 'img-circle img-responsive',
-                                                'style' => 'width: 30px; height: 30px',
-                                            ]) ?>
-                                    </div>
-                                    <div class="col-xs-3 col-md-4 pl-0" style="padding-top: 4px">
-                                        <?= Html::a(Html::encode($solicitud->usuarioId->usuario->nombre
-                                        . ' ' . substr($solicitud->usuarioId->usuario->apellido, 0, 1)) . '.',
-                                        ['usuarios/perfil', 'id' => $solicitud->usuarioId->usuario->id]) ?>
-                                    </div>
-                                    <div class="col-xs-6 col-md-6 pt-5 text-right">
-                                        <?= Html::beginForm(
-                                            ['solicitudes/aceptar', 'id' => $solicitud->id],
-                                            'post'
-                                        ) ?>
-                                        <?= Html::submitButton(
-                                            'Aceptar solicitud',
-                                            ['class' => 'btn btn-xs btn-success']
-                                        ) ?>
-                                        <?= Html::endForm() ?>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endforeach ?>
-                    </ul>
-                <?php else: ?>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-xs-12 col-md-12">
-                                    No tienes solicitudes pendientes.
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                <?php endif ?>
+                <?= $this->render('lista_solicitudes', [
+                    'trayecto' => $model
+                ]) ?>
     		</div>
         </div>
     <?php endif ?>
