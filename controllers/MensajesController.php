@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Conversaciones;
 use app\models\Mensajes;
 use app\models\Usuarios;
 use Yii;
@@ -37,15 +38,30 @@ class MensajesController extends Controller
      */
     public function actionCrear($receptor = null)
     {
+        $idAct = Yii::$app->user->id;
         $model = new Mensajes();
 
         if ($receptor !== null) {
             if (($usuario = Usuarios::findOne($receptor)) === null) {
                 throw new NotFoundHttpException('El usuario receptor no existe.');
             }
-            $model->receptor_id = $usuario->id;
+            $conversacion = Conversaciones::find()
+                ->where(['usuario1_id' => $idAct])->andWhere(['usuario2_id' => $receptor])->one();
+
+            if ($conversacion === null) {
+                $conversacion = Conversaciones::find()
+                    ->where(['usuario1_id' => $receptor])->andWhere(['usuario2_id' => $idAct])->one();
+                if ($conversacion === null) {
+                    $conversacion = new Conversaciones([
+                            'usuario1_id' => $idAct,
+                            'usuario2_id' => $receptor,
+                        ]);
+                    $conversacion->save();
+                }
+            }
         }
-        $model->emisor_id = Yii::$app->user->id;
+        $model->usuario_id = $idAct;
+        $model->conversacion_id = $conversacion->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Mensaje enviado correctamente.');
