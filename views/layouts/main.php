@@ -69,9 +69,21 @@ Icon::map($this);
                 'encode' => false,
             ],
             [
+                'label' => Icon::show('comments', ['class' => 'fa-2x']),
+                'url' => ['conversaciones/buzon'],
+                'linkOptions' => ['class' => 'pt-10 pb-5 hidden-xs', 'title' => 'Mensajes'],
+                'encode' => false,
+            ],
+            [
+                'label' => Icon::show('comments') . ' Mensajes',
+                'url' => ['conversaciones/buzon'],
+                'linkOptions' => ['class' => 'visible-xs'],
+                'encode' => false,
+            ],
+            [
                 'label' => Html::img($foto,
                     [
-                        'class' => 'img-thumbnail',
+                        'class' => 'img-circle',
                         'style' => 'height: 40px; width: 40px; margin: -14px 0px -14px 0px',
                     ]
                 ),

@@ -78,4 +78,28 @@ class UsuariosId extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Solicitudes::className(), ['usuario_id' => 'id'])->inverseOf('usuarioId');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMensajes()
+    {
+        return $this->hasMany(Mensajes::className(), ['usuario_id' => 'id'])->inverseOf('usuarioId');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getConversaciones()
+    {
+        return $this->hasMany(Conversaciones::className(), ['id' => 'emisor_id'])->inverseOf('emisor');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getConversaciones0()
+    {
+        return $this->hasMany(Conversaciones::className(), ['id' => 'receptor_id'])->inverseOf('receptor');
+    }
 }

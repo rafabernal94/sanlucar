@@ -2,19 +2,16 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "mensajes".
  *
  * @property int $id
- * @property int $emisor_id
- * @property int $receptor_id
+ * @property int $usuario_id
+ * @property int $conversacion_id
  * @property string $mensaje
  * @property string $created_at
  *
- * @property UsuariosId $emisor
- * @property UsuariosId $receptor
+ * @property UsuariosId $usuario
  */
 class Mensajes extends \yii\db\ActiveRecord
 {
@@ -32,13 +29,12 @@ class Mensajes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['emisor_id', 'receptor_id', 'mensaje'], 'required'],
-            [['emisor_id', 'receptor_id'], 'default', 'value' => null],
-            [['emisor_id', 'receptor_id'], 'integer'],
+            [['usuario_id', 'conversacion_id', 'mensaje'], 'required'],
+            [['usuario_id', 'conversacion_id'], 'default', 'value' => null],
+            [['usuario_id', 'conversacion_id'], 'integer'],
             [['created_at'], 'safe'],
             [['mensaje'], 'string', 'max' => 255],
-            [['emisor_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['emisor_id' => 'id']],
-            [['receptor_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['receptor_id' => 'id']],
+            [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['usuario_id' => 'id']],
         ];
     }
 
@@ -49,8 +45,8 @@ class Mensajes extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'emisor_id' => 'Emisor ID',
-            'receptor_id' => 'Receptor ID',
+            'usuario_id' => 'Usuario ID',
+            'conversacion_id' => 'Conversacion ID',
             'mensaje' => 'Mensaje',
             'created_at' => 'Created At',
         ];
@@ -59,16 +55,8 @@ class Mensajes extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEmisor()
+    public function getUsuarioId()
     {
-        return $this->hasOne(UsuariosId::className(), ['id' => 'emisor_id'])->inverseOf('mensajes');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReceptor()
-    {
-        return $this->hasOne(UsuariosId::className(), ['id' => 'receptor_id'])->inverseOf('mensajes0');
+        return $this->hasOne(UsuariosId::className(), ['id' => 'usuario_id'])->inverseOf('mensajes');
     }
 }

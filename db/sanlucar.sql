@@ -93,13 +93,24 @@ DROP TABLE IF EXISTS mensajes CASCADE;
 
 CREATE TABLE mensajes
 (
-    id          bigserial    PRIMARY KEY
-  , emisor_id   bigint       NOT NULL REFERENCES usuarios_id (id)
-                             ON DELETE NO ACTION ON UPDATE CASCADE
-  , receptor_id bigint       NOT NULL REFERENCES usuarios_id (id)
-                             ON DELETE NO ACTION ON UPDATE CASCADE
-  , mensaje     varchar(255) NOT NULL
-  , created_at  timestamp(0) NOT NULL DEFAULT localtimestamp
+    id              bigserial    PRIMARY KEY
+  , usuario_id      bigint       NOT NULL REFERENCES usuarios_id (id)
+                                 ON DELETE NO ACTION ON UPDATE CASCADE
+  , conversacion_id bigint       NOT NULL REFERENCES conversaciones (id)
+                                 ON DELETE NO ACTION ON UPDATE CASCADE
+  , mensaje         varchar(255) NOT NULL
+  , created_at      timestamp(0) NOT NULL DEFAULT localtimestamp
+);
+
+DROP TABLE IF EXISTS conversaciones CASCADE;
+
+CREATE TABLE conversaciones
+(
+    id          bigserial PRIMARY KEY
+  , usuario1_id bigint    NOT NULL REFERENCES usuarios_id (id)
+                          ON DELETE NO ACTION ON UPDATE CASCADE
+  , usuario2_id bigint    NOT NULL REFERENCES usuarios_id (id)
+                          ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
@@ -107,13 +118,13 @@ INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)
     VALUES (1, 'rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
                 'Me encanta conducir por Sanlúcar.',
-                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 1)
+                'https://www.dropbox.com/s/3u97mkj85dtn9c5/1.jpg?dl=1', 1)
          , (2, 'pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
                 'Me gusta escuchar música mientras conduzco.',
-                'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 2)
+                'https://www.dropbox.com/s/oxpwq4vj05rtd2g/2.jpg?dl=1', 2)
          , (3, 'manolo@manolo.com', crypt('manolo123', gen_salt('bf', 13)), 'Manolo', 'Pérez',
                'Me encanta la feria.',
-               'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1', 3);
+               'https://www.dropbox.com/s/llzxcj6wd1eso1q/3.jpg?dl=1', 3);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
     VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2)
@@ -131,6 +142,10 @@ INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
     VALUES (true, true, true, false, 1)
          , (true, false, true, false, 2);
 
-INSERT INTO mensajes (emisor_id, receptor_id, mensaje)
-    VALUES (1, 2, 'Hola Pepe. ¿Qué tal?')
-         , (2, 3, 'Hola Manolo. ¿Mañana conduces?');
+INSERT INTO mensajes (usuario_id, conversacion_id, mensaje)
+    VALUES (1, 1, 'Hola Pepe. ¿Qué tal?')
+         , (2, 1, 'Hola Rafa. Estoy muy bien.')
+         , (2, 2, 'Hola Manolo. ¿Mañana conduces?');
+
+INSERT INTO conversaciones (usuario1_id, usuario2_id)
+    VALUES (1, 2), (2, 3);
