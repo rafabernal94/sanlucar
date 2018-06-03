@@ -62,7 +62,7 @@ $this->registerCss($css);
                 </div>
             </div>
             <div class="col-md-6 mb-10">
-                <video width="100%" src="<?= Url::to('@web/videos/spot.mp4') ?>" autoplay loop></video>
+                <video width="100%" src="<?= Url::to('@web/videos/spot.mp4') ?>" autoplay loop muted></video>
             </div>
             <div class="derecha object col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
