@@ -115,10 +115,11 @@ class UsuariosController extends Controller
      * Updates an existing Usuarios model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param mixed $option
+     * @param null|mixed $layout
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionModificar($option)
+    public function actionModificar($option, $layout = null)
     {
         $model = Yii::$app->user->identity;
         $model->scenario = Usuarios::ESCENARIO_UPDATE;
@@ -141,6 +142,13 @@ class UsuariosController extends Controller
                     return $this->redirect(['modificar', 'option' => $option]);
                 }
             }
+        }
+
+        if ($layout !== null) {
+            $this->layout = $layout;
+            return $this->render('foto_ventana', [
+                'model' => $model,
+            ]);
         }
 
         return $this->render('modificar', [

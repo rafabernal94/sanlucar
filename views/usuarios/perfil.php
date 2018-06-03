@@ -27,9 +27,24 @@ $(document).ready(function() {
 			.find('#modalContent')
 			.load($(this).attr('value'));
 	});
+	$('.boton').on('click', function(e) {
+		e.preventDefault();
+		abrirVentana($(this).attr('href'), 'Cambiar foto', 500, 600);
+	});
 });
 EOT;
 $this->registerJs($js);
+$css = <<<'CSS'
+.boton {
+	position: absolute;
+	bottom: 30px;
+	left: 50px;
+}
+.oculto { display: none; }
+#avatar:hover + .boton { display: block; }
+.boton:hover { display: block; }
+CSS;
+$this->registerCss($css);
 ?>
 <?= Utiles::modal('Darse de baja') ?>
 <div class="row">
@@ -78,7 +93,7 @@ $this->registerJs($js);
 							</button>
 						<?php endif ?>
 					</div>
-					<div class="col-md-7 text-left hidden-xs">
+					<div id="prueba" class="col-md-7 text-left hidden-xs hidden-sm">
 						<?php
 						if ($model->url_avatar !== null) {
 							$fotoUrl = $model->url_avatar;
@@ -88,11 +103,21 @@ $this->registerJs($js);
 						?>
 						<?= Html::img(
 							$fotoUrl, [
+								'id' => 'avatar',
 								'class' => 'img-circle',
-								'style' => 'height: 172px; width: 172px',
+								'style' => 'width: 172px; height: 172px;',
 							]) ?>
+						<?php if (Yii::$app->user->id === $model->id): ?>
+							<?= Html::a('Cambiar foto',
+							[
+								'usuarios/modificar', 'option' => 'foto',
+								'layout' => 'ventana_avatar'
+							],
+							['class' => 'btn btn-default boton oculto']
+							) ?>
+						<?php endif ?>
 					</div>
-					<div class="col-xs-8 visible-xs">
+					<div class="col-xs-8 visible-xs visible-sm">
 						<?php
 						if ($model->url_avatar !== null) {
 							$fotoUrl = $model->url_avatar;
@@ -103,7 +128,7 @@ $this->registerJs($js);
 						<?= Html::img(
 							$fotoUrl, [
 								'class' => 'img-circle',
-								'style' => 'height: 172px; width: 172px',
+								'style' => 'width: 172px; height: 172px;',
 							]) ?>
 					</div>
 				</div>
@@ -114,7 +139,7 @@ $this->registerJs($js);
 						' ' . substr($model->apellido, 0, 1)) ?>.</strong></h4>
 					<h5>Aún no tienes valoraciones</h5>
 				</div>
-				<div class="col-md-2 col-xs-7 text-right">
+				<div class="col-md-2 col-xs-7 mb-5">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('edit') . ' Editar perfil',
 							['usuarios/modificar', 'option' => 'infopersonal'],
@@ -122,7 +147,7 @@ $this->registerJs($js);
 						); ?>
 					<?php endif ?>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-2 col-xs-7">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('times-circle') . ' Darse de baja',
 							['usuarios/eliminar'],
