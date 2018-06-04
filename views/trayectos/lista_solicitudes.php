@@ -11,6 +11,7 @@
     <?php foreach ($solicitudesSinAceptar as $solicitud): ?>
         <?= $this->render('solicitud', [
             'solicitud' => $solicitud,
+            'model' => $trayecto
         ]) ?>
     <?php endforeach ?>
 <?php else: ?>

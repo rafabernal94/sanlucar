@@ -61,6 +61,31 @@ class Trayectos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Comprueba si el trayecto está completo.
+     * @return bool True si el trayecto está completo, false si no lo está.
+     */
+    public function estaCompleto()
+    {
+        if ($this->plazas == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba si el trayecto está completo.
+     * @return bool True si el trayecto está completo, false si no lo está.
+     */
+    public function haFinalizado()
+    {
+        $now = date('Y-m-d H:i');
+        if ($now >= $this->fecha) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getConductor()

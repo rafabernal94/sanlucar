@@ -8,15 +8,11 @@
 use app\models\Coches;
 use app\models\Usuarios;
 use app\models\Solicitudes;
-
 use app\helpers\Utiles;
 use yii\web\View;
-
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 use yii\bootstrap\Modal;
-
 use kartik\icons\Icon;
 
 $this->title = 'Detalles';
@@ -97,24 +93,26 @@ $this->registerJs($js);
                             ) ?> a las <strong><?= date('H:i', $hora) ?></strong>
 					</div>
                     <?php if (Yii::$app->user->id === $conductor->id): ?>
-    					<div class="col-md-6 col-xs-12 text-right">
-                            <?= Html::a(
-                                'Editar el trayecto', [
-                                    'trayectos/modificar', 'id' => $model->id
-                                ], [
-                                    'class' => 'btn btn-primary',
-                                ]
-                            ) ?>
-                            <?= Html::a(
-                                'Eliminar',
-                                ['trayectos/eliminar', 'id' => $model->id],
-                                [
-                                    'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
-                                    'data-method' => 'post',
-                                    'class' => 'btn btn-danger'
-                                ]
-                            ) ?>
-    					</div>
+                        <?php if (!$model->haFinalizado()): ?>
+        					<div class="col-md-6 col-xs-12 text-right">
+                                <?= Html::a(
+                                    'Editar el trayecto', [
+                                        'trayectos/modificar', 'id' => $model->id
+                                    ], [
+                                        'class' => 'btn btn-primary',
+                                    ]
+                                ) ?>
+                                <?= Html::a(
+                                    'Eliminar',
+                                    ['trayectos/eliminar', 'id' => $model->id],
+                                    [
+                                        'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
+                                        'data-method' => 'post',
+                                        'class' => 'btn btn-danger'
+                                    ]
+                                ) ?>
+        					</div>
+                        <?php endif ?>
                     <?php endif ?>
 				</div>
 			</li>
@@ -218,24 +216,22 @@ $this->registerJs($js);
                                 <?php
                                 $img = '@web/images/';
                                 $pref->musica ? $img .= 'check.svg' : $img .= 'prohibited.svg';
+                                $array = [
+                                    'class' => 'img-circle img-responsive',
+                                    'style' => 'width: 20px; height: 28px',
+                                ];
                                 ?>
                                 <div class="col-md-6 col-xs-6" style="display: flex">
-                                    <?= Html::img($img, [
-                                            'class' => 'img-circle img-responsive',
-                                            'style' => 'width: 28px; height: 28px',
-                                    ]) ?>
-                                    <span class="pt-5">Música</span>
+                                    <?= Html::img($img, $array) ?>
+                                    <span class="pt-5 pl-5">Música</span>
                                 </div>
                                 <?php
                                 $img = '@web/images/';
                                 $pref->ninos ? $img .= 'check.svg' : $img .= 'prohibited.svg';
                                 ?>
                                 <div class="col-md-6 col-xs-6" style="display: flex">
-                                    <?= Html::img($img, [
-                                            'class' => 'img-circle img-responsive',
-                                            'style' => 'width: 28px; height: 28px',
-                                    ]) ?>
-                                    <span class="pt-5">Niños</span>
+                                    <?= Html::img($img, $array) ?>
+                                    <span class="pt-5 pl-5">Niños</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -244,22 +240,16 @@ $this->registerJs($js);
                                 $pref->mascotas ? $img .= 'check.svg' : $img .= 'prohibited.svg';
                                 ?>
                                 <div class="col-md-6 col-xs-6" style="display: flex">
-                                    <?= Html::img($img, [
-                                            'class' => 'img-circle img-responsive',
-                                            'style' => 'width: 28px; height: 28px',
-                                    ]) ?>
-                                    <span class="pt-5">Mascotas</span>
+                                    <?= Html::img($img, $array) ?>
+                                    <span class="pt-5 pl-5">Mascotas</span>
                                 </div>
                                 <?php
                                 $img = '@web/images/';
                                 $pref->fumar ? $img .= 'check.svg' : $img .= 'prohibited.svg';
                                 ?>
                                 <div class="col-md-6 col-xs-6" style="display: flex">
-                                    <?= Html::img($img, [
-                                            'class' => 'img-circle img-responsive',
-                                            'style' => 'width: 28px; height: 28px',
-                                    ]) ?>
-                                    <span class="pt-5">Fumar</span>
+                                    <?= Html::img($img, $array) ?>
+                                    <span class="pt-5 pl-5">Fumar</span>
                                 </div>
                             </div>
     					</div>
@@ -279,9 +269,8 @@ $this->registerJs($js);
                 'trayecto_id' => $model->id]
             ); ?>
             <?php if (Yii::$app->user->id !== $conductor->id
-                    && !$userActual->esPasajero($model)
-                    && $solicitud === null
-                    && $model->plazas >= 1): ?>
+                    && !$userActual->esPasajero($model) && $solicitud === null
+                    && $model->plazas >= 1 && !$model->haFinalizado()): ?>
                 <div class="panel-footer text-center">
                     <?= Html::beginForm(
                         ['solicitudes/crear'],

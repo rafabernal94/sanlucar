@@ -7,8 +7,14 @@ use yii\helpers\Html;
 <div class="panel-heading">
     <h3 class="panel-title text-center">
         <strong>
-            Pasajeros -
-            <?= Html::encode($trayecto->plazas) ?> plazas disponibles
+            <?php $text = 'Pasajeros'; ?>
+            <?php
+            if (!$trayecto->haFinalizado()) {
+                if ($trayecto->estaCompleto()) $text .= ' (Trayecto completo)';
+                else $text .= ' (' . $trayecto->plazas . ' plaza/s disponible/s)';
+            }
+            ?>
+            <?= Html::encode($text) ?>
         </strong>
     </h3>
 </div>
@@ -17,6 +23,7 @@ use yii\helpers\Html;
     <?php foreach ($trayecto->pasajeros as $pasajero): ?>
         <?= $this->render('pasajero', [
             'pasajero' => $pasajero,
+            'model' => $trayecto
         ]) ?>
     <?php endforeach ?>
 <?php else: ?>

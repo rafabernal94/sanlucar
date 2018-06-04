@@ -1,13 +1,10 @@
 <?php
 
 use yii\web\View;
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-use kartik\datetime\DateTimePicker;
-
 use kartik\touchspin\TouchSpin;
+use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Trayectos */
@@ -54,20 +51,22 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
                     </div>
                     <div class="panel-body">
                         <?= $form->field($model, 'fecha')
-                            ->widget(DateTimePicker::classname(), [
-                                'layout' => '{picker}{input}',
-
-                            	'options' => [
-                                    'placeholder' => 'Introduce la fecha',
-                                    'readonly' => true
-                                ],
-                            	'pluginOptions' => [
-                            		'language' => 'es',
-                            		'autoclose' => true,
-                                    'weekStart' => 1,
-                                    'startDate' => date('d-m-Y H:i'),
-                                    'format' => 'dd-mm-yyyy H:i'
-                            	],
+                            ->widget(DateControl::classname(), [
+                                'type' => DateControl::FORMAT_DATETIME,
+                                'displayFormat' => 'dd/MM/yyyy H:i',
+                                'widgetOptions' => [
+                                    'layout' => '{picker}{input}',
+                                    'options' => [
+                                        'placeholder' => 'Introduce la fecha',
+                                        'readonly' => true,
+                                    ],
+                                    'pluginOptions' => [
+                                        'language' => 'es',
+                                        'weekStart' => 1,
+                                        'autoclose' => true,
+                                        'startDate' => date('d-m-Y H:i'),
+                                    ]
+                                ]
                             ])->label(false) ?>
                     </div>
                 </div>

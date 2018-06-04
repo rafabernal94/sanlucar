@@ -113,18 +113,21 @@ CREATE TABLE conversaciones
                           ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT);
+INSERT INTO usuarios_id (id) VALUES (DEFAULT), (DEFAULT), (DEFAULT), (DEFAULT);
 
 INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avatar, coche_fav)
     VALUES (1, 'rafa@rafa.com', crypt('rafa123', gen_salt('bf', 13)), 'Rafael', 'Bernal',
                 'Me encanta conducir por Sanlúcar.',
-                'https://www.dropbox.com/s/3u97mkj85dtn9c5/1.jpg?dl=1', 1)
+                'https://www.dropbox.com/s/v6070v3zdo3m93b/rafa.jpg?dl=1', 1)
          , (2, 'pepe@pepe.com', crypt('pepe123', gen_salt('bf', 13)), 'Pepe', 'Romero',
                 'Me gusta escuchar música mientras conduzco.',
-                'https://www.dropbox.com/s/oxpwq4vj05rtd2g/2.jpg?dl=1', 2)
-         , (3, 'manolo@manolo.com', crypt('manolo123', gen_salt('bf', 13)), 'Manolo', 'Pérez',
+                'https://www.dropbox.com/s/xklx7c5mnpt2kd0/pepe.jpg?dl=1', 2)
+         , (3, 'manolo@manolo.com', crypt('manolo123', gen_salt('bf', 13)), 'Manuel', 'Pérez',
                'Me encanta la feria.',
-               'https://www.dropbox.com/s/llzxcj6wd1eso1q/3.jpg?dl=1', 3);
+               'https://www.dropbox.com/s/qva1onfjw87szmo/manuel.jpg?dl=1', 3)
+         , (4, 'david@david.com', crypt('david123', gen_salt('bf', 13)), 'David', 'Ruiz',
+               'Me gusta mucho viajar.',
+               'https://www.dropbox.com/s/v504eg93v0dpjqd/david.jpg?dl=1', 3);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
     VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2)

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 use yii\bootstrap\Modal;
 
+/* @var $model app\models\Trayectos */
+$model->haFinalizado();
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
 $('.btn-default').on('click', function(e) {
@@ -63,36 +65,40 @@ $this->registerJs($js);
                 . Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
-                <div class="col-xs-1 col-md-1">
-                    <?php
-                    $array = [
-                        'id' => "btnMas-$model->id",
-                        'class' => 'btn btn-xs btn-default',
-                    ];
-                    if ($model->plazas == 4) {
-                        $array = array_merge($array, ['disabled' => 'disabled']);
-                    }
-                    ?>
-                    <?= Html::beginForm(
-                        ['trayectos/modificar-plazas-ajax'],
-                        'post'
-                    ) ?>
-                    <?= Html::hiddenInput('id',
-                        $model->id,
-                        ['id' => 'id-trayecto']
-                    ) ?>
-                    <?= Html::submitButton(
-                        "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>",
-                        $array
-                    ) ?>
-                    <?= Html::endForm() ?>
+                <?php if (!$model->haFinalizado()): ?>
+                    <div class="col-xs-1 col-md-1">
+                        <?php
+                        $array = [
+                            'id' => "btnMas-$model->id",
+                            'class' => 'btn btn-xs btn-default',
+                        ];
+                        if ($model->plazas == 4) {
+                            $array = array_merge($array, ['disabled' => 'disabled']);
+                        }
+                        ?>
+                        <?= Html::beginForm(
+                            ['trayectos/modificar-plazas-ajax'],
+                            'post'
+                        ) ?>
+                        <?= Html::hiddenInput('id',
+                            $model->id,
+                            ['id' => 'id-trayecto']
+                        ) ?>
+                        <?= Html::submitButton(
+                            "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>",
+                            $array
+                        ) ?>
+                        <?= Html::endForm() ?>
+                    </div>
+                <?php endif ?>
+            <?php endif ?>
+            <?php if (!$model->haFinalizado()): ?>
+                <div class="col-xs-4 col-md-3">
+                    <span id="plazas-<?= $model->id ?>">
+                        <?= Html::encode($model->plazas) . ' plazas disponibles' ?>
+                    </span>
                 </div>
             <?php endif ?>
-            <div class="col-xs-4 col-md-3">
-                <span id="plazas-<?= $model->id ?>">
-                    <?= Html::encode($model->plazas) . ' plazas disponibles' ?>
-                </span>
-            </div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-md-8">
@@ -101,30 +107,32 @@ $this->registerJs($js);
                 . Html::encode(date('H:i', $hora)) ?>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
-                <div class="col-xs-1 col-md-1">
-                    <?php
-                    $array = [
-                        'id' => "btnMenos-$model->id",
-                        'class' => 'btn btn-xs btn-default',
-                    ];
-                    if ($model->plazas == 1) {
-                        $array = array_merge($array, ['disabled' => 'disabled']);
-                    }
-                    ?>
-                    <?= Html::beginForm(
-                        ['trayectos/modificar-plazas-ajax'],
-                        'post'
-                    ) ?>
-                    <?= Html::hiddenInput('id',
-                        $model->id,
-                        ['id' => 'id-trayecto']
-                    ) ?>
-                    <?= Html::submitButton(
-                        "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>",
-                        $array
-                    ) ?>
-                    <?= Html::endForm() ?>
-                </div>
+                <?php if (!$model->haFinalizado()): ?>
+                    <div class="col-xs-1 col-md-1">
+                        <?php
+                        $array = [
+                            'id' => "btnMenos-$model->id",
+                            'class' => 'btn btn-xs btn-default',
+                        ];
+                        if ($model->plazas == 1) {
+                            $array = array_merge($array, ['disabled' => 'disabled']);
+                        }
+                        ?>
+                        <?= Html::beginForm(
+                            ['trayectos/modificar-plazas-ajax'],
+                            'post'
+                        ) ?>
+                        <?= Html::hiddenInput('id',
+                            $model->id,
+                            ['id' => 'id-trayecto']
+                        ) ?>
+                        <?= Html::submitButton(
+                            "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>",
+                            $array
+                        ) ?>
+                        <?= Html::endForm() ?>
+                    </div>
+                <?php endif ?>
             <?php endif ?>
         </div>
     </div>
@@ -147,23 +155,25 @@ $this->registerJs($js);
                 ) ?>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
-                <div class="col-xs-3 col-md-3">
-                    <?= Html::a(Html::tag(
-                        'span', '', ['class' => 'glyphicon glyphicon-pencil'])
-                        . ' Modificar', ['trayectos/modificar', 'id' => $model->id]
-                    ) ?>
-                </div>
-                <div class="col-xs-3 col-md-3">
-                    <?= Html::a(Html::tag(
-                            'span', '', ['class' => 'glyphicon glyphicon-trash'])
-                        . ' Eliminar',
-                        ['trayectos/eliminar', 'id' => $model->id],
-                        [
-                            'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
-                            'data-method' => 'post',
-                        ]
-                    ); ?>
-                </div>
+                <?php if (!$model->haFinalizado()): ?>
+                    <div class="col-xs-3 col-md-3">
+                        <?= Html::a(Html::tag(
+                            'span', '', ['class' => 'glyphicon glyphicon-pencil'])
+                            . ' Modificar', ['trayectos/modificar', 'id' => $model->id]
+                        ) ?>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <?= Html::a(Html::tag(
+                                'span', '', ['class' => 'glyphicon glyphicon-trash'])
+                            . ' Eliminar',
+                            ['trayectos/eliminar', 'id' => $model->id],
+                            [
+                                'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
+                                'data-method' => 'post',
+                            ]
+                        ); ?>
+                    </div>
+                <?php endif ?>
             <?php endif ?>
         </div>
     </div>

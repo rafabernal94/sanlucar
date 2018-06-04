@@ -22,23 +22,17 @@ EOT;
 $this->registerJs($js);
 
 $css = <<<'CSS'
-.derecha:hover {
-    transform: rotate(-360deg);
-    -webkit-transform: rotate(-360deg); /** Chrome & Safari **/
-    -moz-transform: rotate(-360deg); /** Firefox **/
-    -o-transform: rotate(-360deg); /** Opera **/
-}
-.izquierda:hover {
-    transform: rotate(360deg);
-    -webkit-transform: rotate(360deg); /** Chrome & Safari **/
-    -moz-transform: rotate(360deg); /** Firefox **/
-    -o-transform: rotate(360deg); /** Opera **/
+.object:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1); /** Chrome & Safari **/
+    -moz-transform: scale(1.1); /** Firefox **/
+    -o-transform: scale(1.1); /** Opera **/
 }
 .object {
-    transition: all 1s linear;
-    -webkit-transition: all 1s linear; /** Chrome & Safari **/
-    -moz-transition: all 1s linear; /** Firefox **/
-    -o-transition: all 1s linear; /** Opera **/
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear; /** Chrome & Safari **/
+    -moz-transition: all 0.2s linear; /** Firefox **/
+    -o-transition: all 0.2s linear; /** Opera **/
 }
 .single_counter {
     background: #AD1519;
@@ -54,7 +48,7 @@ $this->registerCss($css);
 <div class="site-index">
     <div class="body-content">
         <div class="row">
-            <div class="izquierda object col-xs-12 col-md-3 text-center mt-60 hidden-xs">
+            <div class="object col-xs-12 col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
                     <?= Icon::show('users', ['style' => 'font-size: 36px']) ?>
                     <h1 class="counter">220</h1>
@@ -64,7 +58,7 @@ $this->registerCss($css);
             <div class="col-md-6 mb-10">
                 <video width="100%" src="<?= Url::to('@web/videos/spot.mp4') ?>" autoplay loop muted></video>
             </div>
-            <div class="derecha object col-md-3 text-center mt-60 hidden-xs">
+            <div class="object col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
                     <?= Icon::show('map-signs', ['style' => 'font-size: 36px']) ?>
                     <h1 class="counter">70</h1>

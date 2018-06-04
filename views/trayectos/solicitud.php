@@ -1,5 +1,6 @@
 <?php
 /* @var $solicitud app\models\Solicitudes */
+/* @var $model app\models\Trayectos */
 
 use yii\helpers\Html;
 
@@ -19,6 +20,14 @@ use yii\helpers\Html;
             ['usuarios/perfil', 'id' => $solicitud->usuarioId->usuario->id]) ?>
         </div>
         <div class="col-xs-6 col-md-6 pt-5 text-right">
+            <?php
+            $array = [
+                'class' => 'btn btn-xs btn-success btnAceptarSolicitud',
+            ];
+            if ($model->estaCompleto()) {
+                $array = array_merge($array, ['disabled' => 'disabled']);
+            }
+            ?>
             <?= Html::beginForm(
                 ['solicitudes/aceptar'],
                 'post'
@@ -26,11 +35,7 @@ use yii\helpers\Html;
             <?= Html::hiddenInput('id-solicitud', $solicitud->id, [
                 'id' => 'id-solicitud'
                 ]) ?>
-            <?= Html::submitButton(
-                'Aceptar solicitud',
-                [
-                    'class' => 'btn btn-xs btn-success btnAceptarSolicitud']
-            ) ?>
+            <?= Html::submitButton('Aceptar solicitud', $array) ?>
             <?= Html::endForm() ?>
         </div>
     </div>

@@ -1,5 +1,6 @@
 <?php
 /* @var $pasajero app\models\Pasajeros */
+/* @var $model app\models\Trayectos */
 
 use yii\helpers\Html;
 
@@ -19,21 +20,23 @@ use yii\helpers\Html;
             ['usuarios/perfil', 'id' => $pasajero->usuarioId->usuario->id]) ?>
         </div>
         <?php if ($pasajero->usuarioId->usuario->id === Yii::$app->user->id): ?>
-            <div class="col-md-6 text-right pt-5">
-                <?= Html::a(
-                    'Retirarse',
-                    [
-                        'pasajeros/eliminar',
-                        'usuarioId' => $pasajero->usuarioId->usuario->id,
-                            'trayectoId' => $model->id,
-                    ],
-                    [
-                        'data-confirm' => '¿Estás seguro que quieres retirarte del trayecto? Perderás el importe pagado.',
-                        'data-method' => 'post',
-                        'class' => 'btn btn-xs btn-danger'
-                    ]
-                ) ?>
-            </div>
+            <?php if (!$model->haFinalizado()): ?>
+                <div class="col-md-6 text-right pt-5">
+                    <?= Html::a(
+                        'Retirarse',
+                        [
+                            'pasajeros/eliminar',
+                            'usuarioId' => $pasajero->usuarioId->usuario->id,
+                                'trayectoId' => $model->id,
+                        ],
+                        [
+                            'data-confirm' => '¿Estás seguro que quieres retirarte del trayecto? Perderás el importe pagado.',
+                            'data-method' => 'post',
+                            'class' => 'btn btn-xs btn-danger'
+                        ]
+                    ) ?>
+                </div>
+            <?php endif ?>
         <?php endif ?>
     </div>
 </li>
