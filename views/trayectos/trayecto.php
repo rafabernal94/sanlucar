@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 
 /* @var $model app\models\Trayectos */
-$model->haFinalizado();
+
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
 $('.btn-default').on('click', function(e) {

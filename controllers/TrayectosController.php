@@ -38,7 +38,7 @@ class TrayectosController extends Controller
                 'class' => AccessControl::className(),
                 'only' => [
                     'publicar',
-                    'trayectos-publicados',
+                    'mis-trayectos',
                     'eliminar',
                     'modificar',
                 ],
@@ -47,7 +47,7 @@ class TrayectosController extends Controller
                         'allow' => true,
                         'actions' => [
                             'publicar',
-                            'trayectos-publicados',
+                            'mis-trayectos',
                             'eliminar',
                             'modificar',
                         ],
@@ -77,7 +77,7 @@ class TrayectosController extends Controller
      * Lista los trayectos de un determinado usuario.
      * @return mixed
      */
-    public function actionTrayectosPublicados()
+    public function actionMisTrayectos()
     {
         $usuario = Yii::$app->user->identity;
         $trayectosAct = Trayectos::find()
@@ -90,9 +90,15 @@ class TrayectosController extends Controller
             ->andWhere('fecha < now()')
             ->orderBy(['fecha' => SORT_ASC])->all();
 
-        return $this->render('trayectos_publicados', [
+        $trayectosPart = Trayectos::find()
+            ->joinWith('pasajeros')
+            ->where(['pasajeros.usuario_id' => $usuario->id])
+            ->all();
+
+        return $this->render('mis_trayectos', [
             'trayectosAct' => $trayectosAct,
             'trayectosPas' => $trayectosPas,
+            'trayectosPart' => $trayectosPart,
             'usuario' => $usuario,
         ]);
     }
@@ -131,7 +137,7 @@ class TrayectosController extends Controller
             $pref->trayecto_id = $model->id;
             if ($pref->load(Yii::$app->request->post()) && $pref->save()) {
                 Yii::$app->session->setFlash('success', 'El trayecto se ha publicado correctamente.');
-                return $this->redirect(['trayectos/trayectos-publicados']);
+                return $this->redirect(['trayectos/mis-trayectos']);
             }
         }
 
@@ -162,7 +168,7 @@ class TrayectosController extends Controller
                     $this->enviarEmail($pasajero->usuarioId->usuario, $model);
                 }
                 Yii::$app->session->setFlash('success', 'El trayecto se ha modificado correctamente.');
-                return $this->redirect(['trayectos/trayectos-publicados']);
+                return $this->redirect(['trayectos/mis-trayectos']);
             }
         }
 
@@ -202,7 +208,7 @@ class TrayectosController extends Controller
         }
 
         Yii::$app->session->setFlash('success', 'El trayecto ha sido eliminado correctamente.');
-        return $this->redirect(['/trayectos/trayectos-publicados']);
+        return $this->redirect(['/trayectos/mis-trayectos']);
     }
 
     /**

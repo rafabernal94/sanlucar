@@ -3,7 +3,12 @@ use app\helpers\Utiles;
 use yii\helpers\Html;
 use kartik\tabs\TabsX;
 
-$this->title = 'Mis trayectos publicados';
+/* @var $trayectosAct app\models\Trayectos */
+/* @var $trayectosPas app\models\Trayectos */
+/* @var $trayectosPart app\models\Trayectos */
+
+
+$this->title = 'Mis trayectos';
 $this->params['breadcrumbs'][] = ['label' => 'Mi perfil', 'url' => ['usuarios/perfil', 'id' => $usuario->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -33,7 +38,20 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         $trayectosPasados .= '</div>';
     } else {
-        $trayectosPasados .= '<h4>No tienes trayectos pasados</h4>';
+        $trayectosPasados .= '<h4>No tienes trayectos finalizados</h4>';
+    }
+
+    $trayectosParticipo = '';
+    if(count($trayectosPart) > 0) {
+        $trayectosParticipo .= '<div class="panel-group">';
+            foreach ($trayectosPart as $trayecto) {
+                $trayectosParticipo .= $this->render('/trayectos/trayecto', [
+                    'model' => $trayecto
+                ]);
+            }
+        $trayectosParticipo .= '</div>';
+    } else {
+        $trayectosParticipo .= '<h4>No participas en ningún trayecto</h4>';
     }
 ?>
 
@@ -49,8 +67,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'active' => true
             ],
             [
-                'label' => 'Trayectos pasados',
+                'label' => 'Trayectos finalizados',
                 'content' => $trayectosPasados,
+            ],
+            [
+                'label' => 'Trayectos en los que participo',
+                'content' => $trayectosParticipo,
             ],
         ];
         ?>

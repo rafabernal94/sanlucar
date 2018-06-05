@@ -16,7 +16,7 @@ use yii\bootstrap\Modal;
 use kartik\icons\Icon;
 
 $this->title = 'Detalles';
-$this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/trayectos-publicados']];
+$this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/mis-trayectos']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJsFile('@web/js/draw-detalles.js', [

@@ -8,6 +8,13 @@ use yii\helpers\Html;
 $this->title = 'Conversación';
 $this->params['breadcrumbs'][] = ['label' => 'Buzón de entrada', 'url' => ['conversaciones/buzon']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$css = <<<'CSS'
+.mensaje {
+    word-break: break-all;
+}
+CSS;
+$this->registerCss($css);
 ?>
 
 <div class="conversaciones-conversacion">
@@ -25,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'style' => 'width: 40px',
                         ]) ?>
                 </div>
-                <div class="col-xs-9 col-md-8">
+                <div class="col-xs-9 col-md-8 mensaje">
                     <?= $mensaje->mensaje ?>
                 </div>
                 <div class="col-md-3 hidden-xs">
