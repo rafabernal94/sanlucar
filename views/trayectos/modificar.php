@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Modificar trayecto';
-$this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/trayectos-publicados']];
+$this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/mis-trayectos']];
 $this->params['breadcrumbs'][] = 'Modificar trayecto';
 ?>
 <div class="trayectos-update">

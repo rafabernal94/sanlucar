@@ -96,7 +96,7 @@ Icon::map($this);
                     ],
                     [
                         'label' => Icon::show('map-signs') . ' Mis trayectos',
-                        'url' => ['trayectos/trayectos-publicados'],
+                        'url' => ['trayectos/mis-trayectos'],
                         'encode' => false,
                     ],
                     [
