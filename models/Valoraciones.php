@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "valoraciones".
  *
@@ -51,7 +49,7 @@ class Valoraciones extends \yii\db\ActiveRecord
             'id' => 'ID',
             'valorador_id' => 'Valorador ID',
             'valorado_id' => 'Valorado ID',
-            'texto' => 'Texto',
+            'texto' => 'Valoración',
             'created_at' => 'Created At',
         ];
     }
