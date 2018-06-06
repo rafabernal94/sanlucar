@@ -151,6 +151,15 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             ->andWhere(['trayecto_id' => $trayecto->id])->all());
     }
 
+    /**
+     * Devuelve el nombre con la primera letra del apellido.
+     * @return string Nombre completo formateado
+     */
+    public function mostrarNombre()
+    {
+        return $this->nombre . ' ' . substr($this->apellido, 0, 1) . '.';
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne($id);

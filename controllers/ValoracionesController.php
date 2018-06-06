@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Usuarios;
 use app\models\Valoraciones;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,6 +25,21 @@ class ValoracionesController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => [
+                    'valoraciones',
+                ],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => [
+                            'valoraciones',
+                        ],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -49,12 +65,35 @@ class ValoracionesController extends Controller
         $model->valorador_id = $idAct;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Valoración creada correctamente.');
-            return $this->goHome();
+            Yii::$app->session->setFlash('success', 'Has valorado al usuario correctamente.');
+            return $this->redirect(['valoraciones', 'id' => $valorado]);
         }
 
         return $this->renderAjax('crear', [
             'model' => $model,
+        ]);
+    }
+
+    /**
+     * Lista las valoraciones de un determinado usuario.
+     * @param  int $id ID del usuario
+     * @return mixed
+     */
+    public function actionValoraciones($id)
+    {
+        if ($id === null) {
+            throw new NotFoundHttpException('Falta el id.');
+        }
+        if (($usuario = Usuarios::findOne($id)) === null) {
+            throw new NotFoundHttpException('No existe el usuario.');
+        }
+        $valoraciones = Valoraciones::find()
+            ->where(['valorado_id' => $usuario->id])
+            ->orderBy(['created_at' => SORT_ASC])->all();
+
+        return $this->render('valoraciones', [
+            'valoraciones' => $valoraciones,
+            'usuario' => $usuario,
         ]);
     }
 

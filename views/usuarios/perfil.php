@@ -139,7 +139,7 @@ $this->registerCss($css);
 				</div>
 			</div>
   			<div class="panel-body">
-				<div class="col-md-8 col-xs-5 text-left">
+				<div class="col-md-8 col-xs-5 text-left pl-0">
 					<h4><strong><?= Html::encode($model->nombre .
 						' ' . substr($model->apellido, 0, 1)) ?>.</strong></h4>
 					<?php if (Yii::$app->user->id !== $model->id): ?>
@@ -150,9 +150,14 @@ $this->registerCss($css);
 								'class' => 'btn btn-xs btn-warning'
 							]
 						); ?>
+					<?php else: ?>
+					<?= Html::a(Icon::show('star') . ' Mis valoraciones',
+						['valoraciones/valoraciones', 'id' => $model->id],
+						['class' => 'btn btn-xs btn-warning']
+					); ?>
 					<?php endif ?>
 				</div>
-				<div class="col-md-2 col-xs-7 mb-5">
+				<div class="col-md-2 col-xs-7 mb-5 pr-0">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('edit') . ' Editar perfil',
 							['usuarios/modificar', 'option' => 'infopersonal'],
@@ -160,7 +165,7 @@ $this->registerCss($css);
 						); ?>
 					<?php endif ?>
 				</div>
-				<div class="col-md-2 col-xs-7">
+				<div class="col-md-2 col-xs-7 pr-0">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('times-circle') . ' Darse de baja',
 							['usuarios/eliminar'],
