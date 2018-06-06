@@ -61,6 +61,7 @@ $config = [
                 'trayectos/modificar/<id:\d+>' => 'trayectos/modificar',
                 'trayectos/detalles/<id:\d+>' => 'trayectos/detalles',
                 'coches/modificar/<id:\d+>' => 'coches/modificar',
+                'conversaciones/conversacion/<id:\d+>' => 'conversaciones/conversacion',
             ],
         ],
     ],

@@ -74,6 +74,33 @@ class MensajesController extends Controller
     }
 
     /**
+     * Crea un modelo de Mensajes dentro de una conversación.
+     * @return mixed
+     */
+    public function actionNuevo()
+    {
+        $id = Yii::$app->request->post('conversacion_id');
+        $mensaje = Yii::$app->request->post('mensaje');
+
+        if (($conversacion = Conversaciones::findOne($id)) !== null) {
+            $model = new Mensajes();
+            $model->usuario_id = Yii::$app->user->id;
+            $model->conversacion_id = $id;
+            $model->mensaje = $mensaje;
+
+            if ($model->save()) {
+                $mensajes = Mensajes::find()
+                        ->where(['conversacion_id' => $id])
+                        ->orderBy(['created_at' => SORT_DESC])->all();
+
+                return $this->renderAjax('lista_mensajes', [
+                        'mensajes' => $mensajes,
+                ]);
+            }
+        }
+    }
+
+    /**
      * Finds the Mensajes model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id

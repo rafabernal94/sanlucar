@@ -6,6 +6,7 @@ use app\models\Conversaciones;
 use app\models\Mensajes;
 use app\models\Usuarios;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -25,6 +26,19 @@ class ConversacionesController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => [
+                    'conversacion',
+                ],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['conversacion'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -53,11 +67,16 @@ class ConversacionesController extends Controller
      */
     public function actionConversacion($id)
     {
+        $idAct = Yii::$app->user->id;
         if (($conversacion = $this->findModel($id)) === null) {
             throw new NotFoundHttpException('La conversación no existe.');
         }
 
-        if ($conversacion->usuario1_id !== Yii::$app->user->id) {
+        if ($conversacion->usuario1_id !== $idAct && $conversacion->usuario2_id !== $idAct) {
+            throw new NotFoundHttpException('No tienes permisos para acceder a esta conversación.');
+        }
+
+        if ($conversacion->usuario1_id !== $idAct) {
             $user = Usuarios::findOne($conversacion->usuario1_id);
         } else {
             $user = Usuarios::findOne($conversacion->usuario2_id);
@@ -69,60 +88,9 @@ class ConversacionesController extends Controller
 
         return $this->render('conversacion', [
             'mensajes' => $mensajes,
+            'conversacion' => $conversacion,
             'user' => $user,
         ]);
-    }
-
-    /**
-     * Creates a new Conversaciones model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Conversaciones();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing Conversaciones model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Conversaciones model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

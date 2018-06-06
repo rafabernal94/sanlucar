@@ -1,4 +1,7 @@
 <?php
+use app\models\Mensajes;
+
+use yii\helpers\Url;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -10,11 +13,44 @@ $this->params['breadcrumbs'][] = ['label' => 'Buzón de entrada', 'url' => ['con
 $this->params['breadcrumbs'][] = $this->title;
 
 $css = <<<'CSS'
-.mensaje {
-    word-break: break-all;
+.mensaje { word-break: break-all; }
+#lista-mensajes {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 320px;
+}
+#lista-mensajes::-webkit-scrollbar { width: 12px; }
+#lista-mensajes::-webkit-scrollbar-track {
+    background-color: #d9edf7;
+    border-radius: 10px;
+}
+#lista-mensajes::-webkit-scrollbar-thumb {
+    background-color: #00b5db;
+    border-radius: 10px;
 }
 CSS;
 $this->registerCss($css);
+$url = Url::to(['mensajes/nuevo']);
+$js = <<<EOT
+$(document).ready(function() {
+    $('#mensajes-form').on('beforeSubmit', function() {
+        enviarAjax('$url', 'POST',
+            {
+                conversacion_id: $('body').find('#idConversacion').val(),
+                mensaje: $('#mensajes-mensaje').val(),
+            },
+            function(data) {
+                if (data) {
+                    $('textarea#mensajes-mensaje').val('');
+                    $('#lista-mensajes').html(data);
+                }
+            }
+        );
+        return false;
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 
 <div class="conversaciones-conversacion">
@@ -23,24 +59,15 @@ $this->registerCss($css);
         <hr class="mb-10">
     </div>
     <div class="col-md-8">
-        <?php foreach($mensajes as $mensaje): ?>
-            <div class="row">
-                <div class="col-xs-3 col-md-1">
-                    <?= Html::img(
-                        $mensaje->usuarioId->usuario->url_avatar , [
-                            'class' => 'img-circle',
-                            'style' => 'width: 40px',
-                        ]) ?>
-                </div>
-                <div class="col-xs-9 col-md-8 mensaje">
-                    <?= $mensaje->mensaje ?>
-                </div>
-                <div class="col-md-3 hidden-xs">
-                    <?= Yii::$app->formatter->asDate($mensaje->created_at, 'H:m dd-MM-yyyy') ?>
-                </div>
-            </div>
-            <hr class="mb-10 mt-10">
-        <?php endforeach ?>
+        <?= $this->render('/mensajes/crear', [
+            'model' => new Mensajes,
+        ]) ?>
+        <?= Html::hiddenInput('idConversacion', $conversacion->id, ['id' => 'idConversacion']) ?>
+        <div id="lista-mensajes">
+            <?= $this->render('/mensajes/lista_mensajes', [
+                'mensajes' => $mensajes
+            ]) ?>
+        </div>
     </div>
     <div class="col-md-4">
         <div class="panel panel-info">

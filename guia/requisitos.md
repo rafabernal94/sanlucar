@@ -631,6 +631,15 @@
 | **Entrega**     | v2             |
 | **Incidencia**  | [85](https://github.com/rafabernal94/sanlucar/issues/85) |
 
+| **R71**     | **Notificaciones**           |
+| --------------: | :------------------- |
+| **Descripción** | Se mostrará en la barra de navegación notificaciones cuando el usuario reciba mensajes o solicitudes de unión a un trayecto.             |
+| **Prioridad**   | Opcional           |
+| **Tipo**        | Funcional                |
+| **Complejidad** | Media         |
+| **Entrega**     | v3             |
+| **Incidencia**  | [109](https://github.com/rafabernal94/sanlucar/issues/109) |
+
 
 ## Cuadro resumen
 
@@ -706,3 +715,4 @@
 | (**R68**) Coche favorito | Importante | Funcional | Media | v2 | [83](https://github.com/rafabernal94/sanlucar/issues/83) |
 | (**R69**) Preferencias | Importante | Funcional | Fácil | v2 | [84](https://github.com/rafabernal94/sanlucar/issues/84) |
 | (**R70**) Añadir preferencias | Importante | Funcional | Fácil | v2 | [85](https://github.com/rafabernal94/sanlucar/issues/85) |
+| (**R71**) Notificaciones | Opcional | Funcional | Media | v3 | [109](https://github.com/rafabernal94/sanlucar/issues/109) |

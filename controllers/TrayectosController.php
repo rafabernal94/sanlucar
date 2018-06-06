@@ -41,6 +41,7 @@ class TrayectosController extends Controller
                     'mis-trayectos',
                     'eliminar',
                     'modificar',
+                    'buscar',
                 ],
                 'rules' => [
                     [
@@ -49,9 +50,20 @@ class TrayectosController extends Controller
                             'publicar',
                             'mis-trayectos',
                             'eliminar',
-                            'modificar',
+                            'buscar',
                         ],
                         'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['modificar'],
+                        'matchCallback' => function ($rule, $action) {
+                            $trayecto = Trayectos::findOne(Yii::$app->request->get('id'));
+                            if ($trayecto->haFinalizado()) {
+                                return false;
+                            }
+                            return true;
+                        },
                     ],
                 ],
             ],
