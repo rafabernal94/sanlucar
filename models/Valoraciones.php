@@ -9,6 +9,7 @@ namespace app\models;
  * @property int $valorador_id
  * @property int $valorado_id
  * @property string $texto
+ * @property string $estrellas
  * @property string $created_at
  *
  * @property UsuariosId $valorador
@@ -30,9 +31,10 @@ class Valoraciones extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['valorador_id', 'valorado_id', 'texto'], 'required'],
+            [['valorador_id', 'valorado_id', 'texto', 'estrellas'], 'required'],
             [['valorador_id', 'valorado_id'], 'default', 'value' => null],
             [['valorador_id', 'valorado_id'], 'integer'],
+            [['estrellas'], 'number'],
             [['created_at'], 'safe'],
             [['texto'], 'string', 'max' => 255],
             [['valorador_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['valorador_id' => 'id']],
@@ -50,6 +52,7 @@ class Valoraciones extends \yii\db\ActiveRecord
             'valorador_id' => 'Valorador ID',
             'valorado_id' => 'Valorado ID',
             'texto' => 'Valoración',
+            'estrellas' => 'Estrellas',
             'created_at' => 'Created At',
         ];
     }

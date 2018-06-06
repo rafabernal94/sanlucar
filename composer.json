@@ -32,7 +32,8 @@
         "kartik-v/yii2-datecontrol": "@dev",
         "npm-asset/pwstrength-bootstrap": "^2.2",
         "npm-asset/bootstrap-colorselector": "^0.1.0",
-        "npm-asset/counterup": "^1.0"
+        "npm-asset/counterup": "^1.0",
+        "kartik-v/yii2-widget-rating": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

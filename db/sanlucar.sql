@@ -123,6 +123,7 @@ CREATE TABLE valoraciones
   , valorado_id bigint       NOT NULL REFERENCES usuarios_id (id)
                              ON DELETE NO ACTION ON UPDATE CASCADE
   , texto       varchar(255) NOT NULL
+  , estrellas   numeric(1)   NOT NULL
   , created_at  timestamp(0) NOT NULL DEFAULT localtimestamp
 );
 
@@ -166,6 +167,6 @@ INSERT INTO mensajes (usuario_id, conversacion_id, mensaje)
 INSERT INTO conversaciones (usuario1_id, usuario2_id)
     VALUES (1, 2), (2, 3);
 
-INSERT INTO valoraciones (valorador_id, valorado_id, texto)
-    VALUES (1, 2, 'Viaje muy ameno y conducción perfecta.')
-         , (2, 3, 'No me ha gustado el viaje, pone la música demasiado alta.');
+INSERT INTO valoraciones (valorador_id, valorado_id, texto, estrellas)
+    VALUES (1, 2, 'Viaje muy ameno y conducción perfecta.', 5)
+         , (2, 3, 'No me ha gustado el viaje, pone la música demasiado alta.', 2);
