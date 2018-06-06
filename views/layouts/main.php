@@ -100,6 +100,11 @@ Icon::map($this);
                         'encode' => false,
                     ],
                     [
+                        'label' => Icon::show('star') . ' Mis valoraciones',
+                        'url' => ['valoraciones/valoraciones', 'id' => Yii::$app->user->id],
+                        'encode' => false,
+                    ],
+                    [
                         'label' => Icon::show('car') . ' Mis coches',
                         'url' => ['coches/mis-coches'],
                         'encode' => false,

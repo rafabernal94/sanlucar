@@ -24,7 +24,12 @@ $js = <<<EOT
 $(document).ready(function() {
 	$('#btnMensaje').on('click', function() {
 		$('#modalMensaje').modal('show')
-			.find('#modalContent')
+			.find('#modalContentMensaje')
+			.load($(this).attr('value'));
+	});
+	$('#btnValorar').on('click', function() {
+		$('#modalValoracion').modal('show')
+			.find('#modalContentValoracion')
 			.load($(this).attr('value'));
 	});
 	$('.boton').on('click', function(e) {
@@ -93,7 +98,7 @@ $this->registerCss($css);
 							</button>
 						<?php endif ?>
 					</div>
-					<div id="prueba" class="col-md-7 text-left hidden-xs hidden-sm">
+					<div class="col-md-7 text-left hidden-xs hidden-sm">
 						<?php
 						if ($model->url_avatar !== null) {
 							$fotoUrl = $model->url_avatar;
@@ -134,12 +139,25 @@ $this->registerCss($css);
 				</div>
 			</div>
   			<div class="panel-body">
-				<div class="col-md-8 col-xs-5 text-left">
+				<div class="col-md-8 col-xs-5 text-left pl-0">
 					<h4><strong><?= Html::encode($model->nombre .
 						' ' . substr($model->apellido, 0, 1)) ?>.</strong></h4>
-					<h5>Aún no tienes valoraciones</h5>
+					<?php if (Yii::$app->user->id !== $model->id): ?>
+						<?= Html::button(Icon::show('star') . ' Valorar usuario',
+							[
+								'value' => Url::to(['valoraciones/crear', 'valorado' => $model->id]),
+								'id' => 'btnValorar',
+								'class' => 'btn btn-xs btn-warning'
+							]
+						); ?>
+					<?php else: ?>
+					<?= Html::a(Icon::show('star') . ' Mis valoraciones',
+						['valoraciones/valoraciones', 'id' => $model->id],
+						['class' => 'btn btn-xs btn-warning']
+					); ?>
+					<?php endif ?>
 				</div>
-				<div class="col-md-2 col-xs-7 mb-5">
+				<div class="col-md-2 col-xs-7 mb-5 pr-0">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('edit') . ' Editar perfil',
 							['usuarios/modificar', 'option' => 'infopersonal'],
@@ -147,7 +165,7 @@ $this->registerCss($css);
 						); ?>
 					<?php endif ?>
 				</div>
-				<div class="col-md-2 col-xs-7">
+				<div class="col-md-2 col-xs-7 pr-0">
 					<?php if (Yii::$app->user->id === $model->id): ?>
 						<?= Html::a(Icon::show('times-circle') . ' Darse de baja',
 							['usuarios/eliminar'],
@@ -288,6 +306,14 @@ $this->registerCss($css);
         'id' => 'modalMensaje',
         'size' => 'modal-md',
     ]);
-    echo "<div id='modalContent'></div>";
+    echo "<div id='modalContentMensaje'></div>";
+    Modal::end();
+
+	Modal::begin([
+        'header' => '<span style="font-size: 24px">Valorar usuario</span>',
+        'id' => 'modalValoracion',
+        'size' => 'modal-md',
+    ]);
+    echo "<div id='modalContentValoracion'></div>";
     Modal::end();
 ?>
