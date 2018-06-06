@@ -102,4 +102,20 @@ class UsuariosId extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Conversaciones::className(), ['id' => 'receptor_id'])->inverseOf('receptor');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getValoraciones()
+    {
+        return $this->hasMany(Valoraciones::className(), ['valorador_id' => 'id'])->inverseOf('valorador');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getValoraciones0()
+    {
+        return $this->hasMany(Valoraciones::className(), ['valorado_id' => 'id'])->inverseOf('valorado');
+    }
 }
