@@ -12,6 +12,13 @@ $this->title = 'Mis trayectos';
 $this->params['breadcrumbs'][] = ['label' => 'Mi perfil', 'url' => ['usuarios/perfil', 'id' => $usuario->id]];
 $this->params['breadcrumbs'][] = $this->title;
 
+$css = <<<'CSS'
+.printable {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+CSS;
+$this->registerCss($css);
 ?>
 <?= Utiles::modal('Eliminar trayecto') ?>
 <?php

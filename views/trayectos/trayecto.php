@@ -49,13 +49,21 @@ $this->registerJs($js);
 <div class="panel panel-default mb-10">
     <div class="panel-heading">
         <div class="panel-title">
-            <?php
-            $origen = explode(',', $model->origen)[0];
-            $destino = explode(',', $model->destino)[0];
-            ?>
-            <?= Html::encode($origen)
-            . " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
-            . Html::encode($destino) ?>
+            <div class="row">
+                <div class="col-xs-10 col-md-10">
+                    <?= Html::encode($model->getOrigen())
+                    . " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
+                    . Html::encode($model->getDestino()) ?>
+                </div>
+                <div class="col-xs-2 col-md-2 text-right">
+                    <?php
+                    if (($total = count($model->getSolicitudes()->where(['aceptada' => false])->all()))): ?>
+                        <span class="badge">
+                            <?= $total ?>
+                        </span>
+                    <?php endif ?>
+                </div>
+            </div>
         </div>
     </div>
     <div class="panel-body">
