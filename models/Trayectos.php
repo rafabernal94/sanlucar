@@ -86,6 +86,24 @@ class Trayectos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Devuelve solo la calle de la dirección de origen.
+     * @return string La calle de origen.
+     */
+    public function getOrigen()
+    {
+        return explode(',', $this->origen)[0];
+    }
+
+    /**
+     * Devuelve solo la calle de la dirección de destino.
+     * @return string La calle de destino.
+     */
+    public function getDestino()
+    {
+        return explode(',', $this->destino)[0];
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getConductor()

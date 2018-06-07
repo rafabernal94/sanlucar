@@ -3,13 +3,14 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\models\Solicitudes;
+use app\models\Valoraciones;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-
 use kartik\icons\Icon;
 
 AppAsset::register($this);
@@ -56,6 +57,11 @@ Icon::map($this);
             ]
         ];
     } else {
+        if (($solicitudes = Solicitudes::getPendientes()) > 0) $badgeSol = Html::tag('span', $solicitudes, ['class' => 'badge']);
+        else $badgeSol = '';
+        if (($valoraciones = Valoraciones::getPendientes()) > 0) $badgeVal = Html::tag('span', $valoraciones, ['class' => 'badge']);
+        else $badgeVal = '';
+
         $foto = Yii::$app->user->identity->url_avatar;
         $items = [
             [
@@ -95,12 +101,12 @@ Icon::map($this);
                         'encode' => false
                     ],
                     [
-                        'label' => Icon::show('map-signs') . ' Mis trayectos',
+                        'label' => Icon::show('map-signs') . ' Mis trayectos ' . $badgeSol,
                         'url' => ['trayectos/mis-trayectos'],
                         'encode' => false,
                     ],
                     [
-                        'label' => Icon::show('star') . ' Mis valoraciones',
+                        'label' => Icon::show('star') . ' Mis valoraciones ' . $badgeVal,
                         'url' => ['valoraciones/valoraciones', 'id' => Yii::$app->user->id],
                         'encode' => false,
                     ],

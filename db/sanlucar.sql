@@ -124,6 +124,7 @@ CREATE TABLE valoraciones
                              ON DELETE NO ACTION ON UPDATE CASCADE
   , texto       varchar(255) NOT NULL
   , estrellas   numeric(1)   NOT NULL
+  , vista       bool         DEFAULT false
   , created_at  timestamp(0) NOT NULL DEFAULT localtimestamp
 );
 

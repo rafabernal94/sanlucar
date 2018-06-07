@@ -125,3 +125,7 @@ a, a:hover, a:focus {
 .fav {
     color: #FEC600;
 }
+
+.badge {
+    background-color: #17a2b8 !important;
+}

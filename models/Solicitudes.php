@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use Yii;
+
 /**
  * This is the model class for table "solicitudes".
  *
@@ -51,6 +53,23 @@ class Solicitudes extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Devuelve el número de solicitudes pendientes que tiene el usuario conectado.
+     * @return int El número de solicitudes pendientes
+     */
+    public static function getPendientes()
+    {
+        return self::find()
+            ->joinWith('trayecto')
+            ->where(['solicitudes.aceptada' => false])
+            ->andWhere(['trayectos.conductor_id' => Yii::$app->user->id])
+            ->count();
+    }
+
+    /**
+     * Comprueba si una solicitud está aceptada o no.
+     * @return bool True si está aceptada, false si no lo está.
+     */
     public function estaAceptada()
     {
         return $this->aceptada;
