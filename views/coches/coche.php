@@ -1,10 +1,13 @@
 <?php
+use app\assets\NJSAsset;
+
 use app\models\Usuarios;
 
 use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
 
+NJSAsset::register($this);
 $url = Url::to(['coches/favorito-ajax']);
 $js = <<<EOT
 $('.btn-link').on('click', function(e) {
@@ -18,10 +21,13 @@ $('.btn-link').on('click', function(e) {
         },
         success: function(data) {
             if (data == 1) {
+                mostrarAlert('Coche marcado como favorito correctamente.', 'success');
                 $('.fa-star').removeClass('fav');
                 $('.btn-link').prop('disabled', false);
                 $('#btn-'+cocheId).children('.fa-star').addClass('fav');
                 $('#btn-'+cocheId).prop('disabled', true);
+            } else {
+                mostrarAlert('Ha ocurrido un error.', 'error');
             }
         }
     })

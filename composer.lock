@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "449eb75683f8f522d32eeba44303877b",
+    "content-hash": "5fae872819ccf3e25d670602446605eb",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -108,6 +108,25 @@
             },
             "require": {
                 "bower-asset/jquery": ">=1.6"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/notifyjs",
+            "version": "v0.4.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:jpillora/notifyjs.git",
+                "reference": "9e61e5418d07e0ea83814feada41d5ecb5df0d56"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jpillora/notifyjs/zipball/9e61e5418d07e0ea83814feada41d5ecb5df0d56",
+                "reference": "9e61e5418d07e0ea83814feada41d5ecb5df0d56",
+                "shasum": null
             },
             "type": "bower-asset",
             "license": [

@@ -1,11 +1,12 @@
 <?php
+use app\assets\NJSAsset;
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 use yii\bootstrap\Modal;
 
 /* @var $model app\models\Trayectos */
 
+NJSAsset::register($this);
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
 $('.btn-default').on('click', function(e) {
@@ -19,6 +20,7 @@ $('.btn-default').on('click', function(e) {
             idBtn: $(this).prop('id')
         },
         success: function(data) {
+            mostrarAlert('Plazas modificadas correctamente.', 'success');
             if (data != 1 || data != 4) {
                 $('#btnMenos-'+trayectoId).prop('disabled', false);
                 $('#btnMas-'+trayectoId).prop('disabled', false);

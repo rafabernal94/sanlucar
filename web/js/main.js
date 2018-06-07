@@ -12,3 +12,8 @@ function abrirVentana(url, titulo, ancho, alto) {
     var y = screen.height/2 - alto/2;
     window.open(url, titulo, 'width='+ancho+', height='+alto+', left='+x+', top='+y);
 }
+
+function mostrarAlert(texto, tipo) {
+    $.notify.defaults({autoHideDelay: 2000});
+    $.notify(texto, tipo);
+}
