@@ -87,6 +87,15 @@ class ValoracionesController extends Controller
         if (($usuario = Usuarios::findOne($id)) === null) {
             throw new NotFoundHttpException('No existe el usuario.');
         }
+
+        if (Yii::$app->user->id === $usuario->id) {
+            $condiciones = ['and',
+                ['=', 'vista', false],
+                ['=', 'valorado_id', $usuario->id],
+            ];
+            Valoraciones::updateAll(['vista' => true], $condiciones);
+        }
+
         $valoraciones = Valoraciones::find()
             ->where(['valorado_id' => $usuario->id])
             ->orderBy(['created_at' => SORT_ASC])->all();

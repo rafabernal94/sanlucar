@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\models\Solicitudes;
+use app\models\Valoraciones;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -58,6 +59,8 @@ Icon::map($this);
     } else {
         if (($solicitudes = Solicitudes::getPendientes()) > 0) $badgeSol = Html::tag('span', $solicitudes, ['class' => 'badge']);
         else $badgeSol = '';
+        if (($valoraciones = Valoraciones::getPendientes()) > 0) $badgeVal = Html::tag('span', $valoraciones, ['class' => 'badge']);
+        else $badgeVal = '';
 
         $foto = Yii::$app->user->identity->url_avatar;
         $items = [
@@ -103,7 +106,7 @@ Icon::map($this);
                         'encode' => false,
                     ],
                     [
-                        'label' => Icon::show('star') . ' Mis valoraciones',
+                        'label' => Icon::show('star') . ' Mis valoraciones ' . $badgeVal,
                         'url' => ['valoraciones/valoraciones', 'id' => Yii::$app->user->id],
                         'encode' => false,
                     ],
