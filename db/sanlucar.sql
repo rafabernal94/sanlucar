@@ -38,6 +38,7 @@ CREATE TABLE trayectos
   , conductor_id bigint       NOT NULL REFERENCES usuarios_id (id)
   , fecha        timestamp(0) NOT NULL
   , plazas       numeric(1)   NOT NULL
+  , precio       numeric(5,2) NOT NULL
   , created_at   timestamp(0) NOT NULL DEFAULT localtimestamp
   , updated_at   timestamp(0)
 );
@@ -77,6 +78,7 @@ CREATE TABLE pasajeros
     id          bigserial PRIMARY KEY
   , usuario_id  bigint    NOT NULL REFERENCES usuarios_id (id)
   , trayecto_id bigint    NOT NULL REFERENCES trayectos (id)
+  , pagado      boolean   NOT NULL DEFAULT false
 );
 
 DROP TABLE IF EXISTS solicitudes CASCADE;
@@ -144,9 +146,9 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
                'Me gusta mucho viajar.',
                'https://www.dropbox.com/s/v504eg93v0dpjqd/david.jpg?dl=1', 3);
 
-INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas)
-    VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2)
-         , ('Calle Barrameda, Sanlúcar de Barrameda, España', 'Calle Ganado, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3);
+INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas, precio)
+    VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2, 1.5)
+         , ('Calle Barrameda, Sanlúcar de Barrameda, España', 'Calle Ganado, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3, 0.5);
 
 INSERT INTO pasajeros (usuario_id, trayecto_id)
     VALUES (2, 1), (3, 1);

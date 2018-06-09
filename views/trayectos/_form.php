@@ -3,6 +3,8 @@
 use yii\web\View;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\number\NumberControl;
+
 use kartik\touchspin\TouchSpin;
 use kartik\datecontrol\DateControl;
 
@@ -94,7 +96,7 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Preferencias de viaje</h3>
@@ -110,6 +112,23 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
                                 <?= $form->field($pref, 'fumar')->checkbox() ?>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Precio</h3>
+                    </div>
+                    <div class="panel-body">
+                        <?= $form->field($model, 'precio')->widget(NumberControl::classname(), [
+                            'maskedInputOptions' => [
+                                'suffix' => ' €',
+                                'allowMinus' => false,
+                                'groupSeparator' => '.',
+                                'radixPoint' => ',',
+                            ],
+                        ])->label(false) ?>
                     </div>
                 </div>
             </div>
