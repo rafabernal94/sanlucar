@@ -4,13 +4,14 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 
+use kartik\icons\Icon;
+
 /* @var $model app\models\Trayectos */
 
 NJSAsset::register($this);
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
-$('.btn-default').on('click', function(e) {
-    e.preventDefault();
+$('.btn-default').on('click', function() {
     var trayectoId = $(this).siblings('#id-trayecto').val();
     $.ajax({
         url: '$url',
@@ -70,9 +71,11 @@ $this->registerJs($js);
     </div>
     <div class="panel-body">
         <div class="row mb-5">
-            <div class="col-xs-6 col-md-8">
-                <?= "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> "
-                . Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
+            <div class="col-xs-6 col-md-4">
+                <?= Icon::show('calendar') . Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <?= Html::encode($model->precio) . ' ' . Icon::show('euro') ?>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
                 <?php if (!$model->haFinalizado()): ?>
@@ -94,10 +97,7 @@ $this->registerJs($js);
                             $model->id,
                             ['id' => 'id-trayecto']
                         ) ?>
-                        <?= Html::submitButton(
-                            "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>",
-                            $array
-                        ) ?>
+                        <?= Html::submitButton(Icon::show('plus'), $array) ?>
                         <?= Html::endForm() ?>
                     </div>
                 <?php endif ?>
@@ -136,10 +136,7 @@ $this->registerJs($js);
                             $model->id,
                             ['id' => 'id-trayecto']
                         ) ?>
-                        <?= Html::submitButton(
-                            "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>",
-                            $array
-                        ) ?>
+                        <?= Html::submitButton(Icon::show('minus'), $array) ?>
                         <?= Html::endForm() ?>
                     </div>
                 <?php endif ?>

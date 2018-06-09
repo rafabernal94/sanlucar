@@ -27,6 +27,7 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
 
 $js = <<<EOT
 $(function() {
+    $.removeCookie('paypal_pasajero_id', { path: '/' });
     $('#modalButton').on('click', function() {
         $('#modalMapa').modal('show')
             .find('#modalContent');
@@ -259,6 +260,20 @@ $this->registerJs($js);
 		</div>
     </div>
     <div class="col-md-4">
+        <div class="panel panel-default">
+  			<div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="panel-title">Precio</h3>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <h3 class="panel-title">
+                            <strong><?= Html::encode($model->precio) ?> €</strong>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel panel-default">
             <?= $this->render('lista_pasajeros', [
                 'trayecto' => $model

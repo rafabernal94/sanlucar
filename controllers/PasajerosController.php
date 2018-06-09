@@ -61,6 +61,33 @@ class PasajerosController extends Controller
     }
 
     /**
+     * Si el usuario realiza el pago mediante PayPal correctamente.
+     * @return mixed
+     */
+    public function actionPagar()
+    {
+        $pasajero_id = $_COOKIE['paypal_pasajero_id'];
+        $pasajero = $this->findModel($pasajero_id);
+        $pasajero->pagado = true;
+        if ($pasajero->save()) {
+            Yii::$app->session->setFlash('success', 'Pago realizado correctamente.');
+            return $this->redirect(['/trayectos/detalles', 'id' => $pasajero->trayecto_id]);
+        }
+    }
+
+    /**
+     * Si el usuario cancela el pago mediante PayPal.
+     * @return mixed
+     */
+    public function actionCancelar()
+    {
+        $pasajero_id = $_COOKIE['paypal_pasajero_id'];
+        $pasajero = $this->findModel($pasajero_id);
+        Yii::$app->session->setFlash('info', 'Has cancelado el pago del trayecto.');
+        return $this->redirect(['/trayectos/detalles', 'id' => $pasajero->trayecto_id]);
+    }
+
+    /**
      * Finds the Pasajeros model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id

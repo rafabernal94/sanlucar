@@ -34,7 +34,8 @@
         "npm-asset/bootstrap-colorselector": "^0.1.0",
         "npm-asset/counterup": "^1.0",
         "kartik-v/yii2-widget-rating": "*",
-        "bower-asset/notifyjs": "^0.4.2"
+        "bower-asset/notifyjs": "^0.4.2",
+        "kartik-v/yii2-number": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
