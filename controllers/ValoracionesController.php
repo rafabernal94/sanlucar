@@ -98,7 +98,7 @@ class ValoracionesController extends Controller
 
         $valoraciones = Valoraciones::find()
             ->where(['valorado_id' => $usuario->id])
-            ->orderBy(['created_at' => SORT_ASC])->all();
+            ->orderBy(['created_at' => SORT_DESC])->all();
 
         return $this->render('valoraciones', [
             'valoraciones' => $valoraciones,

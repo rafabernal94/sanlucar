@@ -42,6 +42,7 @@ class TrayectosController extends Controller
                     'eliminar',
                     'modificar',
                     'buscar',
+                    'detalles',
                 ],
                 'rules' => [
                     [
@@ -51,6 +52,7 @@ class TrayectosController extends Controller
                             'mis-trayectos',
                             'eliminar',
                             'buscar',
+                            'detalles',
                         ],
                         'roles' => ['@'],
                     ],

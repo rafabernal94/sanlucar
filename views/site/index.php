@@ -1,9 +1,12 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $trayectos yii\web\Trayectos */
+
 use app\assets\CUAsset;
 use app\assets\WPAsset;
 use yii\helpers\Url;
+use yii\helpers\Html;
 use kartik\icons\Icon;
 
 $this->title = 'Inicio';
@@ -39,9 +42,9 @@ $css = <<<'CSS'
     color: #fff;
     border-radius: 20px;
 }
-video {
-    border-radius: 20px;
-}
+video { border-radius: 20px; }
+hr { border: 1px solid #AD1519; }
+h3 { color: #AD1519; }
 CSS;
 $this->registerCss($css);
 ?>
@@ -82,5 +85,27 @@ $this->registerCss($css);
                 </div>
             </div>
         </div>
+        <?php if (!Yii::$app->user->isGuest): ?>
+            <?php if(count($trayectos) > 0) : ?>
+                <hr>
+                <div class="row text-center">
+                    <h3 class="mt-0 mb-20">Últimos trayectos publicados</h3>
+                </div>
+                <div class="row">
+                    <div class="panel-group">
+                        <?php foreach ($trayectos as $trayecto) : ?>
+                            <div class="col-md-6">
+                                <?= $this->render('/trayectos/trayecto', [
+                                    'model' => $trayecto
+                                ]); ?>
+                            </div>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+                <div class="row text-center mt-10">
+                    <h4><?= Html::a('Ver más', ['trayectos/buscar']) ?></h4>
+                </div>
+            <?php endif ?>
+        <?php endif ?>
     </div>
 </div>
