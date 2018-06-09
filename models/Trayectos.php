@@ -11,6 +11,7 @@ namespace app\models;
  * @property int $conductor_id
  * @property string $fecha
  * @property string $plazas
+ * @property string $precio
  * @property string $created_at
  * @property string $updated_at
  *
@@ -33,11 +34,11 @@ class Trayectos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['origen', 'destino', 'conductor_id', 'fecha', 'plazas'], 'required'],
+            [['origen', 'destino', 'conductor_id', 'fecha', 'plazas', 'precio'], 'required'],
             [['conductor_id'], 'default', 'value' => null],
             [['conductor_id'], 'integer'],
             [['fecha', 'created_at', 'updated_at'], 'safe'],
-            [['plazas'], 'number'],
+            [['plazas', 'precio'], 'number'],
             [['origen', 'destino'], 'string', 'max' => 255],
             [['conductor_id'], 'exist', 'skipOnError' => true, 'targetClass' => UsuariosId::className(), 'targetAttribute' => ['conductor_id' => 'id']],
         ];
@@ -55,6 +56,7 @@ class Trayectos extends \yii\db\ActiveRecord
             'conductor_id' => 'Conductor Id',
             'fecha' => 'Fecha',
             'plazas' => 'Plazas',
+            'precio' => 'Precio',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
