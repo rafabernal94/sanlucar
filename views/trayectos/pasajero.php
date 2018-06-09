@@ -3,7 +3,6 @@
 /* @var $model app\models\Trayectos */
 
 use yii\helpers\Html;
-
 use kartik\icons\Icon;
 
 $js = <<<EOT
@@ -62,6 +61,23 @@ $this->registerJs($js);
                     <?php endif ?>
                 </div>
             <?php endif ?>
+        <?php endif ?>
+        <?php if (Yii::$app->user->id === $model->conductor_id): ?>
+            <div class="col-xs-4 col-md-4 text-right pt-5">
+                <?php if ($pasajero->pagado === true): ?>
+                        <?= Html::button(Icon::show('check'), [
+                            'class' => 'btn btn-xs btn-success',
+                            'disabled' => 'disabled',
+                            'title' => 'Pagado'
+                        ]) ?>
+                <?php else: ?>
+                    <?= Html::button(Icon::show('exclamation-circle'), [
+                        'class' => 'btn btn-xs btn-warning',
+                        'disabled' => 'disabled',
+                        'title' => 'Pendiente de pago'
+                    ]) ?>
+                <?php endif ?>
+            </div>
         <?php endif ?>
     </div>
 </li>

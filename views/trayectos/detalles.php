@@ -96,22 +96,22 @@ $this->registerJs($js);
                     <?php if (Yii::$app->user->id === $conductor->id): ?>
                         <?php if (!$model->haFinalizado()): ?>
         					<div class="col-md-6 col-xs-12 text-right">
-                                <?= Html::a(
-                                    'Editar el trayecto', [
+                                <?= Html::a(Icon::show('pencil') . 'Modificar', [
                                         'trayectos/modificar', 'id' => $model->id
                                     ], [
                                         'class' => 'btn btn-primary',
                                     ]
                                 ) ?>
-                                <?= Html::a(
-                                    'Eliminar',
-                                    ['trayectos/eliminar', 'id' => $model->id],
-                                    [
-                                        'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
-                                        'data-method' => 'post',
-                                        'class' => 'btn btn-danger'
-                                    ]
-                                ) ?>
+                                <?php if ($model->totalPasajeros() === 0): ?>
+                                    <?= Html::a(Icon::show('trash'). 'Eliminar',
+                                        ['trayectos/eliminar', 'id' => $model->id],
+                                        [
+                                            'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
+                                            'data-method' => 'post',
+                                            'class' => 'btn btn-danger'
+                                        ]
+                                    ) ?>
+                                <?php endif ?>
         					</div>
                         <?php endif ?>
                     <?php endif ?>
@@ -263,10 +263,10 @@ $this->registerJs($js);
         <div class="panel panel-default">
   			<div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-xs-6 col-md-6">
                         <h3 class="panel-title">Precio</h3>
                     </div>
-                    <div class="col-md-4 text-right">
+                    <div class="col-xs-6 col-md-6 text-right">
                         <h3 class="panel-title">
                             <strong><?= Html::encode($model->precio) ?> €</strong>
                         </h3>

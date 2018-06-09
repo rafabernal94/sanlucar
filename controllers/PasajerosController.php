@@ -6,6 +6,7 @@ use app\models\Pasajeros;
 use app\models\Solicitudes;
 use app\models\Trayectos;
 use Yii;
+use yii\db\Exception;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -51,9 +52,20 @@ class PasajerosController extends Controller
         ]);
 
         $trayecto = Trayectos::findOne($trayectoId);
-        $model->delete();
-        $solicitud->delete();
-        $trayecto->plazas += 1;
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->delete();
+            if ($solicitud !== null) {
+                $solicitud->delete();
+            }
+            $trayecto->plazas += 1;
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
         if ($trayecto->save()) {
             Yii::$app->session->setFlash('success', 'Te has retirado del trayecto correctamente.');
             return $this->redirect(['/trayectos/detalles', 'id' => $trayectoId]);

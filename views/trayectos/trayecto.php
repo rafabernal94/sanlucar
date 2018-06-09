@@ -11,7 +11,8 @@ use kartik\icons\Icon;
 NJSAsset::register($this);
 $url = Url::to(['trayectos/modificar-plazas-ajax']);
 $js = <<<EOT
-$('.btn-default').on('click', function() {
+$('.btn-default').on('click', function(e) {
+    e.preventDefault();
     var trayectoId = $(this).siblings('#id-trayecto').val();
     $.ajax({
         url: '$url',
@@ -39,9 +40,10 @@ $('.btn-default').on('click', function() {
 EOT;
 $this->registerJs($js);
 $js = <<<EOT
-$(function() {
-    $('#modalButton').on('click', function() {
-        $('#modalPasajeros').modal('show')
+$(document).ready(function() {
+    $('.btn-modal').on('click', function() {
+        var id = $(this).attr('id');
+        $('#modalPasajeros-'+id).modal('show')
             .find('#modalContent');
     });
 });
@@ -146,17 +148,12 @@ $this->registerJs($js);
     <div class="panel-footer">
         <div class="row text-center">
             <div class="col-xs-3 col-md-3">
-                <?= Html::a(Html::tag(
-                    'span', '', ['class' => 'glyphicon glyphicon-eye-open'])
-                    . ' Ver trayecto', ['trayectos/detalles', 'id' => $model->id]
-                ) ?>
+                <?= Html::a(Icon::show('eye') . 'Ver trayecto', ['trayectos/detalles', 'id' => $model->id]) ?>
             </div>
             <div class="col-xs-3 col-md-3">
-                <?= Html::button(Html::tag(
-                    'span', '', ['class' => 'glyphicon glyphicon-user'])
-                    . ' Ver ocupantes', [
-                        'id' => 'modalButton',
-                        'class' => 'btn btn-link',
+                <?= Html::button(Icon::show('users') . 'Ver pasajeros', [
+                        'id' => $model->id,
+                        'class' => 'btn btn-link btn-modal',
                         'style' => 'padding: 0px'
                     ]
                 ) ?>
@@ -164,22 +161,20 @@ $this->registerJs($js);
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
                 <?php if (!$model->haFinalizado()): ?>
                     <div class="col-xs-3 col-md-3">
-                        <?= Html::a(Html::tag(
-                            'span', '', ['class' => 'glyphicon glyphicon-pencil'])
-                            . ' Modificar', ['trayectos/modificar', 'id' => $model->id]
+                        <?= Html::a(Icon::show('pencil') . 'Modificar', ['trayectos/modificar', 'id' => $model->id]
                         ) ?>
                     </div>
-                    <div class="col-xs-3 col-md-3">
-                        <?= Html::a(Html::tag(
-                                'span', '', ['class' => 'glyphicon glyphicon-trash'])
-                            . ' Eliminar',
-                            ['trayectos/eliminar', 'id' => $model->id],
-                            [
-                                'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
-                                'data-method' => 'post',
-                            ]
-                        ); ?>
-                    </div>
+                    <?php if ($model->totalPasajeros() === 0): ?>
+                        <div class="col-xs-3 col-md-3">
+                            <?= Html::a(Icon::show('trash') . 'Eliminar',
+                                ['trayectos/eliminar', 'id' => $model->id],
+                                [
+                                    'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
+                                    'data-method' => 'post',
+                                ]
+                            ); ?>
+                        </div>
+                    <?php endif ?>
                 <?php endif ?>
             <?php endif ?>
         </div>
@@ -221,11 +216,11 @@ if (count($model->pasajeros)) {
 }
 ?>
 <?php
-    Modal::begin([
-        'header' => '<span style="font-size: 24px">Pasajeros</span>',
-        'id' => 'modalPasajeros',
-        'size' => 'modal-md',
-    ]);
-    echo "<div id='modalContent'>$content</div>";
-    Modal::end();
+Modal::begin([
+    'header' => '<span style="font-size: 24px">Pasajeros</span>',
+    'id' => 'modalPasajeros-'. $model->id,
+    'size' => 'modal-md',
+]);
+echo "<div id='modalContent'>$content</div>";
+Modal::end();
 ?>

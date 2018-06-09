@@ -88,6 +88,15 @@ class Trayectos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Devuelve el número de pasajeros que tiene el trayecto.
+     * @return int El número de pasajeros
+     */
+    public function totalPasajeros()
+    {
+        return $this->getPasajeros()->count();
+    }
+
+    /**
      * Devuelve solo la calle de la dirección de origen.
      * @return string La calle de origen.
      */
