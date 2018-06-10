@@ -36,14 +36,17 @@ EOT;
 $this->registerJs($js);
 ?>
 
-<div class="col-md-6 col-xs-12">
+<div class="col-md-6 col-xs-12" itemscope itemtype="http://schema.org/Car">
     <div class="panel panel-info mb-10">
         <div class="panel-heading">
             <div class="panel-title">
                 <div class="row">
                     <div class="col-xs-10 col-md-10">
-                        <?= Html::encode($coche->marca) . ' ' . Html::encode($coche->modelo)
-                        . ' - ' . Html::encode($coche->matricula) ?>
+                        <span itemprop="brand"><?= Html::encode($coche->marca) ?></span>
+                        <span itemprop="model"><?= Html::encode($coche->modelo) ?> -</span>
+                        <span itemprop="vehicleIdentificationNumber">
+                            <?= Html::encode($coche->matricula) ?>
+                        </span>
                     </div>
                     <div class="col-xs-2 col-md-2 text-right">
                         <?php
@@ -78,7 +81,9 @@ $this->registerJs($js);
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6 col-xs-6">
-                    <?= Html::encode($coche->plazas) ?> plazas
+                    <span itemprop="seatingCapacity">
+                        <?= Html::encode($coche->plazas) ?> plazas
+                    </span>
                 </div>
                 <div class="col-md-6 col-xs-6 text-right">
                     <div class="btn-group" role="group">

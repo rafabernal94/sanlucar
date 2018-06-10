@@ -51,14 +51,14 @@ EOT;
 $this->registerJs($js);
 ?>
 
-<div class="panel panel-default mb-10">
+<div class="panel panel-default mb-10" itemscope itemtype="http://schema.org/TravelAction">
     <div class="panel-heading">
         <div class="panel-title">
             <div class="row">
                 <div class="col-xs-10 col-md-10">
-                    <?= Html::encode($model->getOrigen())
-                    . " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
-                    . Html::encode($model->getDestino()) ?>
+                    <span itemprop="fromLocation"><?= Html::encode($model->getOrigen()) ?> </span>
+                    <?= Icon::show('long-arrow-right') ?>
+                    <span itemprop="toLocation"><?= Html::encode($model->getDestino()) ?></span>
                 </div>
                 <div class="col-xs-2 col-md-2 text-right">
                     <?php
@@ -74,7 +74,10 @@ $this->registerJs($js);
     <div class="panel-body">
         <div class="row mb-5">
             <div class="col-xs-6 col-md-4">
-                <?= Icon::show('calendar') . Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
+                <?= Icon::show('calendar') ?>
+                <span itemprop="startTime">
+                    <?= Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
+                </span>
             </div>
             <div class="col-xs-6 col-md-4">
                 <?= Html::encode($model->precio) . ' ' . Icon::show('euro') ?>
@@ -115,8 +118,8 @@ $this->registerJs($js);
         <div class="row">
             <div class="col-xs-6 col-md-8">
                 <?php $hora = strtotime($model->fecha . 'UTC'); ?>
-                <?= "<span class='glyphicon glyphicon-time' aria-hidden='true'></span> "
-                . Html::encode(date('H:i', $hora)) ?>
+                <span class='glyphicon glyphicon-time' aria-hidden='true'></span>
+                <span itemprop="startTime"><?= Html::encode(date('H:i', $hora)) ?></span>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
                 <?php if (!$model->haFinalizado()): ?>

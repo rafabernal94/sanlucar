@@ -25,11 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <hr class="mt-10">
         <?php if(count($coches) > 0): ?>
             <div class="panel-group">
-                <?php foreach ($coches as $coche): ?>
-                    <?= $this->render('/coches/coche', [
-                        'coche' => $coche
-                    ]); ?>
-                <?php endforeach ?>
+                <div class="row">
+                    <?php foreach ($coches as $coche): ?>
+                        <?= $this->render('/coches/coche', [
+                            'coche' => $coche
+                        ]); ?>
+                    <?php endforeach ?>
+                </div>
             </div>
         <?php else: ?>
             <h4>No tienes coches asociados a tu perfil.</h4>
