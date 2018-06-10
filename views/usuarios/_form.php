@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Usuarios */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'form-registro']); ?>
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'nombre')

@@ -5,6 +5,9 @@
 
 use app\assets\CUAsset;
 use app\assets\WPAsset;
+use app\models\Usuarios;
+use app\models\Trayectos;
+
 use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\icons\Icon;
@@ -18,7 +21,7 @@ $js = <<<EOT
 $(document).ready(function() {
     $('.counter').counterUp({
         delay: 10,
-        time: 2000
+        time: 300
     });
 });
 EOT;
@@ -47,6 +50,8 @@ hr { border: 1px solid #AD1519; }
 h3 { color: #AD1519; }
 CSS;
 $this->registerCss($css);
+$totalUsuarios = Usuarios::find()->count();
+$totalTrayectos = Trayectos::find()->count();
 ?>
 <div class="site-index">
     <div class="body-content">
@@ -54,7 +59,7 @@ $this->registerCss($css);
             <div class="object col-xs-12 col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
                     <?= Icon::show('users', ['style' => 'font-size: 36px']) ?>
-                    <h1 class="counter">220</h1>
+                    <h1 class="counter"><?= $totalUsuarios ?></h1>
                     <strong>USUARIOS REGISTRADOS</strong>
                 </div>
             </div>
@@ -64,7 +69,7 @@ $this->registerCss($css);
             <div class="object col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
                     <?= Icon::show('map-signs', ['style' => 'font-size: 36px']) ?>
-                    <h1 class="counter">70</h1>
+                    <h1 class="counter"><?= $totalTrayectos ?></h1>
                     <strong>TRAYECTOS PUBLICADOS</strong>
                 </div>
             </div>
@@ -73,14 +78,14 @@ $this->registerCss($css);
             <div class="col-xs-6 text-center pr-10">
                 <div class="single_counter pt-20 pb-20">
                     <?= Icon::show('users', ['style' => 'font-size: 28px']) ?>
-                    <h3 class="counter mt-10">220</h3>
+                    <h3 class="counter mt-10"><?= $totalUsuarios ?></h3>
                     <strong>USUARIOS REGISTRADOS</strong>
                 </div>
             </div>
             <div class="col-xs-6 text-center pl-10">
                 <div class="single_counter pt-20 pb-20">
                     <?= Icon::show('map-signs', ['style' => 'font-size: 28px']) ?>
-                    <h3 class="counter mt-10">70</h3>
+                    <h3 class="counter mt-10"><?= $totalTrayectos ?></h3>
                     <strong>TRAYECTOS PUBLICADOS</strong>
                 </div>
             </div>

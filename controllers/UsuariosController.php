@@ -88,6 +88,7 @@ class UsuariosController extends Controller
             $usuarioId = new UsuariosId();
             $usuarioId->save();
             $model->id = $usuarioId->id;
+            $model->url_avatar = 'https://www.dropbox.com/s/u52msq5uguwea2s/avatar-default.png?dl=1';
             $model->save();
             $this->enviarEmail($model);
             Yii::$app->session->setFlash('success', 'Se ha enviado un email a su correo electrónico para confirmar la cuenta.');

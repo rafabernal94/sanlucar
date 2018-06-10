@@ -9,6 +9,16 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Iniciar sesión';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<<EOT
+$(document).ready(function() {
+    $('#login-form').on('beforeSubmit', function() {
+        $('.btn-success').text('Iniciando sesión');
+        initBotonCargando('.btn-success');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="site-login">
     <div class="col-md-12">
@@ -32,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'rememberMe')->checkbox([])
                         ->label('Recuérdame') ?>
 
-                    <div class="col-md-3 col-xs-6 pl-0">
+                    <div class="col-md-4 col-xs-6 pl-0">
                         <div class="form-group">
                             <?= Html::submitButton('Iniciar sesión', ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
                         </div>

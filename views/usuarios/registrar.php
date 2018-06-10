@@ -14,6 +14,15 @@ PwsAsset::register($this);
 $this->registerJsFile('@web/js/pwstrength.js', [
 	'depends' => [\yii\web\JqueryAsset::className()]
 ]);
+$js = <<<EOT
+$(document).ready(function() {
+    $('#form-registro').on('beforeSubmit', function() {
+        $('.btn-success').text('Registrando');
+        initBotonCargando('.btn-success');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="usuarios-registrar">
     <div class="col-md-12">

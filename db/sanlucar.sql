@@ -147,8 +147,12 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
                'https://www.dropbox.com/s/v504eg93v0dpjqd/david.jpg?dl=1', 3);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas, precio)
-    VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle Ancha, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2, 1.5)
-         , ('Calle Barrameda, Sanlúcar de Barrameda, España', 'Calle Ganado, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3, 0.5);
+    VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle San Agustín, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2, 1)
+         , ('Calle Barrameda, Sanlúcar de Barrameda, España', 'Calle Borregueros, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P2D'::interval, 3, 0.5)
+         , ('Calle Ancha, Sanlúcar de Barrameda, España', 'Calle Descalzas, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3, 2)
+         , ('Calle Astilleros, Bonanza, España', 'Calle San Juan, Sanlúcar de Barrameda, España', 2, localtimestamp + 'P2D'::interval, 3, 1.5)
+         , ('Calle Banda Playa, Sanlúcar de Barrameda, España', 'Calle B, La Algaida, España', 3, localtimestamp + 'P2D'::interval, 3, 0.5)
+         , ('Calle Guadalhorce, Sanlúcar de Barrameda, España', 'Calle Bolsa, Sanlúcar de Barrameda, España', 3, localtimestamp + 'P2D'::interval, 3, 1);
 
 INSERT INTO pasajeros (usuario_id, trayecto_id)
     VALUES (2, 1), (3, 1);

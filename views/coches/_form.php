@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 use kartik\touchspin\TouchSpin;
 
 /* @var $this yii\web\View */
@@ -12,20 +11,22 @@ use kartik\touchspin\TouchSpin;
 <?php
 $js = <<<EOT
 var matricula = $('#matricula');
-
 matricula.on('blur keyup', validar);
-$('.btn-success').on('click', function(e) {
-    e.preventDefault();
+$('#form-coche').on('beforeSubmit', function() {
     validar();
-    var valida = false;
+    var valida = true;
     $('input[type=text]').each(function() {
-        if ($(this).parent().hasClass('has-success')) {
-            valida = true;
+        if ($(this).parent().hasClass('has-error')) {
+            valida = false;
         }
     });
     if (valida) {
-        $('#form-coche').submit();
+        if ($('.btn-success').text() === 'Añadir') $('.btn-success').text('Añadiendo');
+        else $('.btn-success').text('Modificando');
+        initBotonCargando('.btn-success');
+        return true;
     }
+    return false;
 });
 
 function validar() {
