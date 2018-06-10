@@ -41,6 +41,8 @@ $js = <<<EOT
 $(document).ready(function() {
     $('#btnSolicitar').on('click', function(e) {
         e.preventDefault();
+        $('.btn-success').text('Solicitando plaza');
+        initBotonCargando('.btn-success');
         enviarAjax('$url', 'POST',
             {idTrayecto: $(this).siblings('#id-trayecto').val()},
             function(data) {
@@ -289,7 +291,7 @@ $this->registerJs($js);
                 <div class="panel-footer text-center">
                     <?= Html::beginForm(
                         ['solicitudes/crear'],
-                        'post'
+                        'post', ['id' => 'form-solicitud']
                     ) ?>
                     <?= Html::hiddenInput('id-trayecto', $model->id, [
                         'id' => 'id-trayecto'

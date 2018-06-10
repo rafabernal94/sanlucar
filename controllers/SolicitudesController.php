@@ -5,8 +5,11 @@ namespace app\controllers;
 use app\models\Pasajeros;
 use app\models\Solicitudes;
 use app\models\Trayectos;
+use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -41,6 +44,10 @@ class SolicitudesController extends Controller
         $model = new Solicitudes();
         $model->usuario_id = Yii::$app->user->id;
         $model->trayecto_id = $idTrayecto;
+        $trayecto = Trayectos::findOne($idTrayecto);
+        $conductor = Usuarios::findOne($trayecto->conductor_id);
+
+        $this->enviarEmail($conductor, $trayecto);
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $model->save();
@@ -77,6 +84,31 @@ class SolicitudesController extends Controller
                 return $resultado;
             }
         }
+    }
+
+    /**
+     * Envia un email cuando se crea una solicitud.
+     * @param  Usuarios $usuario Usuario al que se envie el email
+     * @param  Trayectos $trayecto Trayecto al que pertenece la solicitud
+     * @return bool True si el email se ha enviado correctamente
+     */
+    public function enviarEmail($usuario, $trayecto)
+    {
+        $asunto = 'Nueva solicitud';
+        $enlace = Html::a(
+            'Ver solicitud',
+            Url::to(['trayectos/detalles', 'id' => $trayecto->id], true)
+        );
+        $cuerpo = "¡Hola $usuario->nombre!<br>
+            Tienes una nueva solicitud en un trayecto.<br><br>$enlace";
+        return Yii::$app->mailer->compose('template', [
+            'usuario' => $usuario,
+            'cuerpo' => $cuerpo,
+        ])
+        ->setFrom(Yii::$app->params['adminEmail'])
+        ->setTo($usuario->email)
+        ->setSubject($asunto)
+        ->send();
     }
 
     /**
