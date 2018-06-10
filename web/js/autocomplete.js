@@ -1,3 +1,12 @@
+function initMap() {
+    var mapa = new google.maps.Map(document.getElementById('mapa'), {
+        mapTypeControl: false,
+        center: {lat: 36.777035, lng: -6.352707},
+        zoom: 14
+    });
+    new AutocompleteDirectionsHandler(mapa);
+}
+
 function AutocompleteDirectionsHandler(mapa) {
     this.mapa = mapa;
     this.originPlaceId = null;
@@ -15,16 +24,12 @@ function AutocompleteDirectionsHandler(mapa) {
         new google.maps.LatLng(36.777035, -6.352707),
         new google.maps.LatLng(36.777035, -6.352707));
 
-    var autocompletadoOrigen = new google.maps.places.Autocomplete(
-        origen, {
-            bounds: limite, types: ['address'], componentRestrictions: {country: 'es'}
-        }
-    );
-    var autocompletadoDestino = new google.maps.places.Autocomplete(
-        destino, {
-            bounds: limite, types: ['address'], componentRestrictions: {country: 'es'}
-        }
-    );
+    var autocompletadoOrigen = new google.maps.places.Autocomplete(origen, {
+        bounds: limite, types: ['address'], componentRestrictions: {country: 'es'}
+    });
+    var autocompletadoDestino = new google.maps.places.Autocomplete(destino, {
+        bounds: limite, types: ['address'], componentRestrictions: {country: 'es'}
+    });
 
     this.setupPlaceChangedListener(autocompletadoOrigen, 'ORIG');
     this.setupPlaceChangedListener(autocompletadoDestino, 'DEST');
@@ -34,7 +39,7 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(aut
     var me = this;
     autocomplete.bindTo('bounds', this.mapa);
     autocomplete.addListener('place_changed', function() {
-        initMap();
+        if ($('div.trayectos-update').length > 0) initMap();
         var place = autocomplete.getPlace();
         if (!place.place_id) {
             window.alert('Por favor, seleccione una opción de la lista.');

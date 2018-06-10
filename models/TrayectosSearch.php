@@ -66,7 +66,7 @@ class TrayectosSearch extends Trayectos
         //     'updated_at' => $this->updated_at,
         // ]);
 
-        $query->andFilterWhere(['ilike', 'origen', $this->origen])
+        $query->where(['>=', 'fecha', 'now()'])->andFilterWhere(['ilike', 'origen', $this->origen])
             ->andFilterWhere(['ilike', 'destino', $this->destino]);
 
         return $dataProvider;
