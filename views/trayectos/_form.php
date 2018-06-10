@@ -14,7 +14,10 @@ use kartik\datecontrol\DateControl;
 /* @var $form yii\widgets\ActiveForm */
 
 $this->registerJsFile('@web/js/autocomplete.js', ['position' => View::POS_HEAD]);
-$this->registerJsFile('@web/js/draw-route.js', ['position' => View::POS_HEAD]);
+$this->registerJsFile('@web/js/draw-route.js', [
+    'position' => View::POS_HEAD,
+    'depends' => [\yii\web\JqueryAsset::className()]
+]);
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQK52OS9wzjw5P6QE_ejpFTytrD4&libraries=places&callback=initMap');
 ?>
 
@@ -41,11 +44,6 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 visible-xs">
-                <div class="panel panel-default">
-                    <div id="mapaResponsive" style="width:100%; height: 300px"></div>
-                </div>
-            </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -134,9 +132,9 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQ
             </div>
         </div>
     </div>
-    <div class="col-md-6 hidden-xs">
+    <div class="col-md-6">
         <div class="panel panel-default">
-            <div id="mapa" style="width:100%; height: 479px"></div>
+            <div id="mapa" style="width:100%; height: 480px"></div>
         </div>
     </div>
 </div>

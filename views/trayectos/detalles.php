@@ -19,7 +19,7 @@ $this->title = 'Detalles';
 $this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/mis-trayectos']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJsFile('@web/js/draw-detalles.js', [
+$this->registerJsFile('@web/js/draw-route.js', [
     'position' => View::POS_HEAD,
     'depends' => [\yii\web\JqueryAsset::className()]
 ]);

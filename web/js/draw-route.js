@@ -4,19 +4,18 @@ function initMap() {
         center: {lat: 36.777035, lng: -6.352707},
         zoom: 14
     });
-    var mapaResponsive = new google.maps.Map(document.getElementById('mapaResponsive'), {
-        mapTypeControl: false,
-        center: {lat: 36.777035, lng: -6.352707},
-        zoom: 14
-    });
     var geocoder = new google.maps.Geocoder();
-    var origen = document.getElementById('origen').value;
-    var destino = document.getElementById('destino').value;
+    var origen = $('#origen').val();
+    var destino = $('#destino').val();
 
-    new AutocompleteDirectionsHandler(mapa);
-    calcRoute(origen, destino, geocoder, mapa);
-    new AutocompleteDirectionsHandler(mapaResponsive);
-    calcRoute(origen, destino, geocoder, mapaResponsive);
+    if ($('#trayecto-form').length > 0) {
+        new AutocompleteDirectionsHandler(mapa);
+        calcRoute(origen, destino, geocoder, mapa);
+    } else {
+        $('#modalMapa').on('shown.bs.modal', function() {
+            calcRoute(origen, destino, geocoder, mapa);
+        });
+    }
 }
 
 function calcRoute(origen, destino, geocoder, mapa) {
@@ -49,11 +48,11 @@ function calcRoute(origen, destino, geocoder, mapa) {
                         }
                     });
                 } else {
-                    console.log("Geocode was not successful for the following reason: " + status);
+                    // console.log("Geocode was not successful for the following reason: " + status);
                 }
             });
         } else {
-            console.log("Geocode was not successful for the following reason: " + status);
+            // console.log("Geocode was not successful for the following reason: " + status);
         }
     });
 }
