@@ -9,6 +9,16 @@ use yii\helpers\Html;
 $this->title = 'Modificar trayecto';
 $this->params['breadcrumbs'][] = ['label' => 'Mis trayectos', 'url' => ['trayectos/mis-trayectos']];
 $this->params['breadcrumbs'][] = 'Modificar trayecto';
+
+$js = <<<EOT
+$(document).ready(function() {
+    $('#trayecto-form').on('beforeSubmit', function() {
+        $('.btn-success').text('Modificando');
+        initBotonCargando('.btn-success');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="trayectos-update">
     <div class="col-md-12">

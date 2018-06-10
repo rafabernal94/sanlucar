@@ -21,7 +21,7 @@ $('.btn-link').on('click', function(e) {
         },
         success: function(data) {
             if (data == 1) {
-                mostrarAlert('Coche marcado como favorito correctamente.', 'success');
+                mostrarAlert('Coche marcado como favorito.', 'success');
                 $('.fa-star').removeClass('fav');
                 $('.btn-link').prop('disabled', false);
                 $('#btn-'+cocheId).children('.fa-star').addClass('fav');
@@ -87,12 +87,11 @@ $this->registerJs($js);
                 </div>
                 <div class="col-md-6 col-xs-6 text-right">
                     <div class="btn-group" role="group">
-                        <?= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-cog']),
+                        <?= Html::a(Icon::show('pencil'),
                             ['coches/modificar', 'id' => $coche->id],
                             ['class' => 'btn btn-xs btn-default']
                         ); ?>
-                        <?= Html::a(
-                            Html::tag('span', '', ['class' => 'glyphicon glyphicon-trash']),
+                        <?= Html::a(Icon::show('trash'),
                             ['coches/eliminar', 'id' => $coche->id],
                             [
                                 'data-confirm' => '¿Estás seguro que quieres eliminar el coche?',

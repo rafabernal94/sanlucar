@@ -90,6 +90,6 @@ $this->registerJs($js);
 
     <div class="form-group text-right">
         <?php $texto = explode(' ', $this->title)[0]; ?>
-        <?= Html::submitButton($texto .' coche', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($texto, ['class' => 'btn btn-success']) ?>
     </div>
 <?php ActiveForm::end(); ?>

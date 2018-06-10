@@ -18,7 +18,7 @@ $this->registerJsFile('@web/js/draw-route.js', ['position' => View::POS_HEAD]);
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQK52OS9wzjw5P6QE_ejpFTytrD4&libraries=places&callback=initMap');
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id' => 'trayecto-form']); ?>
 <div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">

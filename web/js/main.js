@@ -17,3 +17,11 @@ function mostrarAlert(texto, tipo) {
     $.notify.defaults({autoHideDelay: 2000});
     $.notify(texto, tipo);
 }
+
+function initBotonCargando(boton) {
+    $(boton).prop('disabled', true).append(' <i class="fa fa-refresh fa-spin"></i>');
+}
+
+function finishBotonCargando(boton) {
+    $(boton).prop('disabled', false).find('i.fa').remove();
+}

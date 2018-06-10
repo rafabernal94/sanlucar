@@ -12,7 +12,7 @@ use kartik\rating\StarRating;
 
 <div class="valoraciones-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'valoracion-form']); ?>
 
     <?= $form->field($model, 'texto')
         ->textarea(['maxlength' => true, 'placeholder' => 'Escribir valoración'])

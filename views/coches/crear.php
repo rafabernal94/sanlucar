@@ -7,7 +7,18 @@ use yii\helpers\Html;
 /* @var $model app\models\Coches */
 
 $this->title = 'Añadir coche';
+$this->params['breadcrumbs'][] = ['label' => 'Mis coches', 'url' => ['coches/mis-coches']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<<EOT
+$(document).ready(function() {
+    $('#form-coche').on('beforeSubmit', function() {
+        $('.btn-success').text('Añadiendo');
+        initBotonCargando('.btn-success');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="coches-crear">
     <div class="col-md-12">

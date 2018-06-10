@@ -34,6 +34,8 @@ $url = Url::to(['mensajes/nuevo']);
 $js = <<<EOT
 $(document).ready(function() {
     $('#mensajes-form').on('beforeSubmit', function() {
+        $('.btn-success').text('Enviando');
+        initBotonCargando('.btn-success');
         enviarAjax('$url', 'POST',
             {
                 conversacion_id: $('body').find('#idConversacion').val(),
@@ -43,6 +45,8 @@ $(document).ready(function() {
                 if (data) {
                     $('textarea#mensajes-mensaje').val('');
                     $('#lista-mensajes').html(data);
+                    $('.btn-success').text('Enviar');
+                    finishBotonCargando('.btn-success');
                 }
             }
         );

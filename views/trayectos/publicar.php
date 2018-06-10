@@ -8,6 +8,16 @@ use yii\helpers\Html;
 
 $this->title = 'Publicar trayecto';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<<EOT
+$(document).ready(function() {
+    $('#trayecto-form').on('beforeSubmit', function() {
+        $('.btn-success').text('Publicando');
+        initBotonCargando('.btn-success');
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="trayectos-create">
     <div class="col-md-12">
