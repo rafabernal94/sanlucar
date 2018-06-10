@@ -7,6 +7,8 @@ use app\models\Mensajes;
 use app\models\Usuarios;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -65,7 +67,8 @@ class MensajesController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Mensaje enviado correctamente.');
-            return $this->goHome();
+            $this->enviarEmail($usuario, $conversacion);
+            return $this->redirect(['conversaciones/conversacion', 'id' => $conversacion->id]);
         }
 
         return $this->renderAjax('crear', [
@@ -87,17 +90,49 @@ class MensajesController extends Controller
             $model->usuario_id = Yii::$app->user->id;
             $model->conversacion_id = $id;
             $model->mensaje = $mensaje;
+            if ($conversacion->usuario1_id !== Yii::$app->user->id) {
+                $user_id = $conversacion->usuario1_id;
+            } else {
+                $user_id = $conversacion->usuario2_id;
+            }
+            $receptor = Usuarios::findOne($user_id);
 
             if ($model->save()) {
                 $mensajes = Mensajes::find()
                         ->where(['conversacion_id' => $id])
                         ->orderBy(['created_at' => SORT_DESC])->all();
-
+                $this->enviarEmail($receptor, $conversacion);
                 return $this->renderAjax('lista_mensajes', [
                         'mensajes' => $mensajes,
                 ]);
             }
         }
+    }
+
+    /**
+     * Envia un email cuando se crea un mensaje.
+     * @param  Usuarios $usuario  Usuario al que se envie el email
+     * @param  Conversaciones $conversacion Conversación del mensaje
+     * @param mixed $conversacion
+     * @return bool True si el email se ha enviado correctamente
+     */
+    public function enviarEmail($usuario, $conversacion)
+    {
+        $asunto = 'Mensaje nuevo';
+        $enlace = Html::a(
+            'Ver mensaje',
+            Url::to(['conversaciones/conversacion', 'id' => $conversacion->id], true)
+        );
+        $cuerpo = "¡Hola $usuario->nombre!<br>
+            Te han enviado un mensaje nuevo.<br><br>$enlace";
+        return Yii::$app->mailer->compose('template', [
+            'usuario' => $usuario,
+            'cuerpo' => $cuerpo,
+        ])
+        ->setFrom(Yii::$app->params['adminEmail'])
+        ->setTo($usuario->email)
+        ->setSubject($asunto)
+        ->send();
     }
 
     /**

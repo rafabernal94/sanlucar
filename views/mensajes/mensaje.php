@@ -19,6 +19,6 @@ use yii\helpers\Html;
         <?= $mensaje->mensaje ?>
     </div>
     <div class="col-md-3 hidden-xs">
-        <?= Yii::$app->formatter->asDate($mensaje->created_at, 'H:m dd-MM-yyyy') ?>
+        <?= Yii::$app->formatter->asRelativeTime($mensaje->created_at) ?>
     </div>
 </div>
