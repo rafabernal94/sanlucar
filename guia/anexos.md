@@ -1,8 +1,21 @@
 # Anexos
 
-Documentos específicos vinculados a determinados requisitos funcionales o
-técnicos ("prueba del seis" y similares).
+**VALIDACIÓN HTML5**
+![Validación html](images/html.png)
 
-Poner cada uno en un apartado separado, indicando en el título de cada apartado
-el código y la descripción corta del requisito asociado (por ejemplo,
-**(RF24) Prueba del seis**).
+**VALIDACIÓN CSS3**
+![Validación css](images/css.png)
+
+**COMPROBACIÓN EN NAVEGADORES**
+
+**Google Chrome**
+![Captura chrome](images/chrome.png)
+
+**Mozilla Firefox**
+![Captura firefox](images/firefox.png)
+
+**Microsoft Edge**
+![Captura edge](images/edge.png)
+
+**Opera**
+![Captura opera](images/opera.png)

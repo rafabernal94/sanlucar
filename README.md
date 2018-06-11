@@ -5,7 +5,7 @@
     <br>
 </p>
 
-SanLuCar es una aplicación desarrollada para ser utilizada por todas las personas con el fin de desplazarse al lugar que desee dentro de la localidad de Sanlúcar de Barrameda, Cádiz.
+SanluCar es una aplicación desarrollada para ser utilizada por todas las personas con el fin de desplazarse al lugar que desee dentro de la localidad de Sanlúcar de Barrameda, Cádiz.
 
 El objetivo principal de esta aplicación es facilitar en la medida de lo posible el desplazamiento urbano de las personas a las distintas zonas de la ciudad; de esta forma, los ciudadanos podrán compartir un mismo automóvil para desplazarse. Gracias al mismo, conseguiremos reducir la utilización de vehículos propios y así estaremos ayudando al medio ambiente, evitando una
 excesiva contaminación atmosférica.
