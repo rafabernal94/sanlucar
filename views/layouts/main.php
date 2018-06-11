@@ -35,7 +35,7 @@ Icon::map($this);
     NavBar::begin([
         'brandLabel' => Html::img('@web/images/logo.png', [
             'alt' => 'SanluCar',
-            'width' => '140px;',
+            'width' => '140',
             'style' => 'margin-top: -4px',
         ]),
         'brandUrl' => Yii::$app->homeUrl,

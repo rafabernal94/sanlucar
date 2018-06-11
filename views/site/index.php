@@ -48,6 +48,7 @@ $css = <<<'CSS'
 video { border-radius: 20px; }
 hr { border: 1px solid #AD1519; }
 h3 { color: #AD1519; }
+video { width: 100% }
 CSS;
 $this->registerCss($css);
 $totalUsuarios = Usuarios::find()->count();
@@ -64,7 +65,7 @@ $totalTrayectos = Trayectos::find()->count();
                 </div>
             </div>
             <div class="col-md-6 mb-10">
-                <video width="100%" src="<?= Url::to('@web/videos/spot.mp4') ?>" autoplay loop muted></video>
+                <video src="<?= Url::to('@web/videos/spot.mp4') ?>" autoplay loop muted></video>
             </div>
             <div class="object col-md-3 text-center mt-60 hidden-xs">
                 <div class="single_counter pt-30 pb-30">
