@@ -6,6 +6,8 @@
 
 ![Diagrama modelos](images/diagrama-models.png)
 
+***
+
 **Controladores**
 
 ![Diagrama controladores](images/diagrama-controllers.png)

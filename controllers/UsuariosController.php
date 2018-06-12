@@ -266,31 +266,6 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Envía un email de restauración de contraseña.
-     * @param  Usuarios $model El usuario al cuál se le envía el email
-     * @param mixed $id
-     * @return bool            Devuelve true si se ha enviado correctamente,
-     *                         false en caso contrario
-     */
-    /*public function enviarEmailRecuperar($model)
-    {
-        return Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['adminEmail'])
-            ->setTo($model->email)
-            ->setSubject('Email de restauración de contraseña')
-            ->setHtmlBody(
-                'Has solicitado un cambio de contraseña.<br><br>' .
-                Html::a(
-                    'Modificar contraseña',
-                    Url::to([
-                        'usuarios/restaurar-pass',
-                        'token' => $model->token_pass,
-                    ], true)
-                )
-            )->send();
-    }*/
-
-    /**
      * Finds the Usuarios model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id

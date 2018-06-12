@@ -18,7 +18,7 @@ $this->registerJsFile('@web/js/draw-route.js', [
     'position' => View::POS_HEAD,
     'depends' => [\yii\web\JqueryAsset::className()]
 ]);
-$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyAhfDqWQK52OS9wzjw5P6QE_ejpFTytrD4&libraries=places&callback=initMap');
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . getenv('GOOGLEMAPS_KEY') . '&libraries=places&callback=initMap');
 ?>
 
 <?php $form = ActiveForm::begin(['id' => 'trayecto-form']); ?>
