@@ -144,7 +144,7 @@ INSERT INTO usuarios (id, email, password, nombre, apellido, biografia, url_avat
                'https://www.dropbox.com/s/qva1onfjw87szmo/manuel.jpg?dl=1', 3)
          , (4, 'david@david.com', crypt('david123', gen_salt('bf', 13)), 'David', 'Ruiz',
                'Me gusta mucho viajar.',
-               'https://www.dropbox.com/s/v504eg93v0dpjqd/david.jpg?dl=1', 3);
+               'https://www.dropbox.com/s/v504eg93v0dpjqd/david.jpg?dl=1', 4);
 
 INSERT INTO trayectos (origen, destino, conductor_id, fecha, plazas, precio)
     VALUES ('Calle San Nicolás, Sanlúcar de Barrameda, España', 'Calle San Agustín, Sanlúcar de Barrameda, España', 1, localtimestamp + 'P1D'::interval, 2, 1)
@@ -159,8 +159,9 @@ INSERT INTO pasajeros (usuario_id, trayecto_id)
 
 INSERT INTO coches (marca, modelo, matricula, usuario_id, plazas)
     VALUES ('Opel', 'Corsa', '1234 ABC', 1, 5)
-         , ('Nissan', 'Micra', '4321 CBA', 2, 7)
-         , ('Fiat', 'Punto', '9876 EFG', 3, 5);
+         , ('Nissan', 'Micra', '4321 CBA', 2, 5)
+         , ('Fiat', 'Punto', '9876 EFG', 3, 5)
+         , ('Ford', 'Ka', '6714 RYL', 4, 4);
 
 INSERT INTO preferencias (musica, mascotas, ninos, fumar, trayecto_id)
     VALUES (true, true, true, false, 1)

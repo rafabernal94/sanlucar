@@ -49,6 +49,10 @@ $(document).ready(function() {
 });
 EOT;
 $this->registerJs($js);
+$css = <<<CSS
+.precio { background-color: #ffc107 !important }
+CSS;
+$this->registerCss($css);
 ?>
 
 <div class="panel panel-default mb-10" itemscope itemtype="http://schema.org/TravelAction">
@@ -59,6 +63,7 @@ $this->registerJs($js);
                     <span itemprop="fromLocation"><?= Html::encode($model->getOrigen()) ?> </span>
                     <?= Icon::show('long-arrow-right') ?>
                     <span itemprop="toLocation"><?= Html::encode($model->getDestino()) ?></span>
+                    <span class="badge precio"><?= Html::encode($model->precio) . ' ' . Icon::show('euro') ?></span>
                 </div>
                 <div class="col-xs-2 col-md-2 text-right">
                     <?php
@@ -73,14 +78,11 @@ $this->registerJs($js);
     </div>
     <div class="panel-body">
         <div class="row mb-5">
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-8">
                 <?= Icon::show('calendar') ?>
                 <span itemprop="startTime">
                     <?= Html::encode(Yii::$app->formatter->asDate($model->fecha)) ?>
                 </span>
-            </div>
-            <div class="col-xs-6 col-md-4">
-                <?= Html::encode($model->precio) . ' ' . Icon::show('euro') ?>
             </div>
             <?php if (Yii::$app->user->id === $model->conductor->usuario->id): ?>
                 <?php if (!$model->haFinalizado()): ?>

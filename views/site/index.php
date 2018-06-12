@@ -47,7 +47,6 @@ $css = <<<'CSS'
 }
 video { border-radius: 20px; }
 hr { border: 1px solid #AD1519; }
-h3 { color: #AD1519; }
 video { width: 100% }
 CSS;
 $this->registerCss($css);
@@ -95,7 +94,7 @@ $totalTrayectos = Trayectos::find()->count();
             <?php if(count($trayectos) > 0) : ?>
                 <hr>
                 <div class="row text-center">
-                    <h3 class="mt-0 mb-20">Últimos trayectos publicados</h3>
+                    <h3 class="mt-0 mb-20" style="color: #AD1519">Últimos trayectos publicados</h3>
                 </div>
                 <div class="row">
                     <div class="panel-group">

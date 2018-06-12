@@ -58,6 +58,7 @@ $(document).ready(function() {
         enviarAjax('$url2', 'POST',
             {idSolicitud: $(this).siblings('#id-solicitud').val()},
             function(data) {
+                $('#btnEliminar').remove();
                 $('#listaPasajeros').closest('.panel-default').html(data[0]);
                 $('#listaSolicitudes').replaceWith(data[1]);
             }
@@ -110,7 +111,8 @@ $this->registerJs($js);
                                         [
                                             'data-confirm' => '¿Estás seguro que quieres eliminar el trayecto?',
                                             'data-method' => 'post',
-                                            'class' => 'btn btn-danger'
+                                            'class' => 'btn btn-danger',
+                                            'id' => 'btnEliminar'
                                         ]
                                     ) ?>
                                 <?php endif ?>

@@ -262,40 +262,50 @@ $this->registerCss($css);
 	<div class="col-md-8">
 		<div class="panel panel-default">
   			<div class="panel-heading"><strong>Sobre mi</strong></div>
-  			<div class="panel-body"><?= Html::encode($model->biografia) ?></div>
+  			<div class="panel-body">
+				<?php if ($model->biografia !== null): ?>
+					<?= Html::encode($model->biografia) ?>
+				<?php else: ?>
+					<span>Aún no ha establecido ninguna biografía.</span>
+				<?php endif ?>
+			</div>
 		</div>
 		<div class="panel panel-default">
   			<div class="panel-heading"><strong>Trayectos publicados</strong></div>
   			<div class="panel-body">
-				<table class="table mb-0">
-					<thead>
-						<th>Salida</th>
-						<th>Trayecto</th>
-						<th>Plazas</th>
-					</thead>
-					<tbody>
-						<?php foreach ($model->usuarioId->trayectos as $trayecto): ?>
-							<tr>
-								<?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
-								<td><?= Html::encode(
-									Yii::$app->formatter->asDate($trayecto->fecha))
-									. ' a las '
-									. Html::encode(date('H:i', $hora)) ?>
-								</td>
-								<?php
-					            $origen = explode(',', $trayecto->origen)[0];
-					            $destino = explode(',', $trayecto->destino)[0];
-					            ?>
-								<td><?= Html::a(Html::encode($origen)
-									. " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
-									. Html::encode($destino)
-									, ['trayectos/detalles', 'id' => $trayecto->id]) ?>
-								</td>
-								<td><?= Html::encode($trayecto->plazas) . ' disp.' ?></td>
-							</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
+				<?php if (count($model->usuarioId->trayectos)): ?>
+					<table class="table mb-0">
+						<thead>
+							<th>Salida</th>
+							<th>Trayecto</th>
+							<th>Plazas</th>
+						</thead>
+						<tbody>
+							<?php foreach ($model->usuarioId->trayectos as $trayecto): ?>
+								<tr>
+									<?php $hora = strtotime($trayecto->fecha . 'UTC'); ?>
+									<td><?= Html::encode(
+										Yii::$app->formatter->asDate($trayecto->fecha))
+										. ' a las '
+										. Html::encode(date('H:i', $hora)) ?>
+									</td>
+									<?php
+						            $origen = explode(',', $trayecto->origen)[0];
+						            $destino = explode(',', $trayecto->destino)[0];
+						            ?>
+									<td><?= Html::a(Html::encode($origen)
+										. " <span class='glyphicon glyphicon-arrow-right' aria-hidden='true'></span> "
+										. Html::encode($destino)
+										, ['trayectos/detalles', 'id' => $trayecto->id]) ?>
+									</td>
+									<td><?= Html::encode($trayecto->plazas) . ' disp.' ?></td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				<?php else: ?>
+					<span>Aún no ha publicado ningún trayecto.</span>
+				<?php endif ?>
 			</div>
 		</div>
 	</div>

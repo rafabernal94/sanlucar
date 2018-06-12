@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <hr class="mt-10">
-        <span class="label label-warning">Marca como favorito el coche que utilizarás para realizar tus trayectos.</span>
+        <span class="label label-warning">Marca como favorito el coche con el cual viajarás.</span>
         <?php if(count($coches) > 0): ?>
             <div class="panel-group mt-10">
                 <div class="row">
